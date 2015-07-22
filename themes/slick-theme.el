@@ -33,18 +33,13 @@
    `(font-lock-preprocessor-face ((,class (:foreground "DarkGoldenrod" :weight bold))))
    `(font-lock-comment-face ((,class (:foreground "OliveDrab" :slant italic))))
    `(font-lock-string-face ((,class (:foreground "cadet blue"))))
-   ;; `(font-lock-function-name-face ((,class (:foreground "IndianRed3" :weight bold))))
-   ;; `(font-lock-builtin-face ((,class (:foreground "DarkGoldenrod"))))
-   ;; `(font-lock-keyword-face ((,class (:inherit default :weight bold))))
-   ;; `(font-lock-variable-name-face ((,class (:foreground "sienna1" :weight normal))))
-   ;; `(font-lock-constant-face ((,class (:foreground "dark turquoise"))))
 
    ;; disable some font lock faces for less color.
-   `(font-lock-function-name-face ((,class (:weight bold))))
-   `(font-lock-keyword-face ((,class (:inherit default))))
-   `(font-lock-type-face ((,class (:inherit default))))
-   `(font-lock-constant-face ((,class (:inherit default))))
-   `(font-lock-builtin-face ((,class (:inherit default))))
+   `(font-lock-function-name-face ((,class (:inherit default :weight bold :foreground nil))))
+   `(font-lock-keyword-face ((,class (:inherit default :foreground nil))))
+   `(font-lock-type-face ((,class (:inherit default :foreground nil))))
+   `(font-lock-constant-face ((,class (:inherit default :foreground nil))))
+   `(font-lock-builtin-face ((,class (:inherit default :foreground nil))))
    `(font-lock-variable-name-face ((,class (:inherit default))))
 
    ;; Button and link faces
