@@ -1,0 +1,13 @@
+/*
+!/Makefile
+!/elpa
+!/themes
+!/lisp
+!/init.el
+!/settings-customize.eld
+
+*.elc
+/lisp/init-autoloads.el
+/elpa/archives
+/elpa/gnupg
+
