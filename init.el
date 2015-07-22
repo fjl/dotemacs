@@ -2,6 +2,9 @@
 
 ;; (push (lambda (f) (message "loading %s" f)) after-load-functions)
 
+;; Don't warn unless it's serious.
+(setq warning-minimum-level :emergency)
+
 ;; Load the bootstrap file. This sets up all load paths and activates all packages.
 (let* ((init-dir (file-name-directory (file-truename (or load-file-name buffer-file-name))))
        (init-lisp-dir (concat init-dir "lisp/")))
