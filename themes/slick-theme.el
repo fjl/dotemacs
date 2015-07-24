@@ -63,8 +63,8 @@
    `(message-separator ((,class (:foreground "deep sky blue"))))
 
    ;; Mode line style
-   `(mode-line           ((,class (:background "tan4" :foreground "gray90" :box (:line-width 2 :color "tan4" :style released-button)))))
-   `(mode-line-inactive  ((,class (:inherit mode-line :background "black" :foreground "grey40" :weight light :box (:line-width 2 :style released-button)))))
+   `(mode-line           ((,class (:background "tan4" :foreground "gray90" :box (:line-width 1 :color "tan4" :style released-button)))))
+   `(mode-line-inactive  ((,class (:inherit mode-line :background "black" :foreground "grey40" :weight light :box (:line-width 1 :style released-button)))))
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
 
