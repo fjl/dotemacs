@@ -64,6 +64,12 @@
 ]+ >> ")
  '(eshell-visual-subcommands (quote (("vagrant" "ssh") ("brew" "log"))))
  '(git-commit-summary-max-length 80)
+ '(gnutls-algorithm-priority "PFS")
+ '(gnutls-min-prime-bits 1024)
+ '(gnutls-trustfiles
+   (quote
+    ("/usr/local/etc/openssl/cert.pem" "/etc/ssl/certs/ca-certificates.crt" "/etc/pki/tls/certs/ca-bundle.crt" "/etc/ssl/ca-bundle.pem" "/usr/ssl/certs/ca-bundle.crt")))
+ '(gnutls-verify-error t)
  '(go-fontify-function-calls nil)
  '(gofmt-command "~/bin/goimports")
  '(gofmt-show-errors (quote buffer))
@@ -166,6 +172,7 @@
  '(tab-always-indent (quote always))
  '(tab-width 4)
  '(term-input-ignoredups t)
+ '(tls-checktrust t)
  '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))))
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
