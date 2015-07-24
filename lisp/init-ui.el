@@ -6,17 +6,17 @@
 
 ;; Frame parameters for all frames, regardless of window-system.
 (setq default-frame-alist
-      '((menu-bar-lines . 0)
-        (tool-bar-lines 0)
+      '((tool-bar-lines 0)
         (left-fringe . nil)
         (right-fringe . 0)
         (vertical-scroll-bars . nil)))
 
 ;; Per window-system overrides and additions to default-frame-alist.
 (setq window-system-default-frame-alist
-      '((ns .  ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-12")))
+      '((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-14")))
         (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-12")))
-        (x .   ((font . "PragmataPro-12")))))
+        (x   . ((font . "PragmataPro-12") (menu-bar-lines . 0)))
+        (t   . ((menu-bar-lines 0)))))
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
@@ -30,10 +30,18 @@ and to setup the inital frame."
       (dolist (p (cdr special))
         (set-frame-parameter frame (car p) (cdr p))))))
 
-;; apply alist values for initial frames.
-(cl-eval-when (eval load)
+(defun fjl/setup-all-frames (&optional frame)
+  (declare (ignore frame))
   (dolist (frame (frame-list))
     (fjl/setup-frame frame)))
+
+;; Apply the parameters to all frames after creating a new frame.
+;; This works around issues I had in the past with the menu bar randomly
+;; showing up on a frame.
+(add-to-list 'after-make-frame-functions 'fjl/setup-all-frames)
+
+;; Apply the parameters for all initial frames.
+(fjl/setup-all-frames)
 
 ;; This is a workaround for a bug in the GTK interface
 ;; where it resets the frame size to something very small
