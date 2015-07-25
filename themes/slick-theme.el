@@ -44,7 +44,9 @@
 
    ;; Button and link faces
    `(link ((,class (:underline t :foreground "tan3"))))
+   `(w3m-anchor ((,class (:underline t :foreground "tan3"))))
    `(link-visited ((,class (:underline t :foreground "tan4"))))
+   `(w3m-arrived-anchor ((,class (:underline t :foreground "tan4"))))
 
    ;; Gnus faces
    `(gnus-header-content ((,class (:weight normal :foreground "yellow green"))))
