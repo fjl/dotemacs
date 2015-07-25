@@ -4,6 +4,10 @@
 (require 'em-hist)
 (require 'ring)
 
+;; Load 'z' extension. This tracks frequently-used directories and
+;; enables jumping into them using the 'z' command.
+(require 'eshell-z)
+
 ;;;###autoload
 (defun fjl/eshell-hotkey (prefix-arg)
   "This function creates or selects an eshell session.
