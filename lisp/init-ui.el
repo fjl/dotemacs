@@ -31,7 +31,6 @@ and to setup the inital frame."
         (set-frame-parameter frame (car p) (cdr p))))))
 
 (defun fjl/setup-all-frames (&optional frame)
-  (declare (ignore frame))
   (dolist (frame (frame-list))
     (fjl/setup-frame frame)))
 
