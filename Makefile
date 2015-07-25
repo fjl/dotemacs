@@ -1,5 +1,5 @@
 all:
-	emacs -q --batch -l lisp/init-bootstrap.el -l lisp/init-commands.el -f init-compile
+	emacs -q --batch -l lisp/init-bootstrap.el -f make-init-autoloads -eval '(batch-byte-recompile-directory 0)' .
 
 clean:
 	find . -name "*.elc" -print -delete

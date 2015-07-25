@@ -3,10 +3,7 @@
 (defun init-compile ()
   "Recompile initialization files."
   (interactive)
-  ;; make autoloads for *.el
-  (let ((generated-autoload-file (concat +fjl-init-lisp+ "init-autoloads.el")))
-    (update-directory-autoloads +fjl-init-lisp+))
-  ;; compile init files
+  (make-init-autoloads nil)
   (byte-recompile-directory +fjl-init+ 0))
 
 (defun reinit ()

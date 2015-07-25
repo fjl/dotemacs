@@ -30,9 +30,13 @@
   (declare (indent defun))
   `(eval-after-load ,(symbol-name pkg) (lambda () ,@body)))
 
+(defun make-init-autoloads (&optional skip-if-exists)
+  (let ((generated-autoload-file (concat +fjl-init-lisp+ "init-autoloads.el")))
+    (unless (and skip-if-exists (file-exists-p generated-autoload-file))
+      (update-directory-autoloads +fjl-init-lisp+))))
+
 ;; Ensure init-autoloads.el exists so other files can just depend on it.
-(let ((generated-autoload-file (concat +fjl-init-lisp+ "init-autoloads.el")))
-  (unless (file-exists-p generated-autoload-file)
-    (update-directory-autoloads +fjl-init-lisp+)))
+;; This makes the first startup work without running the makefile.
+(make-init-autoloads t)
 
 (provide 'init-bootstrap)
