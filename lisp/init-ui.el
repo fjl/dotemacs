@@ -14,7 +14,7 @@
 ;; Per window-system overrides and additions to default-frame-alist.
 (setq window-system-default-frame-alist
       '((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-14")))
-        (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-12")))
+        (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-14")))
         (x   . ((font . "PragmataPro-12") (menu-bar-lines . 0)))
         (t   . ((menu-bar-lines 0)))))
 
