@@ -3,7 +3,8 @@
 ;; (push (lambda (f) (message "loading %s" f)) after-load-functions)
 
 ;; Don't warn unless it's serious.
-(setq warning-minimum-level :emergency)
+(eval-when-compile (require 'warnings))
+(setq warning-minimum-level :error)
 
 ;; Load the bootstrap file. This sets up all load paths and activates all packages.
 (let* ((init-dir (file-name-directory (file-truename (or load-file-name buffer-file-name))))
