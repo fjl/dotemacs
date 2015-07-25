@@ -13,7 +13,10 @@
   "Recompile and reload initialization files."
   (interactive)
   (init-compile)
-   (load-file "~/.emacs"))
+  (dolist (f features)
+    (when (string-prefix-p "init-" (symbol-name f))
+      (load (symbol-name f))))
+  (load (concat +fjl-init+ "init")))
 
 ;; backported from emacs 23.4
 (unless (functionp 'isearch-forward-symbol-at-point)

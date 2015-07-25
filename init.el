@@ -9,7 +9,7 @@
 (let* ((init-dir (file-name-directory (file-truename (or load-file-name buffer-file-name))))
        (init-lisp-dir (concat init-dir "lisp/")))
   (add-to-list 'load-path init-lisp-dir)
-  (load "init-bootstrap"))
+  (require 'init-bootstrap))
 
 ;; Apply UI customizations first so the display doesn't jump so much.
 (require 'init-ui)
