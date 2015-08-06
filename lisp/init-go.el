@@ -5,7 +5,45 @@
 (require 'cl-lib)
 (require 's)
 
-;; Helpful Commands
+(defvar gotools-dir
+  (concat user-emacs-directory "gotools")
+  "Holds the directory that Go tools are installed in.")
+
+(defvar gotools-gobin
+  (concat (file-name-as-directory gotools-dir) "bin")
+  "Holds the directory that Go tools binaries are installed in.")
+
+(defvar gotools-list
+  '(("godep"     "github.com/tools/godep")
+    ("goimports" "github.com/bradfitz/goimports")
+    ("gocode"    "github.com/nsf/gocode")
+    ("godef"     "code.google.com/p/rog-go/exp/cmd/godef")))
+
+(defun gotools-update ()
+  "Install go tools in `gotools-dir' and set up various variables to
+refer to the installed tools."
+  (interactive)
+  (make-directory (concat (file-name-as-directory gotools-dir) "src") t)
+  (switch-to-buffer "*gotools-update*")
+  (erase-buffer)
+  (let* ((process-environment (list (concat "PATH="   (getenv "PATH"))
+                                    (concat "HOME="   (getenv "HOME"))
+                                    (concat "GOPATH=" (expand-file-name gotools-dir))
+                                    (concat "GOBIN="  (expand-file-name gotools-gobin))))
+         (command `(,go-command "get" "-v" "-u" ,@(mapcar #'second gotools-list)))
+         (proc    (apply #'start-process "go get" (current-buffer) command)))
+    (set-process-sentinel proc (lambda (process event)
+                                 (with-current-buffer "*gotools-update*"
+                                   (let ((standard-output (current-buffer)))
+                                     (newline)
+                                     (insert event)
+                                     (gotools-setup))))
+    (set-process-query-on-exit-flag proc t))))
+
+(defun gotools-setup ()
+  "Ensure that the Go tools installation in `gotools-dir' is in `exec-path'."
+  (when (file-exists-p gotools-gobin)
+    (add-to-list 'exec-path gotools-gobin)))
 
 ;;;###autoload
 (defun gopath (&optional dir)
@@ -94,6 +132,7 @@ found."
 ;;;###autoload
 (defun fjl/go-mode-hook ()
   (gopath)
+  (gotools-setup)
   (add-hook 'before-save-hook 'gofmt-before-save)
   (go-eldoc-setup)
   (set (make-local-variable 'company-backends) '(company-go))
@@ -101,5 +140,5 @@ found."
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)
-  
+
 (provide 'init-go)
