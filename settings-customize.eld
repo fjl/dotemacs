@@ -71,7 +71,7 @@
     ("/usr/local/etc/openssl/cert.pem" "/etc/ssl/certs/ca-certificates.crt" "/etc/pki/tls/certs/ca-bundle.crt" "/etc/ssl/ca-bundle.pem" "/usr/ssl/certs/ca-bundle.crt")))
  '(gnutls-verify-error t)
  '(go-fontify-function-calls nil)
- '(gofmt-command "~/bin/goimports")
+ '(gofmt-command "goimports")
  '(gofmt-show-errors (quote buffer))
  '(grep-command "grep -nH -e ")
  '(grep-find-command (quote ("find . -type f -exec grep -nH -e  {} +" . 34)))

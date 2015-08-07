@@ -17,8 +17,9 @@
   '(("godep"     "github.com/tools/godep")
     ("goimports" "github.com/bradfitz/goimports")
     ("gocode"    "github.com/nsf/gocode")
-    ("godef"     "code.google.com/p/rog-go/exp/cmd/godef")))
+    ("godef"     "github.com/rogpeppe/godef")))
 
+;;;###autoload
 (defun gotools-update ()
   "Install go tools in `gotools-dir' and set up various variables to
 refer to the installed tools."
@@ -26,24 +27,34 @@ refer to the installed tools."
   (make-directory (concat (file-name-as-directory gotools-dir) "src") t)
   (switch-to-buffer "*gotools-update*")
   (erase-buffer)
-  (let* ((process-environment (list (concat "PATH="   (getenv "PATH"))
-                                    (concat "HOME="   (getenv "HOME"))
-                                    (concat "GOPATH=" (expand-file-name gotools-dir))
-                                    (concat "GOBIN="  (expand-file-name gotools-gobin))))
-         (command `(,go-command "get" "-v" "-u" ,@(mapcar #'second gotools-list)))
-         (proc    (apply #'start-process "go get" (current-buffer) command)))
-    (set-process-sentinel proc (lambda (process event)
-                                 (with-current-buffer "*gotools-update*"
-                                   (let ((standard-output (current-buffer)))
+  (insert
+   (propertize
+    (format "Installing Go tools.\nGOPATH = %s\nGOBIN = %s\n\n" gotools-dir gotools-gobin)
+    'face 'bold))
+  (let ((proc nil))
+    (let ((process-environment (cl-copy-list process-environment)))
+      (setenv "GOPATH" (expand-file-name gotools-dir))
+      (setenv "GOBIN" (expand-file-name gotools-gobin))
+      (let ((command (cl-list* go-command "get" "-v" "-u" (mapcar #'cadr gotools-list))))
+        (setq proc (apply #'start-process "go get" (current-buffer) command))))
+    (set-process-sentinel proc (lambda (proc event)
+                                 (when (buffer-live-p (process-buffer proc))
+                                   (with-current-buffer (process-buffer proc)
                                      (newline)
-                                     (insert event)
-                                     (gotools-setup))))
-    (set-process-query-on-exit-flag proc t))))
+                                     (insert (process-name proc) " " (propertize event 'face 'bold))
+                                     (gotools-setup)))))
+    (set-process-query-on-exit-flag proc t)))
 
+;;;###autoload
 (defun gotools-setup ()
-  "Ensure that the Go tools installation in `gotools-dir' is in `exec-path'."
+  "Ensure that the tools installed by `gotools-update' are
+present in `exec-path' and the PATH environment variable."
   (when (file-exists-p gotools-gobin)
-    (add-to-list 'exec-path gotools-gobin)))
+    (let ((path-list (split-string (getenv "PATH") path-separator))
+          (eb (expand-file-name gotools-gobin)))
+      (add-to-list 'exec-path eb)
+      (unless (member eb path-list)
+        (setenv "PATH" (concat eb path-separator (getenv "PATH")))))))
 
 ;;;###autoload
 (defun gopath (&optional dir)
