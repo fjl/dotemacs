@@ -9,6 +9,7 @@
  '(ag-reuse-window nil)
  '(ansi-color-for-comint-mode t)
  '(auth-sources (quote (macos-keychain-internet)))
+ '(avy-background t)
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backup/"))))
  '(c-default-style
    (quote
@@ -92,6 +93,7 @@
  '(initial-scratch-message nil)
  '(ivy-mode t)
  '(ivy-use-virtual-buffers t)
+ '(ivy-wrap t)
  '(mac-command-modifier (quote super))
  '(mac-mouse-wheel-mode t)
  '(mac-option-modifier (quote meta))
