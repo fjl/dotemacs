@@ -1215,6 +1215,7 @@ Insert .* between each char."
        (lambda ()
          (list ivy--default)))
   (setq-local max-mini-window-height ivy-height)
+  (setq-local line-spacing 0)
   (add-hook 'post-command-hook #'ivy--exhibit nil t)
   ;; show completions with empty input
   (ivy--exhibit))
