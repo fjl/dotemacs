@@ -58,9 +58,11 @@ and to setup the inital frame."
   (setq-default line-spacing 0.1)
   ;; enable emoji font as fallback
   (set-fontset-font t 'unicode "Symbola" nil 'prepend)
-  ;; command is meta
-  (setq mac-command-modifier 'meta)
-  (setq ns-command-modifier 'meta)
+  (setq ns-use-native-fullscreen nil)
+  (setq mac-command-modifier 'super)
+  (setq ns-command-modifier 'super)
+  (setq ns-alternate-modifier 'meta)
+  (setq ns-auto-hide-menu-bar nil)
   ;; confirm quit
   (setq confirm-kill-emacs 'y-or-n-p)
 )
