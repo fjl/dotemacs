@@ -95,7 +95,12 @@
   (global-set-key (kbd "s-v") 'clipboard-yank)
   ;; enable fast frame switch on OS X
   (global-set-key (kbd "M-`") 'other-frame)
-  (global-set-key (kbd "s-`") 'other-frame))
+  (global-set-key (kbd "s-`") 'other-frame)
+  ;; Use the OS X binding for iconify frame.
+  ;; I hit C-x C-z by accident all the time.
+  (global-unset-key (kbd "C-x C-z"))
+  (global-set-key (kbd "s-m") 'iconify-frame)
+)
 
 ;; set up file-name > mode associations
 (add-to-list 'auto-mode-alist '("\\.hbs" . web-mode))
