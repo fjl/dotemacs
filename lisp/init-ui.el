@@ -58,8 +58,12 @@ and to setup the inital frame."
   (setq-default line-spacing 0.1)
   ;; enable emoji font as fallback
   (set-fontset-font t 'unicode "Symbola" nil 'prepend)
-  (setq ns-use-native-fullscreen nil)
   (setq mac-command-modifier 'super)
+  (setq mac-option-modifier 'meta)
+  ;; enable ligatures on OS X.
+  (when (functionp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode))
+  (setq ns-use-native-fullscreen nil)
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
