@@ -17,24 +17,28 @@
    `(header-line ((,class (:inherit mode-line :background "grey20" :foreground "grey90"
                            :box (:line-width 2 :color "grey20")))))
 
-   ;; Compilation faces
+   ;; Compilation
    `(compilation-mode-line-fail ((,class (:foreground "dark green"))))
    `(compilation-mode-line-run  ((,class (:foreground "dark goldenrod"))))
    `(compilation-mode-line-exit ((,class (:foreground "SpringGreen4"))))
+   `(compilation-error ((,class (:foreground "tan3" :weight bold :underline t))))
 
-   ;; Highlighting faces
+   ;; Highlighting
    `(highlight ((,class (:foreground "white" :background "dark green"))))
    `(region ((,class (:foreground "white" :background "dark green"))))
    `(secondary-selection ((,class (:background "dark slate gray"))))
    `(isearch ((,class (:foreground "white" :background "dark goldenrod"))))
    `(lazy-highlight ((,class (:background "gray25"))))
+   `(hl-line ((,class (:background "gray18"))))
+   `(linum ((,class (:foreground "gray40" :inherit default))))
+   `(show-paren-match ((,class (:background "gray50"))))
 
    ;; Font lock faces
    `(font-lock-preprocessor-face ((,class (:foreground "DarkGoldenrod" :weight bold))))
    `(font-lock-comment-face ((,class (:foreground "OliveDrab" :slant italic))))
    `(font-lock-string-face ((,class (:foreground "cadet blue"))))
 
-   ;; disable some font lock faces for less color.
+   ;; Disable some font lock faces for less color.
    `(font-lock-function-name-face ((,class (:inherit default :weight bold :foreground nil))))
    `(font-lock-keyword-face ((,class (:inherit default :foreground nil))))
    `(font-lock-type-face ((,class (:inherit default :foreground nil))))
@@ -42,20 +46,20 @@
    `(font-lock-builtin-face ((,class (:inherit default :foreground nil))))
    `(font-lock-variable-name-face ((,class (:inherit default))))
 
-   ;; Button and link faces
+   ;; Button and link
    `(link ((,class (:underline t :foreground "tan3"))))
    `(w3m-anchor ((,class (:underline t :foreground "tan3"))))
    `(link-visited ((,class (:underline t :foreground "tan4"))))
    `(w3m-arrived-anchor ((,class (:underline t :foreground "tan4"))))
 
-   ;; Gnus faces
+   ;; Gnus
    `(gnus-header-content ((,class (:weight normal :foreground "yellow green"))))
    `(gnus-header-from ((,class (:foreground "pale green"))))
    `(gnus-header-subject ((,class (:foreground "pale turquoise"))))
    `(gnus-header-name ((,class (:foreground "dark sea green"))))
    `(gnus-header-newsgroups ((,class (:foreground "dark khaki"))))
 
-   ;; Message faces
+   ;; Message
    `(message-header-name ((,class (:foreground "dark turquoise"))))
    `(message-header-cc ((,class (:foreground "yellow green"))))
    `(message-header-other ((,class (:foreground "dark khaki"))))
@@ -70,23 +74,22 @@
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
 
-   ;; Ido-related faces
-   `(flx-highlight-face ((,class (:foreground "tan3" :underline t))))
-   `(ido-vertical-match-face ((,class (:foreground "tan3" :underline t))))
+   ;; Minibuffer
+   `(ivy-remote ((,class (:foreground "deep sky blue"))))
+   `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
 
-   ;; markdown
+   ;; Markdown
    `(markdown-pre-face ((,class (:background "gray20"))))
 
-   ;; Misc faces
-   `(hl-line ((,class (:background "gray18"))))
-   `(compilation-error ((,class (:foreground "tan3" :weight bold :underline t))))
+   ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
-   `(ido-subdir ((,class (:foreground "khaki4" :slant normal))))
-   `(linum ((,class (:foreground "gray60" :inherit fringe))))
+   `(term-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
+
+   ;; Magit
+   `(smerge-refined-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
+   `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
    `(magit-item-highlight ((,class (:background "grey20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
-   `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
-   `(show-paren-match ((,class (:background "gray50"))))
   ))
 
 (provide-theme 'slick)

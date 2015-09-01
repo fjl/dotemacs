@@ -182,14 +182,3 @@
  '(web-mode-enable-engine-detection t)
  '(window-min-width 70)
  '(winner-mode t))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(eshell-prompt ((t (:foreground "deep pink" :weight bold))))
- '(ivy-remote ((t (:foreground "deep sky blue"))))
- '(smerge-refined-added ((t (:inherit smerge-refined-change :underline "#22aa22"))))
- '(smerge-refined-removed ((t (:inherit smerge-refined-change :underline "#aa2222"))))
- '(term-color-black ((t (:background "dim gray" :foreground "dim gray")))))
