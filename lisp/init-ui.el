@@ -71,6 +71,22 @@ and to setup the inital frame."
   (setq confirm-kill-emacs 'y-or-n-p)
 )
 
+;; Display margin content on the inside of the fringe.
+;; It looks nicer.
+(setq-default fringes-outside-margins t)
+
+;; Make linum look nicer in combination with the above
+;; setting. This mostly adds some space after the number.
+(progn
+  (defvar fjl/linum-fmt-width 0)
+  (defun fjl/linum-numbering-hook ()
+    (setq fjl/linum-fmt-width (length (number-to-string (count-lines (point-min) (point-max))))))
+  (defun fjl/linum-format (n)
+    (propertize (format (concat "%" (number-to-string fjl/linum-fmt-width) "d ") n)
+                'face 'linum))
+  (add-hook 'linum-before-numbering-hook 'fjl/linum-numbering-hook)
+  (setq-default linum-format #'fjl/linum-format))
+
 ;; Enable mouse support in terminal
 (when (and (not window-system)
            (not (string-equal (getenv "TERM_PROGRAM") "Apple_Terminal")))
