@@ -75,6 +75,7 @@
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
 
    ;; Minibuffer
+   `(ivy-current-match ((,class (:foreground "white" :background "dark green"))))
    `(ivy-remote ((,class (:foreground "deep sky blue"))))
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
 
