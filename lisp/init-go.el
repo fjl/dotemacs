@@ -130,7 +130,60 @@ found."
   (interactive)
   (go-coverage "c.out"))
 
+(defun go-toggle-initializer ()
+  "Moves a variable initialization in or out of the head part of an if or switch."
+  (interactive)
+  (atomic-change-group
+    (when (fjl/go-condition-head-p 2)
+      ;; If the line after the current one is a condition,
+      ;; do the edit from inside its head instead.
+      (forward-line 1))
+    (when (fjl/go-condition-head-p)
+      ;; If we're on a line with a condition, modify its head.
+      (beginning-of-line)
+      (forward-word)
+      (let ((start (point))
+            (semi  (fjl/search-forward-no-comment ";" (line-end-position))))
+        (if semi
+            ;; Move out the existing initializer.
+            (let ((init (fjl/delete-region-string start semi)))
+              (forward-line -1)
+              (end-of-line)
+              (newline-and-indent)
+              (insert (s-chop-suffix ";" (s-trim init))))
+          ;; The condition has no initializer. Pull in the previous
+          ;; line if it contains code. Kill any comment on the
+          ;; previous line because it doesn't fit into the header.
+          (unless (fjl/boring-go-line-p 0)
+            (save-excursion
+              (forward-line -1)
+              (comment-kill nil))
+            (let ((init (fjl/delete-region-string (line-beginning-position 0) (1+ (line-end-position 0)))))
+              (insert " ")
+              (insert (s-chop-suffix ";" (s-trim init)))
+              (insert ";"))))))))
+
+(defun fjl/boring-go-line-p (n)
+  (let ((line (s-trim (buffer-substring (line-beginning-position n) (line-end-position n)))))
+    (or (s-blank? line) (s-prefix-p "/*" line) (s-prefix-p "//" line))))
+
+(defun fjl/go-condition-head-p (&optional n)
+  (string-match-p "[[:space:]]*\\(if\\|switch\\|for\\)\\b"
+                  (buffer-substring (line-beginning-position n) (line-end-position n))))
+
+(defun fjl/search-forward-no-comment (what bound)
+  "Like `search-forward' but skips any matches inside of a string or comment."
+  (loop for m = (search-forward what bound t)
+        for s = (and m (syntax-ppss m))
+        when (or (null m) (and (not (nth 3 s)) (not (nth 4 s))))
+        return m))
+
+(defun fjl/delete-region-string (start end)
+  (prog1 (buffer-substring start end)
+    (delete-region start end)))
+
 ;; Keys
+(define-key go-mode-map (kbd "C-c i") 'go-toggle-initializer)
 (define-key go-mode-map (kbd "C-c C-f") 'gofmt)
 (define-key go-mode-map (kbd "C-c C-d") 'godef-describe)
 (define-key go-mode-map (kbd "C-c d") 'godoc)
