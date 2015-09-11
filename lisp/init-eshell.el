@@ -64,8 +64,9 @@ It must be invoked using a number key or function key."
               (cl-loop for dircons on (split-string pwd "/" t)
                        for dir = (car dircons)
                        for last = (null (cdr dircons))
+                       for sublen = (if (= (aref dir 0) ?.) 2 1)
                        concat "/"
-                       concat (if last dir (substring dir 0 1)))
+                       concat (if last dir (substring dir 0 sublen)))
               " >> "))))
 
 ;;;###autoload
