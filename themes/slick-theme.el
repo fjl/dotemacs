@@ -90,6 +90,15 @@
    `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
    `(magit-item-highlight ((,class (:background "grey20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
+
+   ;; mu4e
+   `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
+   `(mu4e-flagged-face ((,class (:foreground "tan3" :weight medium))))
+   `(mu4e-cited-1-face ((,class (:foreground "gray70"))))
+   `(mu4e-cited-2-face ((,class (:foreground "gray60"))))
+   `(mu4e-cited-3-face ((,class (:foreground "gray50"))))
+   `(mu4e-cited-4-face ((,class (:foreground "gray40"))))
+   `(mu4e-cited-5-face ((,class (:foreground "gray30"))))
   ))
 
 (provide-theme 'slick)

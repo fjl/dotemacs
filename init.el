@@ -20,19 +20,12 @@
 (require 'init-commands)
 (require 'init-bindings)
 
-;; Load mu4e, which doesn't have a package.
-(condition-case err
-    (progn
-      (require 'mu4e-autoloads)
-      (setq mail-user-agent 'mu4e-user-agent))
-  (file-error nil))
-
 ;; Enable some built-in packages.
 (require 'uniquify)
 
 ;; Set PATH on OS X. This is necessary because Emacs.app
 ;; is started by launchd and does not have the shell environment.
-(when (memq window-system '(ns mac))
+(when (eq system-type 'darwin)
   (let* ((homebin (expand-file-name "~/bin"))
          (path `(,homebin
                  "/usr/local/bin" "/usr/local/sbin"
@@ -43,6 +36,16 @@
       (setq cpath (concat cpath (if (cl-plusp (length cpath)) ":") dir)))
     (setq exec-path path)
     (setenv "PATH" cpath)))
+
+;; Setup an autoload for mu4e because it doesn't have a package.
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+(when (cl-some (lambda (d)
+                 (file-exists-p (concat (file-name-as-directory d) "mu4e.el")))
+               load-path)
+  (autoload 'mu4e "mu4e" "If mu4e is not running yet, start it." t)
+  (autoload 'mu4e-user-agent "mu4e" nil nil)
+  (eval-after-load 'mu4e '(require 'init-mu4e))
+  (setq mail-user-agent 'mu4e-user-agent))
 
 ;; Enable some disabled commands. This goes last because emacs adds
 ;; them to the end of this file when enabling interactively.
