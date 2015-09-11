@@ -12,8 +12,8 @@
         (ecl   ("ecl"))))
 
 (slime-setup '(slime-indentation
-               slime-tramp
-               ;; slime-fancy
+               ;; slime-tramp
+               slime-fancy
                ;; slime-asdf
                slime-editing-commands
                slime-package-fu
