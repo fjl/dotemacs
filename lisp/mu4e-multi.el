@@ -38,6 +38,8 @@
 This is just for `mu4e-multi-minibuffer-read-account' to prompt
 always the latest used account as default.")
 
+(defvar mu4e-multi-default-account "")
+
 (defvar mu4e-multi-account-alist nil
   "Alist containing all information of email accounts.
 Here's an example for two accounts:
@@ -99,12 +101,14 @@ If no account can be found from MSG then use ACCOUNT as default."
 (defun mu4e-multi-make-folder-fn (folder-var)
   (lexical-let ((folder folder-var))
     (lambda (msg)
-      (let* ((md      (or (mu4e-multi-get-msg-account msg) mu4e-multi-last-read-account))
-             (account (cdr (assoc md mu4e-multi-account-alist)))
-             (val     (assoc folder account)))
-        (cond ((not account) (mu4e-error "Cannot set folder %s, account for message not detected" folder))
-              ((not val)     (mu4e-error "Cannot set folder %s because it is not defined for account %S" folder account))
-              (t             (cdr val)))))))
+      (let ((md      (or (mu4e-multi-get-msg-account msg) mu4e-multi-last-read-account)))
+        (when (or (null md) (string= md ""))
+          (setq md mu4e-multi-default-account))
+        (let* ((account (cdr (assoc md mu4e-multi-account-alist)))
+               (val     (assoc folder account)))
+          (cond ((not account) (mu4e-error "Cannot set folder %s, account for message not detected" folder))
+                ((not val)     (mu4e-error "Cannot set folder %s because it is not defined for account %S" folder account))
+                (t             (cdr val))))))))
 
 (defmacro mu4e-multi-make-mark-for-command (folder)
   "Generate command to mark current message to move to FOLDER.

@@ -24,6 +24,8 @@
          (mu4e-junk-folder    . "/ethdev.com/[Gmail]/Spam")
          (user-mail-address   . "felix@ethdev.com"))))
 
+(setq mu4e-multi-default-account "twurst.com")
+
 (mu4e-multi-enable)
 
 (defun fjl/mu4e-expand-mailbox-alt (var)
