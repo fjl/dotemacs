@@ -18,6 +18,8 @@
         (x   . ((font . "PragmataPro-12") (menu-bar-lines . 0)))
         (t   . ((menu-bar-lines 0)))))
 
+(set-face-attribute 'fixed-pitch nil :family "PragmataPro")
+
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
 `window-system-default-frame-alist'. This is useful while tweaking

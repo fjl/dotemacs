@@ -80,7 +80,10 @@
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
 
    ;; Markdown
-   `(markdown-pre-face ((,class (:background "gray20"))))
+   `(markdown-pre-face ((,class (:inherit fixed-pitch :foreground "gray75"))))
+   `(markdown-inline-code-face ((,class (:inherit fixed-pitch :foreground "gray75"))))
+   `(markdown-header-face-1 ((,class (:inherit default :weight bold :height 1.2))))
+   `(markdown-header-face-2 ((,class (:inherit default :weight bold :height 1.2))))
 
    ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
