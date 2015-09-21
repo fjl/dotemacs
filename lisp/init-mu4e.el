@@ -1,5 +1,4 @@
 (require 'mu4e)
-(require 'mu4e-contrib) ;; for mu4e-shr2text
 (require 'mu4e-multi)
 (require 's)
 (require 'cl-lib)
@@ -47,10 +46,12 @@
 
 ;; Message view setup
 
+(defconst fjl/mail-wrap-column 100)
+
 (defun fjl/mu4e-view-mode-hook ()
   (setq word-wrap t)
   (setq truncate-lines nil)
-  (set-visual-wrap-column 90))
+  (set-visual-wrap-column fjl/mail-wrap-column))
 
 (add-hook 'mu4e-view-mode-hook 'fjl/mu4e-view-mode-hook)
 
@@ -71,6 +72,18 @@
                 (if (eq (car m) 'trash) fjl/mu4e-trash-mark m))
               mu4e-marks))
 
+(defun fjl/render-html-mail ()
+  "Render HTML mail with shr."
+  (require 'shr)
+  (let ((dom (libxml-parse-html-region (point-min) (point-max)))
+        ;; Disable image loading.
+        (shr-inhibit-images t)
+        ;; Tell shr to fit into the wrap width.
+        (shr-width (1- fjl/mail-wrap-column)))
+    (erase-buffer)
+    (shr-insert-document dom)
+    (goto-char (point-min))))
+
 ;; Misc Settings
 
 (setq mu4e-attachment-dir "/Users/fjl/Downloads"
@@ -82,7 +95,7 @@
       mu4e-compose-signature nil
       mu4e-headers-skip-duplicates t
       mu4e-compose-signature-auto-include nil
-      mu4e-html2text-command 'mu4e-shr2text ;; or "w3m -T text/html -S -O utf8 -dump -cols 90"
+      mu4e-html2text-command 'fjl/render-html-mail ;; or "w3m -T text/html -S -O utf8 -dump -cols 90"
       mu4e-get-mail-command "mbsync -aVX | cat" ;; | cat to get rid of tty progress indicator
       mu4e-maildir "~/Mail"
       mu4e-user-mailing-lists '(("go-ethereum.ethereum.github.com" . "geth")))

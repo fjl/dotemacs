@@ -145,6 +145,7 @@
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
  '(show-trailing-whitespace nil)
+ '(shr-color-visible-luminance-min 60)
  '(smex-completion-method (quote ivy))
  '(speedbar-ignored-modes (quote (fundamental-mode mu4e-compose-mode)))
  '(speedbar-show-unknown-files t)
