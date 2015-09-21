@@ -23,9 +23,6 @@
         (apply #'w3m-browse-url url args)))))
 
 ;;;###autoload
-(setq browse-url-browser-function 'w3m-browse-url-other-window)
-
-;;;###autoload
 (defun fjl/w3m-mode-hook ()
   (setq word-wrap t)
   (setq truncate-lines nil)
