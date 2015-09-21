@@ -64,7 +64,11 @@
  '(eshell-prompt-function (quote fjl/eshell-prompt))
  '(eshell-prompt-regexp "^[^>
 ]+ >> ")
- '(eshell-visual-subcommands (quote (("vagrant" "ssh") ("brew" "log"))))
+ '(eshell-visual-subcommands
+   (quote
+    (("vagrant" "ssh")
+     ("brew" "log")
+     ("geth" "attach"))))
  '(git-commit-summary-max-length 80)
  '(gnutls-algorithm-priority "PFS")
  '(gnutls-min-prime-bits 1024)
