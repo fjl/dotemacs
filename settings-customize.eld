@@ -104,6 +104,7 @@
  '(magit-process-buffer-name-format "*magit-process: %b*")
  '(magit-restore-window-configuration nil)
  '(magit-revision-buffer-name-format "*magit-rev: %b*")
+ '(magit-revision-show-gravatars nil)
  '(magit-status-buffer-name-format "*magit: %b*")
  '(message-cite-style (quote message-cite-style-thunderbird))
  '(message-kill-buffer-on-exit t)
