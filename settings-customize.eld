@@ -50,9 +50,6 @@
  '(compilation-window-height 14)
  '(completion-styles (quote (partial-completion emacs22)))
  '(custom-safe-themes t)
- '(desktop-globals-to-clear
-   (quote
-    (kill-ring kill-ring-yank-pointer search-ring search-ring-yank-pointer regexp-search-ring regexp-search-ring-yank-pointer custom-enabled-themes)))
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
  '(electric-indent-mode t)
@@ -100,8 +97,6 @@
  '(ivy-use-virtual-buffers t)
  '(ivy-wrap t)
  '(mac-mouse-wheel-mode t)
- '(mac-pass-command-to-system nil)
- '(mac-pass-control-to-system nil)
  '(magit-cherry-buffer-name-format "*magit-cherry: %b*")
  '(magit-completing-read-function (quote ivy-completing-read))
  '(magit-log-buffer-name-format "*magit-log: %b*")
