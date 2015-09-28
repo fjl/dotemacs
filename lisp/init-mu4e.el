@@ -89,7 +89,7 @@
 ;; Misc Settings
 
 (setq mu4e-attachment-dir "/Users/fjl/Downloads"
-      mu4e-use-fancy-chars nil
+      mu4e-use-fancy-chars 'threads
       mu4e-view-show-images t
       mu4e-view-show-addresses t
       mu4e-change-filenames-when-moving t ;; for mbsync
