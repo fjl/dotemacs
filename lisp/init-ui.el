@@ -89,6 +89,21 @@ and to setup the inital frame."
   (add-hook 'linum-before-numbering-hook 'fjl/linum-numbering-hook)
   (setq-default linum-format #'fjl/linum-format))
 
+;; Mode Line Setup.
+
+(defun fjl/mode-line-align-right (face format)
+  (let* ((fmt     (format-mode-line format face))
+         (reserve (string-width fmt)))
+    (list (propertize " " 'display `((space :align-to (- (+ right right-margin right-fringe) ,reserve))))
+          fmt)))
+
+(setq-default mode-line-format
+              '(("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
+                 mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
+                 (vc-mode vc-mode)
+                 "  " mode-line-modes
+                 (:eval (fjl/mode-line-align-right 'italic mode-line-misc-info)))))
+
 ;; Enable mouse support in terminal
 (when (and (not window-system)
            (not (string-equal (getenv "TERM_PROGRAM") "Apple_Terminal")))
@@ -104,7 +119,7 @@ and to setup the inital frame."
 ;; UTF-8 terminal
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
+(prefer-coding-system 'utf-8) 
 
 ;; The code below shows the mark location as a small rectangle
 ;; in the fringe. Adapted from http://www.emacswiki.org/emacs/TheFringe.
