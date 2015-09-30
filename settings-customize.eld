@@ -118,6 +118,7 @@
  '(ns-command-modifier (quote super))
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
+ '(package-selected-packages (quote (ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime w3m web-mode wgrep yaml-mode)))
  '(projectile-completion-system (quote ivy))
  '(projectile-global-mode t)
  '(projectile-mode-line (quote (:eval (format " P<%s>" (projectile-project-name)))))
@@ -167,3 +168,9 @@
  '(web-mode-enable-engine-detection t)
  '(window-min-width 70)
  '(winner-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
