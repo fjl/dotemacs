@@ -96,6 +96,7 @@
       mu4e-completing-read-function 'ivy-completing-read
       mu4e-compose-signature nil
       mu4e-headers-skip-duplicates t
+      mu4e-headers-include-related t
       mu4e-compose-signature-auto-include nil
       mu4e-html2text-command 'fjl/render-html-mail ;; or "w3m -T text/html -S -O utf8 -dump -cols 90"
       mu4e-get-mail-command "mbsync -aVX | cat" ;; | cat to get rid of tty progress indicator
