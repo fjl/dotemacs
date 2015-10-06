@@ -73,6 +73,7 @@
    `(mode-line-inactive  ((,class (:inherit mode-line :background "black" :foreground "grey40" :weight light :box (:line-width 1 :style released-button)))))
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
+   `(which-func          ((,class (:foreground "chartreuse3"))))
 
    ;; Minibuffer
    `(ivy-current-match ((,class (:foreground "white" :background "dark green"))))

@@ -166,6 +166,7 @@
  '(vc-handled-backends nil)
  '(visible-bell nil)
  '(web-mode-enable-engine-detection t)
+ '(which-func-modes (quote (python-mode)))
  '(window-min-width 70)
  '(winner-mode t))
 (custom-set-faces
