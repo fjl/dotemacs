@@ -98,6 +98,7 @@
 
    ;; mu4e
    `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
+   `(mu4e-modeline-face ((,class (:inherit nil :background nil :foreground "gray80"))))
    `(mu4e-flagged-face ((,class (:foreground "tan3" :weight medium))))
    `(mu4e-cited-1-face ((,class (:foreground "gray70"))))
    `(mu4e-cited-2-face ((,class (:foreground "gray60"))))
