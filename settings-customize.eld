@@ -141,8 +141,9 @@
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)
  '(shell-completion-fignore (quote ("~" "#" "%")))
+ '(shell-file-name "bash")
  '(shell-prompt-pattern "^[^>
-]+ -> ")
+]+ >> ")
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
  '(show-trailing-whitespace nil)
