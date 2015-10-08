@@ -130,27 +130,23 @@ found."
   (interactive)
   (go-coverage "c.out"))
 
-(defun go-toggle-initializer ()
+(defun go-toggle-initializer (&optional rec)
   "Moves a variable initialization in or out of the head part of an if or switch."
   (interactive)
-  (atomic-change-group
-    (when (fjl/go-condition-head-p 2)
-      ;; If the line after the current one is a condition,
-      ;; do the edit from inside its head instead.
-      (forward-line 1))
-    (when (fjl/go-condition-head-p)
-      ;; If we're on a line with a condition, modify its head.
+  (if (fjl/go-condition-head-p)
+    ;; If we're on a line with a condition, modify its head.
+    (atomic-change-group
       (beginning-of-line)
       (forward-word)
       (let ((start (point))
             (semi  (fjl/search-forward-no-comment ";" (line-end-position))))
         (if semi
-            ;; Move out the existing initializer.
-            (let ((init (fjl/delete-region-string start semi)))
-              (forward-line -1)
-              (end-of-line)
-              (newline-and-indent)
-              (insert (s-chop-suffix ";" (s-trim init))))
+          ;; Move out the existing initializer.
+          (let ((init (fjl/delete-region-string start semi)))
+            (forward-line -1)
+            (end-of-line)
+            (newline-and-indent)
+            (insert (s-chop-suffix ";" (s-trim init))))
           ;; The condition has no initializer. Pull in the previous
           ;; line if it contains code. Kill any comment on the
           ;; previous line because it doesn't fit into the header.
@@ -161,7 +157,12 @@ found."
             (let ((init (fjl/delete-region-string (line-beginning-position 0) (1+ (line-end-position 0)))))
               (insert " ")
               (insert (s-chop-suffix ";" (s-trim init)))
-              (insert ";"))))))))
+              (insert ";"))))))
+    (when (and (fjl/go-condition-head-p 2) (not rec))
+      ;; If the line after the current one is a condition,
+      ;; do the edit from inside its head instead.
+      (forward-line 1)
+      (go-toggle-initializer t))))
 
 (defun fjl/boring-go-line-p (n)
   (let ((line (s-trim (buffer-substring (line-beginning-position n) (line-end-position n)))))
