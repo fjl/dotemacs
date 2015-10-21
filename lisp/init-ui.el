@@ -64,6 +64,7 @@ and to setup the inital frame."
   (setq mac-option-modifier 'meta)
   ;; enable ligatures on OS X.
   (when (functionp 'mac-auto-operator-composition-mode)
+    (setq mac-auto-operator-composition-characters "!\"#$%&'()*+,-/:;<=>?@[]^_`{|}~")
     (mac-auto-operator-composition-mode))
   (setq ns-use-native-fullscreen nil)
   (setq ns-command-modifier 'super)
