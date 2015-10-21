@@ -96,6 +96,12 @@
    `(magit-item-highlight ((,class (:background "grey20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
 
+   ;; avy
+   `(avy-lead-face-0 ((,class (:foreground "black" :background "tan"))))
+   `(avy-lead-face-1 ((,class (:foreground "black" :background "white"))))
+   `(avy-lead-face-2 ((,class (:foreground "black" :background "red"))))
+   `(avy-lead-face ((,class (:foreground "black" :background "tan3"))))
+
    ;; mu4e
    `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
    `(mu4e-modeline-face ((,class (:inherit nil :background nil :foreground "gray80"))))
