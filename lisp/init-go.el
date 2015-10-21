@@ -15,6 +15,7 @@
 
 (defvar gotools-list
   '(("godep"     "github.com/tools/godep")
+    ("godoc"     "golang.org/x/tools/cmd/godoc")
     ("goimports" "github.com/bradfitz/goimports")
     ("gocode"    "github.com/nsf/gocode")
     ("godef"     "github.com/rogpeppe/godef")))
