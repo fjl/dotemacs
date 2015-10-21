@@ -172,7 +172,9 @@
  '(visible-bell nil)
  '(web-mode-enable-engine-detection t)
  '(which-func-modes (quote (python-mode)))
+ '(window-combination-resize t)
  '(window-min-width 70)
+ '(window-sides-slots (quote (1 nil 3 nil)))
  '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
