@@ -102,7 +102,7 @@ and to setup the inital frame."
                  mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
                  (vc-mode vc-mode)
                  "  " mode-line-modes
-                 (:eval (fjl/mode-line-align-right 'italic mode-line-misc-info)))))
+                 (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
 ;; Enable mouse support in terminal
 (when (and (not window-system)
