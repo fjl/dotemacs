@@ -119,6 +119,7 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (shell . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-hide-leading-stars nil)
+ '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages (quote (ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime w3m web-mode wgrep yaml-mode)))
