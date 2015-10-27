@@ -1,13 +1,17 @@
 (deftheme slick
   "A theme based the wheatgrass theme that comes with emacs.")
 
-(let ((class    '((class color) (min-colors 89)))
+(defconst slick-search-color "saddle brown")
+(defconst slick-text-color "gray80")
+
+(let ((class    '((class color)))
       (graphic  '((type x w32 mac ns))))
   (custom-theme-set-faces
    'slick
 
    ;; Basic faces
-   `(default ((,graphic (:foreground "gray80" :background "gray15"))))
+   `(default ((,graphic (:foreground ,slick-text-color :background "gray15"))
+              (,class   (:foreground ,slick-text-color))))
    `(cursor ((,class (:background "red"))))
    `(error ((,class (:foreground "red"))))
    `(warning ((,class (:foreground "orange"))))
@@ -27,24 +31,24 @@
    `(highlight ((,class (:foreground "white" :background "dark green"))))
    `(region ((,class (:foreground "white" :background "dark green"))))
    `(secondary-selection ((,class (:background "dark slate gray"))))
-   `(isearch ((,class (:foreground "white" :background "dark goldenrod"))))
-   `(lazy-highlight ((,class (:background "gray25"))))
-   `(hl-line ((,class (:background "gray18"))))
+   `(isearch ((,class (:foreground "white" :background ,slick-search-color))))
+   `(lazy-highlight ((,class (:background "gray25" :foreground "gray90" :underline t :weight bold))))
+   `(hl-line ((,class (:background "gray20"))))
    `(linum ((,class (:foreground "gray40" :inherit default))))
    `(show-paren-match ((,class (:background "gray50"))))
 
    ;; Font lock faces
    `(font-lock-preprocessor-face ((,class (:foreground "DarkGoldenrod" :weight bold))))
    `(font-lock-comment-face ((,class (:foreground "OliveDrab" :slant italic))))
-   `(font-lock-string-face ((,class (:foreground "cadet blue"))))
+   `(font-lock-string-face ((,class (:inherit default :foreground "cadet blue"))))
 
    ;; Disable some font lock faces for less color.
-   `(font-lock-function-name-face ((,class (:inherit default :weight bold :foreground nil))))
-   `(font-lock-keyword-face ((,class (:inherit default :foreground nil))))
-   `(font-lock-type-face ((,class (:inherit default :foreground nil))))
-   `(font-lock-constant-face ((,class (:inherit default :foreground nil))))
-   `(font-lock-builtin-face ((,class (:inherit default :foreground nil))))
-   `(font-lock-variable-name-face ((,class (:inherit default))))
+   `(font-lock-function-name-face ((,class (:inherit default :weight bold :foreground ,slick-text-color))))
+   `(font-lock-keyword-face ((,class (:inherit default :foreground ,slick-text-color))))
+   `(font-lock-type-face ((,class (:inherit default :foreground ,slick-text-color))))
+   `(font-lock-constant-face ((,class (:inherit default :foreground ,slick-text-color))))
+   `(font-lock-builtin-face ((,class (:inherit default :foreground ,slick-text-color))))
+   `(font-lock-variable-name-face ((,class (:inherit default :foreground ,slick-text-color))))
 
    ;; Button and link
    `(link ((,class (:underline t :foreground "tan3"))))
@@ -76,8 +80,6 @@
    `(which-func          ((,class (:foreground "chartreuse3"))))
 
    ;; Minibuffer
-   `(ivy-current-match ((,class (:foreground "white" :background "dark green"))))
-   `(ivy-remote ((,class (:foreground "deep sky blue"))))
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
 
    ;; Markdown
@@ -96,15 +98,24 @@
    `(magit-item-highlight ((,class (:background "grey20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
 
-   ;; avy
+   ;; avy/ivy/swiper
    `(avy-lead-face-0 ((,class (:foreground "black" :background "tan"))))
    `(avy-lead-face-1 ((,class (:foreground "black" :background "white"))))
    `(avy-lead-face-2 ((,class (:foreground "black" :background "red"))))
    `(avy-lead-face ((,class (:foreground "black" :background "tan3"))))
 
+   `(ivy-remote ((,class (:foreground "deep sky blue"))))
+   `(ivy-current-match ((,class (:foreground "white" :background ,slick-search-color))))
+   `(swiper-minibuffer-match-face-1 ((,class (:foreground "gray90" :weight bold))))
+   `(swiper-minibuffer-match-face-2 ((,class (:foreground "gray90" :weight bold :underline t))))
+
+   `(swiper-line-face ((,class (:foreground "white" :background ,slick-search-color))))
+   `(swiper-match-face-1 ((,class (:foreground "gray90" :weight bold))))
+   `(swiper-match-face-2 ((,class (:foreground "gray90" :weight bold :underline t))))
+   
    ;; mu4e
    `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
-   `(mu4e-modeline-face ((,class (:inherit nil :background nil :foreground "gray80"))))
+   `(mu4e-modeline-face ((,class (:inherit nil :background nil :foreground ,slick-text-color))))
    `(mu4e-flagged-face ((,class (:foreground "tan3" :weight medium))))
    `(mu4e-cited-1-face ((,class (:foreground "gray70"))))
    `(mu4e-cited-2-face ((,class (:foreground "gray60"))))
@@ -114,3 +125,9 @@
   ))
 
 (provide-theme 'slick)
+
+;; Local Variables:
+;; no-byte-compile: t
+;; no-update-autoloads: t
+;; coding: utf-8
+;; End:

@@ -161,6 +161,10 @@
  '(split-height-threshold 30)
  '(split-width-threshold 100)
  '(split-window-preferred-function (quote fjl/split-window-sensibly))
+ '(swiper-faces (quote (swiper-match-face-1 swiper-match-face-2)))
+ '(swiper-minibuffer-faces
+   (quote
+    (swiper-minibuffer-match-face-1 swiper-minibuffer-match-face-2)))
  '(tab-always-indent (quote always))
  '(tab-width 4)
  '(term-input-ignoredups t)
