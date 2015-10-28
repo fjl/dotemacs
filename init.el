@@ -15,9 +15,6 @@
 ;; Apply UI customizations first so the display doesn't jump so much.
 (require 'init-ui)
 
-;; Work around ivy highlighting issue (https://github.com/abo-abo/swiper/issues/276)
-(require 'swiper)
-
 ;; Load init files.
 (load custom-file)
 (require 'init-commands)

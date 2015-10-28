@@ -115,8 +115,8 @@
 
    `(ivy-remote ((,class (:foreground "deep sky blue"))))
    `(ivy-current-match ((,class (:foreground "white" :background ,slick-search-color))))
-   `(swiper-minibuffer-match-face-1 ((,class (:foreground "gray90"))))
-   `(swiper-minibuffer-match-face-2 ((,class (:foreground "gray90" :underline t))))
+   `(ivy-minibuffer-match-face-1 ((,class (:foreground "gray90"))))
+   `(ivy-minibuffer-match-face-2 ((,class (:foreground "gray90" :underline t))))
 
    `(swiper-line-face ((,class (:background ,slick-search-color :foreground "white"))))
    `(swiper-match-face-1 ((,class (:background "gray30" :foreground "gray90"))))
