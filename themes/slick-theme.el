@@ -55,6 +55,7 @@
    `(w3m-anchor ((,class (:underline t :foreground "tan3"))))
    `(link-visited ((,class (:underline t :foreground "tan4"))))
    `(w3m-arrived-anchor ((,class (:underline t :foreground "tan4"))))
+   `(custom-variable-tag ((,class (:foreground "tan2"))))
 
    ;; Gnus
    `(gnus-header-content ((,class (:weight normal :foreground "yellow green"))))
