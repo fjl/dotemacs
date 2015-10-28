@@ -98,14 +98,13 @@
    `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
    `(magit-item-highlight ((,class (:background "grey20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
-   `(magit-section-highlight ((,class (:background "gray30"))))
+   `(magit-section-highlight ((,class (:background "gray25"))))
    `(magit-diff-added ((,class (:background "#225522" :foreground "#88ff88"))))
    `(magit-diff-added-highlight ((,class (:background "#307730" :foreground "#ccffcc"))))
    `(magit-diff-removed ((,class (:background "#552222" :foreground "#ff8888"))))
    `(magit-diff-removed-highlight ((,class (:background "#773333" :foreground "#ffcccc"))))
    `(magit-diff-context ((,class (:background "gray10"))))
    `(magit-diff-context-highlight ((,class (:background "gray30"))))
-   `(magit-section-highlight ((,class (:background "gray25"))))
 
    ;; avy/ivy/swiper
    `(avy-lead-face-0 ((,class (:foreground "black" :background "tan"))))
