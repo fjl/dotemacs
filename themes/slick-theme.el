@@ -106,12 +106,12 @@
 
    `(ivy-remote ((,class (:foreground "deep sky blue"))))
    `(ivy-current-match ((,class (:foreground "white" :background ,slick-search-color))))
-   `(swiper-minibuffer-match-face-1 ((,class (:foreground "gray90" :weight bold))))
-   `(swiper-minibuffer-match-face-2 ((,class (:foreground "gray90" :weight bold :underline t))))
+   `(swiper-minibuffer-match-face-1 ((,class (:foreground "gray90"))))
+   `(swiper-minibuffer-match-face-2 ((,class (:foreground "gray90" :underline t))))
 
-   `(swiper-line-face ((,class (:foreground "white" :background ,slick-search-color))))
-   `(swiper-match-face-1 ((,class (:foreground "gray90" :weight bold))))
-   `(swiper-match-face-2 ((,class (:foreground "gray90" :weight bold :underline t))))
+   `(swiper-line-face ((,class (:background ,slick-search-color :foreground "white"))))
+   `(swiper-match-face-1 ((,class (:background "gray30" :foreground "gray90"))))
+   `(swiper-match-face-2 ((,class (:background "gray30" :foreground "gray90" :weight bold :underline t))))
    
    ;; mu4e
    `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
