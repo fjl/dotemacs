@@ -97,6 +97,14 @@
    `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
    `(magit-item-highlight ((,class (:background "grey20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
+   `(magit-section-highlight ((,class (:background "gray30"))))
+   `(magit-diff-added ((,class (:background "#225522" :foreground "#88ff88"))))
+   `(magit-diff-added-highlight ((,class (:background "#307730" :foreground "#ccffcc"))))
+   `(magit-diff-removed ((,class (:background "#552222" :foreground "#ff8888"))))
+   `(magit-diff-removed-highlight ((,class (:background "#773333" :foreground "#ffcccc"))))
+   `(magit-diff-context ((,class (:background "gray10"))))
+   `(magit-diff-context-highlight ((,class (:background "gray30"))))
+   `(magit-section-highlight ((,class (:background "gray25"))))
 
    ;; avy/ivy/swiper
    `(avy-lead-face-0 ((,class (:foreground "black" :background "tan"))))
@@ -112,7 +120,7 @@
    `(swiper-line-face ((,class (:background ,slick-search-color :foreground "white"))))
    `(swiper-match-face-1 ((,class (:background "gray30" :foreground "gray90"))))
    `(swiper-match-face-2 ((,class (:background "gray30" :foreground "gray90" :weight bold :underline t))))
-   
+
    ;; mu4e
    `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
    `(mu4e-modeline-face ((,class (:inherit nil :background nil :foreground ,slick-text-color))))
