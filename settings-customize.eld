@@ -12,12 +12,6 @@
  '(auth-sources (quote (macos-keychain-internet)))
  '(avy-background t)
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backup/"))))
- '(beacon-blink-duration 0.1)
- '(beacon-color "#aa0000")
- '(beacon-lighter "")
- '(beacon-mode t)
- '(beacon-push-mark 35)
- '(beacon-size 30)
  '(c-default-style
    (quote
     ((java-mode . "java")
@@ -99,6 +93,9 @@
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
  '(initial-scratch-message nil)
+ '(ivy-minibuffer-faces
+   (quote
+    (ivy-minibuffer-match-face-1 ivy-minibuffer-match-face-2)))
  '(ivy-mode t)
  '(ivy-use-virtual-buffers t)
  '(ivy-wrap t)
@@ -130,7 +127,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (beacon ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime w3m web-mode wgrep yaml-mode)))
+    (ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime w3m web-mode wgrep yaml-mode)))
  '(projectile-completion-system (quote ivy))
  '(projectile-global-mode t)
  '(projectile-mode-line (quote (:eval (format " P<%s>" (projectile-project-name)))))
@@ -168,9 +165,6 @@
  '(split-width-threshold 100)
  '(split-window-preferred-function (quote fjl/split-window-sensibly))
  '(swiper-faces (quote (swiper-match-face-1 swiper-match-face-2)))
- '(ivy-minibuffer-faces
-   (quote
-    (ivy-minibuffer-match-face-1 ivy-minibuffer-match-face-2)))
  '(tab-always-indent (quote always))
  '(tab-width 4)
  '(term-input-ignoredups t)
