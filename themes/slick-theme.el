@@ -103,7 +103,7 @@
    `(magit-diff-added-highlight ((,class (:background "#307730" :foreground "#ccffcc"))))
    `(magit-diff-removed ((,class (:background "#552222" :foreground "#ff8888"))))
    `(magit-diff-removed-highlight ((,class (:background "#773333" :foreground "#ffcccc"))))
-   `(magit-diff-context ((,class (:background "gray10"))))
+   `(magit-diff-context ((,class (:inherit default))))
    `(magit-diff-context-highlight ((,class (:background "gray30"))))
 
    ;; avy/ivy/swiper
