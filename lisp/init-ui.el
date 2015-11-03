@@ -17,14 +17,15 @@
       '((tool-bar-lines 0)
         (left-fringe . nil)
         (right-fringe . 0)
+        (menu-bar-lines . 0)
         (vertical-scroll-bars . nil)))
 
 ;; Per window-system overrides and additions to default-frame-alist.
 (setq window-system-default-frame-alist
       `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
         (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
-        (x   . ((menu-bar-lines . 0) (font . ,(fpfont 12))))
-        (t   . ((menu-bar-lines 0)))))
+        (w32 . ((font . ,(fpfont 12))))
+        (x   . ((font . ,(fpfont 12))))))
 
 (set-face-attribute 'fixed-pitch nil :family the-fixed-pitch-family)
 
