@@ -4,6 +4,14 @@
 (setq-default custom-safe-themes t) ;; accept any theme
 (load-theme 'slick)
 
+;; Font
+(defconst fixed-pitch-families '("PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace"))
+(defvar the-fixed-pitch-family
+  (or (cl-find-if 'x-family-fonts fixed-pitch-families)
+      (car (last fixed-pitch-families))))
+(defun fpfont (size)
+  (format "%s-%d" the-fixed-pitch-family size))
+
 ;; Frame parameters for all frames, regardless of window-system.
 (setq default-frame-alist
       '((tool-bar-lines 0)
@@ -13,12 +21,12 @@
 
 ;; Per window-system overrides and additions to default-frame-alist.
 (setq window-system-default-frame-alist
-      '((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-14")))
-        (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . "PragmataPro-14")))
-        (x   . ((font . "PragmataPro-12") (menu-bar-lines . 0)))
+      `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
+        (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
+        (x   . ((menu-bar-lines . 0) (font . ,(fpfont 12))))
         (t   . ((menu-bar-lines 0)))))
 
-(set-face-attribute 'fixed-pitch nil :family "PragmataPro")
+(set-face-attribute 'fixed-pitch nil :family the-fixed-pitch-family)
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
@@ -66,7 +74,7 @@ and to setup the inital frame."
   (when (functionp 'mac-auto-operator-composition-mode)
     (setq mac-auto-operator-composition-characters "!\"#$%&'()*+,-/:;<=>?@[]^_`{|}~")
     (mac-auto-operator-composition-mode))
-  (setq ns-use-native-fullscreen nil)
+  (setq ns-use-native-fullscreen t)
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
