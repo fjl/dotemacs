@@ -28,7 +28,7 @@
 (when (eq system-type 'darwin)
   (let* ((homebin (expand-file-name "~/bin"))
          (path `(,homebin
-                 "/usr/local/bin" "/usr/local/sbin"
+                 "/usr/local/bin"
                  "/usr/bin" "/usr/sbin"
                  "/bin" "/sbin"))
          (cpath ""))
