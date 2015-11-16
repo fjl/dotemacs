@@ -67,6 +67,7 @@
     (("vagrant" "ssh")
      ("brew" "log")
      ("geth" "attach"))))
+ '(font-lock-maximum-decoration 0)
  '(git-commit-summary-max-length 80)
  '(gnutls-algorithm-priority "PFS")
  '(gnutls-min-prime-bits 1024)
