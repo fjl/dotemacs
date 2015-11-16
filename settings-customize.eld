@@ -41,6 +41,7 @@
  '(company-auto-complete-chars (quote (41)))
  '(company-go-insert-arguments nil)
  '(company-idle-delay 0.2)
+ '(compilation-always-kill t)
  '(compilation-error-regexp-alist
    (quote
     (absoft ada aix ant bash borland python-tracebacks-and-caml comma cucumber msft edg-1 edg-2 epc ftnchek iar ibm irix jikes-file maven jikes-line gcc-include ruby-Test::Unit lcc makepp mips-1 mips-2 msft omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint go-test gnu java)))
