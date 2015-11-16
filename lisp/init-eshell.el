@@ -150,6 +150,7 @@ of a pipeline and has no options specified.")
 
 ;;;###autoload
 (defun fjl/eshell-mode-hook ()
+  (setq truncate-lines nil)
   ;; this overrides eshell-show-output, which is also bound to C-c C-r.
   (define-key eshell-mode-map (kbd "C-c C-q") (lambda () (interactive) (quit-process)))
   (define-key eshell-mode-map (kbd "C-M-l") 'fjl/eshell-clear)
