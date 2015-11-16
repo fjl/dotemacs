@@ -99,6 +99,7 @@
     (ivy-minibuffer-match-face-1 ivy-minibuffer-match-face-2)))
  '(ivy-mode t)
  '(ivy-use-virtual-buffers t)
+ '(ivy-virtual-abbreviate (quote full))
  '(ivy-wrap t)
  '(mac-mouse-wheel-mode t)
  '(magit-cherry-buffer-name-format "*magit-cherry: %b*")
