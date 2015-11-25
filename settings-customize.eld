@@ -59,6 +59,7 @@
  '(eshell-cmpl-autolist t)
  '(eshell-hist-ignoredups t)
  '(eshell-kill-processes-on-exit (quote ask))
+ '(eshell-modify-global-environment t)
  '(eshell-prompt-function (quote fjl/eshell-prompt))
  '(eshell-prompt-regexp "^[^>
 ]+ >> ")
