@@ -43,8 +43,13 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "C-c SPC") 'avy-goto-char)
 (global-set-key (kbd "M-o") 'ace-window)
-(global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-M-s") 'swiper)
+(global-set-key (kbd "C-x C-a") 'ivy-resume)
+;; Redirect common operation through counsel. This enables
+;; some of the more interesting features of ivy.
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
 (after-package ivy 
   ;; In ivy, never exit when pressing TAB too much.
