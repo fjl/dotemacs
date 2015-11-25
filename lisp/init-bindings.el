@@ -21,6 +21,7 @@
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
 (global-set-key (kbd "M-o") 'select-mru-window)
 (global-set-key (kbd "C-x C-j") 'fjl/join-next-line) ;; overwrites jabber commands
+(global-set-key (kbd "s-1") 'launcher)
 
 (define-key prog-mode-map (kbd "M-RET") 'fjl/comment-enter)
 (define-key prog-mode-map (kbd "RET") 'newline)

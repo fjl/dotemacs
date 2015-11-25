@@ -166,4 +166,27 @@ and launch multi-isearch."
      (list (read-file-name "Multi I-search glob: " nil default nil default))))
   (multi-isearch-files (file-expand-wildcards glob)))
 
+;; run shell commands with completion
+
+(defun launcher (&optional initial-input)
+  "Launch a program in the background, completing candidates using ivy.
+Optional INITIAL-INPUT is the initial input in the minibuffer."
+  (interactive)
+  (unless initial-input
+    (setq initial-input (cdr (assoc this-command
+                                    ivy-initial-inputs-alist))))
+  (let ((output-buffer nil)
+        (error-buffer  shell-command-default-error-buffer))
+    (ivy-read "Async Shell Command: " (fjl/shell-command-completions)
+              :history 'shell-command-history
+              :action (lambda (cmd) (start-process-shell-command cmd nil cmd))
+              :initial-input initial-input)))
+
+(defun fjl/shell-command-completions ()
+  (let (result)
+    (dolist (dir exec-path)
+      (dolist (file (directory-files dir))
+        (push file result)))
+    (delete-dups (sort (append result shell-command-history) 'string-lessp))))
+
 (provide 'init-commands)
