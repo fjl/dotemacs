@@ -14,7 +14,7 @@
 (slime-setup '(slime-indentation
                ;; slime-tramp
                slime-fancy
-               ;; slime-asdf
+               slime-asdf
                slime-editing-commands
                slime-package-fu
                slime-autodoc
