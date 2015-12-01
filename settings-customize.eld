@@ -69,6 +69,8 @@
      ("brew" "log")
      ("geth" "attach"))))
  '(font-lock-maximum-decoration 0)
+ '(fuel-factor-root-dir "~/src/factor")
+ '(fuel-listener-factor-binary "~/src/factor/factor")
  '(git-commit-summary-max-length 80)
  '(gnutls-algorithm-priority "PFS")
  '(gnutls-min-prime-bits 1024)
