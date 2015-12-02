@@ -159,8 +159,7 @@
  '(sentence-end-double-space nil)
  '(shell-completion-fignore (quote ("~" "#" "%")))
  '(shell-file-name "bash")
- '(shell-prompt-pattern "^[^>
-]+ >> ")
+ '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
  '(show-trailing-whitespace nil)
