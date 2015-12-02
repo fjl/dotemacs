@@ -48,7 +48,7 @@
  '(compilation-message-face (quote default))
  '(compilation-scroll-output (quote first-error))
  '(compilation-search-path (quote (nil ".")))
- '(compilation-window-height 14)
+ '(compilation-window-height 20)
  '(completion-styles (quote (partial-completion emacs22)))
  '(custom-safe-themes t)
  '(display-time-mode t)
