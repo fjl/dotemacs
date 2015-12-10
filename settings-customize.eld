@@ -95,6 +95,8 @@
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries nil)
  '(indicate-empty-lines nil)
+ '(inhibit-default-init t)
+ '(inhibit-startup-echo-area-message "fjl")
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
  '(initial-scratch-message nil)
