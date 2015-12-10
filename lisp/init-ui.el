@@ -1,16 +1,23 @@
 (require 'cl-lib)
+(eval-when-compile (require 'cl)) ;; for lexical-let*
 
 ;; Theme
 (setq-default custom-safe-themes t) ;; accept any theme
 (load-theme 'slick)
 
 ;; Font
-(defconst fixed-pitch-families '("PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace"))
-(defvar the-fixed-pitch-family
-  (or (cl-find-if 'x-family-fonts fixed-pitch-families)
-      (car (last fixed-pitch-families))))
-(defun fpfont (size)
-  (format "%s-%d" the-fixed-pitch-family size))
+(defmacro fjl/define-font-class (name &rest alternates)
+  (let ((alts (cl-gensym)) (sel (cl-gensym)))
+    `(lexical-let* ((,alts ',alternates)
+                    (,sel  (or (when (functionp 'x-family-fonts)
+				 (cl-find-if 'x-family-fonts ,alts))
+			       (car (last ,alts)))))
+       (defun ,name (&optional size)
+         (or (and size (format "%s-%d" ,sel size))
+             ,sel)))))
+
+(fjl/define-font-class fpfont "PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace")
+(fjl/define-font-class vpfont "Avenir" "Dejavu Sans" "Sans Serif")
 
 ;; Frame parameters for all frames, regardless of window-system.
 (setq default-frame-alist
@@ -27,7 +34,8 @@
         (w32 . ((font . ,(fpfont 12))))
         (x   . ((font . ,(fpfont 12))))))
 
-(set-face-attribute 'fixed-pitch nil :family the-fixed-pitch-family)
+(set-face-attribute 'fixed-pitch nil :family (fpfont))
+(set-face-attribute 'variable-pitch nil :family (vpfont))
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
