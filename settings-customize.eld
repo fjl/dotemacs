@@ -111,6 +111,7 @@
  '(magit-log-buffer-name-format "*magit-log: %b*")
  '(magit-process-buffer-name-format "*magit-process: %b*")
  '(magit-restore-window-configuration nil)
+ '(magit-revert-buffers -2)
  '(magit-revision-buffer-name-format "*magit-rev: %b*")
  '(magit-revision-show-gravatars nil)
  '(magit-status-buffer-name-format "*magit: %b*")
