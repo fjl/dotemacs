@@ -49,6 +49,7 @@
 ;; some of the more interesting features of ivy.
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
 (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
 (after-package ivy 
@@ -90,8 +91,9 @@
 ;; term
 (add-hook 'term-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-x C-y") 'term-paste)
-            (local-set-key (kbd "C-x M-w") 'kill-ring-save)))
+            (define-key term-raw-map (kbd "M-o") 'ace-window)
+            (define-key term-raw-map (kbd "C-x C-y") 'term-paste)
+            (define-key term-raw-map (kbd "C-x M-w") 'kill-ring-save)))
 
 (when (memq window-system '(ns mac))
   ;; disable print-buffer on OS X
