@@ -26,7 +26,7 @@
 (require 'init-ui)
 
 ;; Load init files.
-(load custom-file)
+(load custom-file nil t)
 (require 'init-commands)
 (require 'init-bindings)
 
