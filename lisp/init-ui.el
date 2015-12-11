@@ -35,7 +35,7 @@
         (x   . ((font . ,(fpfont 12))))))
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
-(set-face-attribute 'variable-pitch nil :family (vpfont))
+(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.2)
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
