@@ -48,12 +48,9 @@
 
 ;; Message view setup
 
-(defconst fjl/mail-wrap-column 100)
-
 (defun fjl/mu4e-view-mode-hook ()
   (setq word-wrap t)
-  (setq truncate-lines nil)
-  (set-visual-wrap-column fjl/mail-wrap-column))
+  (setq truncate-lines nil))
 
 (add-hook 'mu4e-view-mode-hook 'fjl/mu4e-view-mode-hook)
 
@@ -81,7 +78,7 @@
         ;; Disable image loading.
         (shr-inhibit-images t)
         ;; Tell shr to fit into the wrap width.
-        (shr-width (1- fjl/mail-wrap-column)))
+        (shr-width 99))
     (erase-buffer)
     (shr-insert-document dom)
     (goto-char (point-min))))
