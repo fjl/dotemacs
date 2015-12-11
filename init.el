@@ -13,6 +13,8 @@
 (setq gc-cons-threshold (* 20 1024 1024))
 ;; Load source instead of bytecode if the bytecode is outdated.
 (setq load-prefer-newer t)
+;; Don't warn if .emacs.d is not writable.
+(setq user-emacs-directory-warning nil)
 
 ;; Load the bootstrap file. This sets up all load paths and activates all packages.
 (let* ((init-dir (file-name-directory (file-truename (or load-file-name buffer-file-name))))

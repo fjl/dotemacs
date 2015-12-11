@@ -149,6 +149,7 @@
     ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$")))
  '(recentf-max-saved-items 60)
  '(recentf-mode t)
+ '(recentf-save-file "~/.emacs-recentf")
  '(safe-local-variable-values
    (quote
     ((org-src-preserve-indentation . t)
@@ -157,6 +158,7 @@
      (Package . CL-USER)
      (Base . 10))))
  '(save-place t nil (saveplace))
+ '(savehist-file "~/.emacs-history")
  '(savehist-mode t)
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)
