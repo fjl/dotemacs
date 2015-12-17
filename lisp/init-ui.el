@@ -123,21 +123,15 @@ and to setup the inital frame."
                  (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
 ;; Enable mouse support in terminal
-(when (and (not window-system)
-           (not (string-equal (getenv "TERM_PROGRAM") "Apple_Terminal")))
-  (require 'mouse)
-  (xterm-mouse-mode t)
-  (global-set-key [mouse-4] '(lambda ()
-                               (interactive)
-                               (scroll-down 1)))
-  (global-set-key [mouse-5] '(lambda ()
-                               (interactive)
-                               (scroll-up 1))))
+(unless window-system
+  (xterm-mouse-mode 1)
+  (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
+  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1))))
 
 ;; UTF-8 terminal
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8) 
+(prefer-coding-system 'utf-8)
 
 ;; The code below shows the mark location as a small rectangle
 ;; in the fringe. Adapted from http://www.emacswiki.org/emacs/TheFringe.

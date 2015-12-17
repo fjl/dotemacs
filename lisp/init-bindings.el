@@ -52,7 +52,7 @@
 (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
 (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
-(after-package ivy 
+(after-package ivy
   ;; In ivy, never exit when pressing TAB too much.
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
   ;; In ivy, swap C-j and RET to retain ido behavior.
@@ -63,19 +63,17 @@
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous))
 
-;; make paragraph keys easier to type, especially on small keyboards.
-(global-set-key (kbd "M-[") 'backward-paragraph)
-(global-set-key (kbd "M-]") 'forward-paragraph)
-
-(define-key minibuffer-local-map [f3]
-  (lambda () (interactive)
-     (insert (buffer-name (window-buffer (minibuffer-selected-window))))))
+;; Make paragraph keys easier to type, especially on small keyboards.
+;; They used to be bound to M-[ M-] here, but M-[ is indistinguishable
+;; from a terminal escape sequence and binding it breaks xterm-mouse-mode.
+(global-set-key (kbd "M-p") 'backward-paragraph)
+(global-set-key (kbd "M-n") 'forward-paragraph)
 
 ;; compilation
 (define-key compilation-mode-map (kbd "C-c C-q") '(lambda () (interactive) (quit-process)))
 
 ;; ibuffer
-(global-set-key (kbd "C-x C-b") #'ibuffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; the first few function keys launch eshell sessions
 (dolist (k '(f1 f2 f3 f4 f5 f6))
