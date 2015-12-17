@@ -10,8 +10,8 @@
   (let ((alts (cl-gensym)) (sel (cl-gensym)))
     `(lexical-let* ((,alts ',alternates)
                     (,sel  (or (when (functionp 'x-family-fonts)
-				 (cl-find-if 'x-family-fonts ,alts))
-			       (car (last ,alts)))))
+                                 (cl-find-if 'x-family-fonts ,alts))
+                               (car (last ,alts)))))
        (defun ,name (&optional size)
          (or (and size (format "%s-%d" ,sel size))
              ,sel)))))
@@ -35,7 +35,7 @@
         (x   . ((font . ,(fpfont 12))))))
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
-(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.2)
+(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.1)
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
