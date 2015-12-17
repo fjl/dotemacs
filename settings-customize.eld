@@ -165,6 +165,7 @@
  '(swiper-faces (quote (swiper-match-face-1 swiper-match-face-2)))
  '(tab-always-indent (quote always))
  '(tab-width 4)
+ '(temp-buffer-resize-mode t)
  '(term-input-ignoredups t)
  '(tls-checktrust t)
  '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))))
@@ -178,7 +179,7 @@
  '(web-mode-enable-engine-detection t)
  '(which-func-modes (quote (python-mode)))
  '(window-combination-resize t)
- '(window-min-width 70)
+ '(window-min-width 90)
  '(window-sides-slots (quote (1 nil 3 nil)))
  '(winner-mode t))
 (custom-set-faces
