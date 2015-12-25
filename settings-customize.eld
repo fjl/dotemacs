@@ -68,6 +68,7 @@
     (("vagrant" "ssh")
      ("brew" "log")
      ("geth" "attach"))))
+ '(fill-column 90)
  '(font-lock-maximum-decoration 0)
  '(fuel-factor-root-dir "~/src/factor")
  '(fuel-listener-factor-binary "~/src/factor/factor")
