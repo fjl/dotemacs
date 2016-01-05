@@ -37,6 +37,7 @@
  '(comint-completion-autolist t)
  '(comint-input-ignoredups t)
  '(comint-process-echoes nil)
+ '(comment-fill-column 70)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
  '(company-auto-complete-chars (quote (41)))
  '(company-go-insert-arguments nil)
