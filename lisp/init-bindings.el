@@ -105,6 +105,7 @@
   ;; Use the OS X binding for iconify frame.
   ;; I hit C-x C-z by accident all the time.
   (global-unset-key (kbd "C-x C-z"))
+  (global-unset-key (kbd "C-z"))
   (global-set-key (kbd "s-m") 'iconify-frame)
 )
 
