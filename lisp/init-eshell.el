@@ -148,8 +148,17 @@ of a pipeline and has no options specified.")
       (quit-window)
     (delete-char arg)))
 
+(defun fjl/eshell-fixup-COLUMNS ()
+  "Patches the definition of COLUMNS to report less than
+the actual window width. This makes output from command
+adapting to terminal width not wrap."
+  (dolist (el eshell-variable-aliases-list)
+    (when (string= (car el) "COLUMNS")
+      (rplacd el '((lambda (indices) (- (window-width) 2)) t)))))
+
 ;;;###autoload
 (defun fjl/eshell-mode-hook ()
+  (fjl/eshell-fixup-COLUMNS)
   (setq truncate-lines nil)
   ;; this overrides eshell-show-output, which is also bound to C-c C-r.
   (define-key eshell-mode-map (kbd "C-c C-q") (lambda () (interactive) (quit-process)))
