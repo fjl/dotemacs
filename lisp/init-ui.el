@@ -83,7 +83,7 @@ and to setup the inital frame."
   (when (functionp 'mac-auto-operator-composition-mode)
     (setq mac-auto-operator-composition-characters "!\"#$%&'()*+,-/:;<=>?@[]^_`{|}~")
     (mac-auto-operator-composition-mode))
-  (setq ns-use-native-fullscreen t)
+  (setq ns-use-native-fullscreen nil)
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
