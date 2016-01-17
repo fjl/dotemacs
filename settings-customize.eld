@@ -143,11 +143,41 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(safe-local-variable-values
    (quote
-    ((org-src-preserve-indentation . t)
-     (erlang-tab-always-indent)
-     (Syntax . COMMON-LISP)
-     (Package . CL-USER)
-     (Base . 10))))
+    ((dtrt-indent-explicit-offset . t)
+     (eval c-add-style "ethereum"
+           (quote
+            ("bsd"
+             (indent-tabs-mode . t)
+             (tab-width . 4)
+             (c-basic-offset . 4)
+             (c-hanging-braces-alist
+              (substatement-open before)
+              (brace-list-open))
+             (c-hanging-colons-alist
+              (member-init-intro before)
+              (inher-intro)
+              (case-label after)
+              (label after)
+              (access-label after))
+             (c-cleanup-list scope-operator empty-defun-braces defun-close-semi)
+             (c-offsets-alist
+              (arglist-close . 0)
+              (arglist-cont . 0)
+              (arglist-cont-nonempty lambda
+                                     (anchor)
+                                     (save-excursion
+                                       (back-to-indentation)
+                                       (if
+                                           (and
+                                            (looking-at "[ 	]*{")
+                                            (ignore-errors
+                                              (backward-sexp 2)
+                                              (looking-at "\\[[^]]*\\][ 	]*[({][^}]*$")))
+                                           0
+                                         (quote +))))
+              (substatement-open . 0)
+              (inline-open . 0))))
+           t))))
  '(save-place t nil (saveplace))
  '(savehist-file "~/.emacs-history")
  '(savehist-mode t)
