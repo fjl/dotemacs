@@ -69,6 +69,7 @@
     (("vagrant" "ssh")
      ("brew" "log")
      ("geth" "attach"))))
+ '(expand-region-preferred-python-mode (quote fgallina-python))
  '(fill-column 90)
  '(font-lock-maximum-decoration 0)
  '(fuel-debug-confirm-restarts-p nil)
@@ -133,6 +134,7 @@
  '(projectile-ignored-project-function (quote file-remote-p))
  '(projectile-mode-line (quote (:eval (format " P<%s>" (projectile-project-name)))))
  '(projectile-switch-project-action (lambda nil (dired ".")))
+ '(python-shell-completion-native-disabled-interpreters (quote ("pypy" "python")))
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
  '(recentf-exclude
