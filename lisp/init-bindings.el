@@ -46,6 +46,7 @@
 (global-set-key (kbd "M-o") 'ace-window)
 (global-set-key (kbd "C-M-s") 'swiper)
 (global-set-key (kbd "s-r") 'counsel-imenu)
+(global-set-key (kbd "C-x M-RET") 'ivy-resume)
 ;; Redirect common operation through counsel. This enables
 ;; some of the more interesting features of ivy.
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
