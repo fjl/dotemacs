@@ -111,5 +111,6 @@
 
 ;; set up file-name > mode associations
 (add-to-list 'auto-mode-alist '("\\.hbs" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.h" . c++-mode))
 
 (provide 'init-bindings)
