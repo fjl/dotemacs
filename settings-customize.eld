@@ -107,7 +107,7 @@
  '(mac-mouse-wheel-mode t)
  '(magit-completing-read-function (quote ivy-completing-read))
  '(magit-restore-window-configuration nil)
- '(magit-revert-buffers -2)
+ '(magit-revert-buffers -2 t)
  '(magit-revision-show-gravatars nil)
  '(message-cite-style (quote message-cite-style-thunderbird))
  '(message-kill-buffer-on-exit t)
@@ -122,6 +122,7 @@
  '(ns-command-modifier (quote super))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (shell . t))))
  '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "~/stuff.org")
  '(org-hide-leading-stars nil)
  '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-replace-disputed-keys t)
@@ -145,7 +146,42 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(safe-local-variable-values
    (quote
-    ((dtrt-indent-explicit-offset . t)
+    ((eval c-add-style "ethereum"
+           (quote
+            ("bsd"
+             (indent-tabs-mode . t)
+             (tab-width . 4)
+             (c-basic-offset . 4)
+             (c-hanging-braces-alist
+              (substatement-open before)
+              (brace-list-open))
+             (c-hanging-colons-alist
+              (member-init-intro before)
+              (inher-intro)
+              (case-label after)
+              (label after)
+              (access-label after))
+             (c-cleanup-list scope-operator empty-defun-braces defun-close-semi)
+             (c-offsets-alist
+              (arglist-close . 0)
+              (arglist-cont . 0)
+              (arglist-cont-nonempty lambda
+                                     (anchor)
+                                     (save-excursion
+                                       (back-to-indentation)
+                                       (if
+                                           (and
+                                            (looking-at "[ 	]*{")
+                                            (ignore-errors
+                                              (backward-sexp 2)
+                                              (looking-at "\\[[^]]*\\][ 	]*[({][^}]*$")))
+                                           0
+                                         (quote +))))
+              (substatement-open . 0)
+              (inline-open . 0)
+              (innamespace . 0))))
+           t)
+     (dtrt-indent-explicit-offset . t)
      (eval c-add-style "ethereum"
            (quote
             ("bsd"
