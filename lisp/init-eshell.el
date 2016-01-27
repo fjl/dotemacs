@@ -154,7 +154,7 @@ the actual window width. This makes output from command
 adapting to terminal width not wrap."
   (dolist (el eshell-variable-aliases-list)
     (when (string= (car el) "COLUMNS")
-      (rplacd el '((lambda (indices) (- (window-width) 2)) t)))))
+      (rplacd el '((lambda (indices) (- (window-width) 1)) t)))))
 
 ;;;###autoload
 (defun fjl/eshell-mode-hook ()
