@@ -80,9 +80,12 @@
 ;; eshell
 (global-set-key (kbd "C-x 7 7") 'switch-to-eshell)
 (global-set-key (kbd "C-x 4 7") 'switch-to-eshell-other-window)
+(global-set-key (kbd "C-x 7 4") 'switch-to-eshell-other-window)
 (global-set-key (kbd "C-x 7 d") 'switch-to-eshell-in-directory)
 (global-set-key (kbd "C-x 7 z") 'switch-to-eshell-z)
-(global-set-key [f2] 'fjl/eshell-restart-command)
+(global-set-key (kbd "C-x 7 f") 'cycle-free-eshells)
+(global-set-key (kbd "C-x 7 b") 'cycle-busy-eshells)
+(global-set-key (kbd "C-x 7 r") 'fjl/eshell-restart-command)
 
 ;; term
 (defun fjl/setup-term-mode ()
