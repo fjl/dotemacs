@@ -85,11 +85,10 @@
 (global-set-key [f2] 'fjl/eshell-restart-command)
 
 ;; term
-(add-hook 'term-mode-hook
-          (lambda ()
-            (define-key term-raw-map (kbd "M-o") 'ace-window)
-            (define-key term-raw-map (kbd "C-x C-y") 'term-paste)
-            (define-key term-raw-map (kbd "C-x M-w") 'kill-ring-save)))
+(defun fjl/setup-term-mode ()
+  (setq truncate-lines nil)
+  (define-key term-raw-map (kbd "M-o") 'ace-window))
+(add-hook 'term-mode-hook 'fjl/setup-term-mode)
 
 (when (memq window-system '(ns mac))
   ;; disable print-buffer on OS X
