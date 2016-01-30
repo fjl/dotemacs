@@ -10,6 +10,7 @@
 ;; (setq warning-minimum-level :error)
 
 ;; Inhibit GC during initialization.
+(defvar prev-gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold (* 20 1024 1024))
 ;; Load source instead of bytecode if the bytecode is outdated.
 (setq load-prefer-newer t)
@@ -61,7 +62,7 @@
   (setq mail-user-agent 'mu4e-user-agent))
 
 ;; Set GC trigger back to a reasonable value after initializing everything.
-(setq gc-cons-threshold (* 1 1024 1024))
+(setq gc-cons-threshold prev-gc-cons-threshold)
 
 ;; Enable some disabled commands. This goes last because emacs adds
 ;; them to the end of this file when enabling interactively.
