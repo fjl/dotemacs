@@ -77,16 +77,11 @@
 
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; the first few function keys launch eshell sessions
-(dolist (k '(f1 f2 f3 f4 f5 f6))
-  (global-set-key `[(control ,k)] 'fjl/eshell-hotkey)
-  (global-set-key `[(meta ,k)] 'fjl/eshell-hotkey))
-;; also bind to C-7 [1-9] for non-GUI emacs
-(dolist (k '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
-  (global-set-key `[(control ?x) ?7 ,k] 'fjl/eshell-hotkey)
-  (global-set-key `[(control ?x) ?7 (meta ,k)] 'fjl/eshell-hotkey))
-
+;; eshell
+(global-set-key (kbd "C-x 7 7") 'switch-to-eshell)
+(global-set-key (kbd "C-x 4 7") 'switch-to-eshell-other-window)
+(global-set-key (kbd "C-x 7 d") 'switch-to-eshell-in-directory)
+(global-set-key (kbd "C-x 7 z") 'switch-to-eshell-z)
 (global-set-key [f2] 'fjl/eshell-restart-command)
 
 ;; term

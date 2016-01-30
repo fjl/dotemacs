@@ -3,33 +3,118 @@
 (require 'em-prompt)
 (require 'em-hist)
 (require 'ring)
+(require 'levenshtein)
 
 ;; Load 'z' extension. This tracks frequently-used directories and
 ;; enables jumping into them using the 'z' command.
 (require 'eshell-z)
 
+;; Shell Ring. Tracks eshells and whether they are currently in use,
+;; so that I can get a 'free' shell whenever I want.
+
+(defvar fjl/free-eshells nil
+  "This list tracks eshell buffers which are not currently executing
+a command. They are kept in no particular order.")
+(defvar fjl/busy-eshells nil
+  "This list tracks eshell buffers in which a command is running.
+They are orded by the time when the command was started (most recent first).")
+
+(defvar fjl/eshell-id-counter 0)
+
 ;;;###autoload
-(defun fjl/eshell-hotkey (prefix-arg)
-  "This function creates or selects an eshell session.
-It must be invoked using a number key or function key."
-  (interactive "p")
-  (let* ((ev      (this-command-keys-vector))
-         (lastkey (aref ev (1- (length ev))))
-         (bare    (event-basic-type lastkey))
-         (fkey    (cl-position bare '(f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12)))
-         (numkey  (cl-position bare '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0)))
-         (session (1+ (or fkey numkey prefix-arg)))
-         (buffer  (get-buffer-create (format "*eshell %d*" session)))
-         (win     (get-buffer-window buffer 'visible)))
-    (cond (win
-           (select-frame-set-input-focus (window-frame win))
-           (select-window win))
-          ((memq 'meta (event-modifiers lastkey))
-           (pop-to-buffer buffer))
-          (t
-           (switch-to-buffer buffer)))
-    (unless (derived-mode-p 'eshell-mode)
-      (eshell-mode))))
+(defun switch-to-eshell (&optional close-to-dir other-window)
+  "Switches to a non-busy eshell."
+  (interactive)
+  (unless close-to-dir
+    (setq close-to-dir default-directory))
+  (if (null fjl/free-eshells)
+      ;; There are no free shells, just make a new one.
+      (switch-to-buffer (fjl/new-eshell close-to-dir))
+    ;; Try to select a shell which is already in the right directory,
+    ;; or at least in a directory that's "close".
+      (setq fjl/free-eshells
+            (cl-sort fjl/free-eshells '<
+                     :key (lambda (b)
+                            (levenshtein-distance close-to-dir
+                                                  (buffer-local-value 'default-directory b)))))
+      (let* ((buf (car fjl/free-eshells))
+             (win (get-buffer-window buf 'visible)))
+        (cond (win          (select-window win))
+              (other-window (switch-to-buffer-other-window buf))
+              (t            (switch-to-buffer buf))))))
+
+;;;###autoload
+(defun switch-to-eshell-other-window (&optional close-to-dir)
+  (interactive)
+  (switch-to-eshell close-to-dir t))
+
+;;;###autoload
+(defun switch-to-eshell-in-directory (&optional dir)
+  "Switches to a non-busy eshell, switching it to the working
+directory of the current buffer."
+  (interactive)
+  (when (null dir)
+    (setq dir default-directory))
+  (switch-to-eshell dir)
+  (fjl/eshell-cd-and-reprompt dir))
+
+;;;###autoload
+(defun switch-to-eshell-z ()
+  "Prompts for a recent directory, then switches to a non-busy
+eshell in that directory."
+  (interactive)
+  (let* ((paths
+          (sort (eshell-z--hash-table-values eshell-z-freq-dir-hash-table)
+                (lambda (elt1 elt2)
+                  (> (eshell-z--frecent elt1)
+                     (eshell-z--frecent elt2)))))
+         (dir (completing-read "eshell-z " paths nil t)))
+    (switch-to-eshell-in-directory dir)))
+
+(defun fjl/eshell-cd-and-reprompt (dir)
+  (eshell/cd dir)
+  (goto-char (point-max))
+  (save-match-data
+    (when (looking-back eshell-prompt-regexp
+                        (max (point-min) (- (point) 200)))
+      (let ((inhibit-read-only t))
+        (delete-region (match-beginning 0) (match-end 0))
+        (eshell-emit-prompt)))))
+
+(defun fjl/new-eshell (&optional working-dir)
+  (let ((buffer (get-buffer-create (format "*autoeshell %d*" fjl/eshell-id-counter))))
+    (cl-incf fjl/eshell-id-counter)
+    (push buffer fjl/free-eshells)
+    (with-current-buffer buffer
+      (when (and working-dir (file-accessible-directory-p working-dir))
+        (setq-local default-directory working-dir))
+      (eshell-mode)
+      (rename-buffer "Eshell" t))
+    buffer))
+
+(defmacro fjl/deletef (element listvar)
+  `(setq ,listvar (delete ,element ,listvar)))
+
+(defun fjl/remove-from-eshell-lists ()
+  (fjl/deletef (current-buffer) fjl/busy-eshells)
+  (fjl/deletef (current-buffer) fjl/free-eshells))
+
+(defun fjl/mark-eshell-buffer-as-free ()
+  (fjl/deletef (current-buffer) fjl/busy-eshells)
+  (push (current-buffer) fjl/free-eshells))
+
+(defun fjl/mark-eshell-buffer-as-busy ()
+  (fjl/deletef (current-buffer) fjl/free-eshells)
+  (push (current-buffer) fjl/busy-eshells))
+
+(defun fjl/setup-eshell-list-hooks ()
+  (fjl/mark-eshell-buffer-as-free)
+  (add-hook 'kill-buffer-hook 'fjl/remove-from-eshell-lists)
+  (add-hook 'eshell-pre-command-hook 'fjl/mark-eshell-buffer-as-busy)
+  (add-hook 'eshell-post-command-hook 'fjl/mark-eshell-buffer-as-free))
+
+;;;###autoload
+(add-hook 'eshell-mode-hook 'fjl/setup-eshell-list-hooks)
 
 (defun fjl/eshell-clear ()
   "Clear the eshell buffer, deleting everything except the last prompt."
