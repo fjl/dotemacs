@@ -62,6 +62,9 @@
  '(eshell-hist-ignoredups t)
  '(eshell-kill-processes-on-exit (quote ask))
  '(eshell-modify-global-environment t)
+ '(eshell-modules-list
+   (quote
+    (eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
  '(eshell-prompt-function (quote fjl/eshell-prompt))
  '(eshell-prompt-regexp "^[^>
 ]+ >> ")
@@ -134,7 +137,14 @@
  '(projectile-completion-system (quote ivy))
  '(projectile-global-mode t)
  '(projectile-ignored-project-function (quote file-remote-p))
- '(projectile-mode-line (quote (:eval (format " P<%s>" (projectile-project-name)))))
+ '(projectile-mode-line
+   (quote
+    (:eval
+     (if
+         (file-remote-p default-directory)
+         "P"
+       (format " P<%s>"
+               (projectile-project-name))))))
  '(projectile-switch-project-action (lambda nil (dired ".")))
  '(python-shell-completion-native-disabled-interpreters (quote ("pypy" "python")))
  '(query-user-mail-address nil)
@@ -242,6 +252,7 @@
  '(term-input-ignoredups t)
  '(tls-checktrust t)
  '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))))
+ '(tramp-connection-timeout 10)
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(use-file-dialog nil)
