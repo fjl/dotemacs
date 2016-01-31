@@ -46,6 +46,7 @@
    `(font-lock-function-name-face ((,class (:inherit default :weight bold :foreground ,slick-text-color))))
    `(font-lock-keyword-face ((,class (:inherit default :foreground ,slick-text-color))))
    `(font-lock-type-face ((,class (:inherit default :foreground ,slick-text-color))))
+   `(font-lock-operator-face ((,class (:inherit default :foreground ,slick-text-color))))
    `(font-lock-constant-face ((,class (:inherit default :foreground ,slick-text-color))))
    `(font-lock-builtin-face ((,class (:inherit default :foreground ,slick-text-color))))
    `(font-lock-variable-name-face ((,class (:inherit default :foreground ,slick-text-color))))
