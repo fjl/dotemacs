@@ -164,11 +164,9 @@ Eshell buffers (i.e. those which are not currently executing a command)."
     (insert cmd)))
 
 (defun fjl/eshell-prompt ()
-  (let* ((default-directory (expand-file-name default-directory))
-         (remote            (or (file-remote-p default-directory) "")))
-    (concat remote
-            (fjl/abbrev-prompt-dir (substring default-directory 0 (length remote)))
-            " >> ")))
+  (let* ((remote (or (file-remote-p default-directory) ""))
+         (dir    (substring default-directory (length remote))))
+    (concat remote (fjl/abbrev-prompt-dir dir) " >> ")))
 
 (defun fjl/abbrev-prompt-dir (dir)
   (save-match-data
@@ -176,7 +174,7 @@ Eshell buffers (i.e. those which are not currently executing a command)."
            (dir    (expand-file-name dir))
            (inhome (string-prefix-p home dir))
            (pwd    (substring dir (if inhome (length home) 0))))
-      (concat (if inhome "~" "")
+      (concat (cond (inhome "~") ((string= dir "/") dir))
               ;; todo: make more comps visible of last one is < 3 characters
               (cl-loop for dircons on (split-string pwd "/" t)
                        for dir = (car dircons)
