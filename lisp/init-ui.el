@@ -17,7 +17,7 @@
              ,sel)))))
 
 (fjl/define-font-class fpfont "PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace")
-(fjl/define-font-class vpfont "Avenir" "Dejavu Sans" "Sans Serif")
+(fjl/define-font-class vpfont "Avenir" "Noto Sans" "Dejavu Sans" "Sans Serif")
 
 ;; Frame parameters for all frames, regardless of window-system.
 (setq default-frame-alist
@@ -35,7 +35,7 @@
         (x   . ((font . ,(fpfont 12))))))
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
-(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.1)
+(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
@@ -157,14 +157,17 @@ and to setup the inital frame."
 ;; in the mode-line to reduce display clutter.
 
 (defvar fjl/mode-line-cleaner-alist
-  `((company-mode . "")
+  `(;; Minor modes that should be hidden.
+    (company-mode . "")
     (eldoc-mode . "")
     (paredit-mode . "")
     (abbrev-mode . "")
     (ivy-mode . "")
     (magit-auto-revert-mode . "")
+    (buffer-face-mode . "")
 
     ;; Major modes
+    (markdown-mode . "Md")
     (lisp-interaction-mode . "λ")
     (hi-lock-mode . "")
     (python-mode . "Py")

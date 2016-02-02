@@ -53,6 +53,7 @@
  '(compilation-window-height 20)
  '(completion-styles (quote (partial-completion emacs22)))
  '(custom-safe-themes t)
+ '(darkroom-text-scale-increase 0)
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
  '(electric-indent-mode t)
@@ -142,7 +143,7 @@
     (:eval
      (if
          (file-remote-p default-directory)
-         "P"
+         " P"
        (format " P<%s>"
                (projectile-project-name))))))
  '(projectile-switch-project-action (lambda nil (dired ".")))
