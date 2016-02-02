@@ -66,4 +66,8 @@
 ;; exwm resizes its frames when the display config changes.
 (exwm-randr-enable)
 
+(defun xcape-reset ()
+  (interactive)
+  (shell-command "killall xcape; xmodmap ~/.xmodmap; sleep 0.2; ~/src/xcape/xcape -e Hyper_L=space" nil))
+
 (provide 'init-exwm)
