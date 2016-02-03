@@ -102,6 +102,7 @@
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
  '(initial-scratch-message nil)
+ '(ivy-do-completion-in-region nil)
  '(ivy-minibuffer-faces
    (quote
     (ivy-minibuffer-match-face-1 ivy-minibuffer-match-face-2)))
@@ -229,6 +230,7 @@
               (inline-open . 0))))
            t))))
  '(save-place t nil (saveplace))
+ '(save-place-mode t nil (saveplace))
  '(savehist-file "~/.emacs-history")
  '(savehist-mode t)
  '(send-mail-function (quote smtpmail-send-it))
