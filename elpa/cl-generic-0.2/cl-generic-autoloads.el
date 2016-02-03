@@ -1,10 +1,10 @@
 ;;; cl-generic-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "cl-generic" "cl-generic.el" (22186 29662 583507
-;;;;;;  66000))
+;;;### (autoloads nil "cl-generic" "cl-generic.el" (22193 54203 781403
+;;;;;;  88000))
 ;;; Generated autoloads from cl-generic.el
  (let ((d (file-name-directory #$)))
   (when (member d load-path)
