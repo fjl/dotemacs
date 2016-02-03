@@ -133,29 +133,7 @@ and to setup the inital frame."
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;; The code below shows the mark location as a small rectangle
-;; in the fringe. Adapted from http://www.emacswiki.org/emacs/TheFringe.
-
-(defvar fjl/mark-bol nil
-  "Marker from `beginning-of-line' for `mark'.")
-
-(put 'fjl/mark-bol 'overlay-arrow-bitmap 'filled-square)
-(put 'fjl/mark-bol 'overlay-arrow-string "")
-(add-to-list 'overlay-arrow-variable-list 'fjl/mark-bol)
-
-(defun fjl/mark-fringe-hook ()
-  (when (and (mark t) (not (minibufferp)))
-    (setq fjl/mark-bol
-          (save-excursion
-            (goto-char (mark t))
-            (point-marker)))))
-
-(add-to-list 'activate-mark-hook #'fjl/mark-fringe-hook)
-(add-to-list 'buffer-list-update-hook #'fjl/mark-fringe-hook)
-
-;; The Code below renames and hides certain modes
-;; in the mode-line to reduce display clutter.
-
+;; Rename and hide certain modes in the mode-line to reduce display clutter.
 (defvar fjl/mode-line-cleaner-alist
   `(;; Minor modes that should be hidden.
     (company-mode . "")
@@ -166,7 +144,7 @@ and to setup the inital frame."
     (magit-auto-revert-mode . "")
     (buffer-face-mode . "")
 
-    ;; Major modes
+    ;; Major modes.
     (markdown-mode . "Md")
     (lisp-interaction-mode . "λ")
     (hi-lock-mode . "")
@@ -190,7 +168,6 @@ want to use in the modeline *in lieu of* the original.")
              (old-mode-str (cdr (assq mode minor-mode-alist))))
         (when old-mode-str
           (setcar old-mode-str mode-str))
-        ;; major mode
         (when (eq mode major-mode)
           (setq mode-name mode-str)))))
 
