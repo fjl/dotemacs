@@ -10,7 +10,7 @@
  '(ag-reuse-buffers t)
  '(ag-reuse-window nil)
  '(ansi-color-for-comint-mode t)
- '(auth-sources (quote (macos-keychain-internet)))
+ '(auth-sources nil)
  '(avy-background t)
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backup/"))))
  '(c-default-style
@@ -134,7 +134,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (levenshtein hydra ox-gfm virtualenvwrapper fuel darkroom ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime web-mode wgrep yaml-mode)))
+    (cl-generic cm-mode levenshtein hydra ox-gfm virtualenvwrapper fuel darkroom ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime web-mode wgrep yaml-mode)))
  '(projectile-completion-system (quote ivy))
  '(projectile-global-mode t)
  '(projectile-ignored-project-function (quote file-remote-p))
