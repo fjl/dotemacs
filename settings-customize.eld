@@ -13,6 +13,9 @@
  '(auth-sources nil)
  '(avy-background t)
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backup/"))))
+ '(battery-load-low 15)
+ '(battery-mode-line-format " Bat: %p")
+ '(battery-mode-line-limit 15)
  '(c-default-style
    (quote
     ((java-mode . "java")
@@ -54,6 +57,7 @@
  '(completion-styles (quote (partial-completion emacs22)))
  '(custom-safe-themes t)
  '(darkroom-text-scale-increase 0)
+ '(display-battery-mode t)
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
  '(electric-indent-mode t)
@@ -230,7 +234,6 @@
               (inline-open . 0))))
            t))))
  '(save-place t nil (saveplace))
- '(save-place-mode t nil (saveplace))
  '(savehist-file "~/.emacs-history")
  '(savehist-mode t)
  '(send-mail-function (quote smtpmail-send-it))
