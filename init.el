@@ -61,6 +61,10 @@
   (eval-after-load 'mu4e '(require 'init-mu4e))
   (setq mail-user-agent 'mu4e-user-agent))
 
+;; Setup autoloads for darkroom.el because it doesn't define them.
+(autoload 'darkroom-mode "darkroom" "" t)
+(autoload 'darkroom-tentative-mode "darkroom" "" t)
+
 ;; Set GC trigger back to a reasonable value after initializing everything.
 (setq gc-cons-threshold prev-gc-cons-threshold)
 
