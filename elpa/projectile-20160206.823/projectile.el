@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
-;; Package-Version: 20160130.457
+;; Package-Version: 20160206.823
 ;; Keywords: project, convenience
 ;; Version: 0.13.0
 ;; Package-Requires: ((dash "2.11.0") (pkg-info "0.4"))
@@ -869,7 +869,7 @@ Files are returned as relative paths to the project root."
   :group 'projectile
   :type 'string)
 
-(defcustom projectile-fossil-command "fossil ls"
+(defcustom projectile-fossil-command "fossil ls | tr '\\n' '\\0'"
   "Command used by projectile to get the files in a fossil project."
   :group 'projectile
   :type 'string)
