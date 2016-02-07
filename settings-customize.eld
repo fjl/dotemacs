@@ -58,6 +58,7 @@
  '(custom-safe-themes t)
  '(darkroom-text-scale-increase 0)
  '(display-battery-mode t)
+ '(display-time-format " %-I:%M%p")
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
  '(electric-indent-mode t)
