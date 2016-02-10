@@ -60,6 +60,9 @@
 
 ;;;###autoload
 (defun fjl/slime-mode-hook ()
+  (setq-local browse-url-browser-function 'eww-browse-url)
+  (when (file-directory-p "/usr/local/share/doc/HyperSpec/")
+    (setq common-lisp-hyperspec-root "file:///usr/local/share/doc/HyperSpec/"))
   (global-set-key (kbd "C-c C-s") 'slime-selector)
   (global-set-key (kbd "C-c s") 'slime-selector)
   (define-key lisp-mode-map (kbd "<tab>") 'slime-indent-and-complete-symbol)
@@ -72,7 +75,7 @@
                 slime-threads-update-interval    0.1))
 
 ;;;###autoload
-(defun fjl/common-lisp-mode-hook () 
+(defun fjl/common-lisp-mode-hook ()
   (setq common-lisp-style-default "fjl-indentation"))
 
 ;;;###autoload
