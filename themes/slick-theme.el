@@ -2,7 +2,7 @@
   "A theme based the wheatgrass theme that comes with emacs.")
 
 (defconst slick-search-color "saddle brown")
-(defconst slick-text-color "gray80")
+(defconst slick-text-color "gray90")
 
 (let ((class    '((class color)))
       (graphic  '((type x w32 mac ns))))
