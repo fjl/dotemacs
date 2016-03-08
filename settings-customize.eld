@@ -143,7 +143,6 @@
       "* LATER %?" :prepend t :empty-lines 1))))
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Documents/org/work.org")
- '(org-hide-leading-stars t)
  '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-replace-disputed-keys t)
  '(org-src-fontify-natively nil)
