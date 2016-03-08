@@ -86,7 +86,7 @@ Returns the new value of GOPATH."
             (setq new (concat new path-separator (second gp)))))))
     (unless (or (string-equal new old) (fjl/in-goroot-p dir) (fjl/in-godeps-p dir))
       (message (concat "GOPATH = " new))
-      (setenv "GOBIN" (concat dir "bin"))
+      (setenv "GOBIN" (concat dir "/bin"))
       (setenv "GOPATH" new))))
 
 ;;;###autoload
