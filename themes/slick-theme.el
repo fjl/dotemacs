@@ -18,8 +18,9 @@
    `(success ((,class (:foreground "yellow green"))))
    `(fringe ((,class (:background "gray10"))))
    `(vertical-border ((,class (:foreground "gray25"))))
-   `(header-line ((,class (:inherit mode-line :background "grey20" :foreground "grey90"
-                           :box (:line-width 2 :color "grey20")))))
+   `(shadow ((,class (:inherit default :background nil :foreground "gray75"))))
+   `(header-line ((,class (:inherit mode-line :background "gray20" :foreground "gray90"
+                           :box (:line-width 2 :color "gray20")))))
 
    ;; Compilation
    `(compilation-mode-line-fail ((,class (:foreground "dark green"))))
@@ -76,7 +77,7 @@
 
    ;; Mode line style
    `(mode-line           ((,class (:background "tan4" :foreground "gray90" :box (:line-width 1 :color "tan4" :style released-button)))))
-   `(mode-line-inactive  ((,class (:inherit mode-line :background "black" :foreground "grey40" :weight light :box (:line-width 1 :style released-button)))))
+   `(mode-line-inactive  ((,class (:inherit mode-line :background "black" :foreground "gray40" :weight light :box (:line-width 1 :style released-button)))))
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
    `(which-func          ((,class (:foreground "chartreuse3"))))
@@ -90,6 +91,17 @@
    `(markdown-header-face-1 ((,class (:inherit default :weight bold :height 1.2))))
    `(markdown-header-face-2 ((,class (:inherit default :weight bold :height 1.2))))
 
+   ;; Org
+   `(org-hide ((,graphic (:foreground "gray15")) (t (:foreground "black"))))
+   `(org-document-title ((,class (:foreground "light blue"))))
+   `(org-document-info ((,class (:foreground "light blue"))))
+   `(org-block ((,class (:inherit shadow))))
+   `(org-meta-line ((,class (:foreground "gray45"))))
+   `(org-block-begin-line ((,graphic (:underline "gray30" :foreground "gray45"))
+                           (t (:foreground "gray45"))))
+   `(org-block-end-line ((,graphic (:overline "gray30" :foreground "gray45"))
+                         (t (:foreground "gray45"))))
+
    ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
    `(term-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
@@ -97,7 +109,7 @@
    ;; Magit
    `(smerge-refined-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
    `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
-   `(magit-item-highlight ((,class (:background "grey20"))))
+   `(magit-item-highlight ((,class (:background "gray20"))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
    `(magit-section-highlight ((,class (:background "gray25"))))
    `(magit-diff-added ((,class (:background "#225522" :foreground "#88ff88"))))
