@@ -92,16 +92,19 @@
    `(markdown-header-face-2 ((,class (:inherit default :weight bold :height 1.2))))
 
    ;; Org
-   `(org-hide ((,graphic (:foreground "gray15")) (t (:foreground "black"))))
-   `(org-document-title ((,class (:foreground "light blue"))))
-   `(org-document-info ((,class (:foreground "light blue"))))
-   `(org-block ((,class (:inherit fixed-pitch :foreground "gray75"))))
-   `(org-table ((,class (:inherit fixed-pitch :foreground "LightSkyBlue"))))
-   `(org-meta-line ((,class (:foreground "gray45"))))
+   `(org-hide             ((,graphic (:foreground "gray15")) (t (:foreground "black"))))
+   `(org-document-title   ((,class (:foreground "light blue"))))
+   `(org-document-info    ((,class (:foreground "light blue"))))
+   `(org-block            ((,class (:inherit fixed-pitch :foreground "gray75"))))
+   `(org-table            ((,class (:inherit fixed-pitch :foreground "LightSkyBlue"))))
+   `(org-meta-line        ((,class (:foreground "gray45"))))
    `(org-block-begin-line ((,graphic (:underline "gray30" :foreground "gray45"))
                            (t (:foreground "gray45"))))
-   `(org-block-end-line ((,graphic (:overline "gray30" :foreground "gray45"))
-                         (t (:foreground "gray45"))))
+   `(org-block-end-line   ((,graphic (:overline "gray30" :foreground "gray45"))
+                           (t (:foreground "gray45"))))
+   `(outline-1            ((,class (:weight bold :foreground ,slick-text-color))))
+   `(outline-2            ((,class (:weight bold :foreground ,slick-text-color))))
+   `(outline-3            ((,class (:weight bold :foreground ,slick-text-color))))
 
    ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
