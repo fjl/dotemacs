@@ -35,7 +35,7 @@
         (x   . ((font . ,(fpfont 12))))))
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
-(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
+(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.1)
 
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
@@ -79,9 +79,10 @@ and to setup the inital frame."
   (set-fontset-font t 'unicode "Symbola" nil 'prepend)
   (setq mac-command-modifier 'super)
   (setq mac-option-modifier 'meta)
+  (setq mac-mouse-wheel-smooth-scroll nil)
   ;; enable ligatures on OS X.
   (when (functionp 'mac-auto-operator-composition-mode)
-    (setq mac-auto-operator-composition-characters "!\"#$%&'()*+,-/:;<=>?@[]^_`{|}~")
+    (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
     (mac-auto-operator-composition-mode))
   (setq ns-use-native-fullscreen nil)
   (setq ns-command-modifier 'super)
