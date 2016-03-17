@@ -231,7 +231,7 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
 (defun fjl/shell-command-completions ()
   (let (result)
     (dolist (dir exec-path)
-      (dolist (file (directory-files dir))
+      (dolist (file (ignore-errors (directory-files dir)))
         (unless (or (string= file ".") (string= file ".."))
           (push file result))))
     (delete-dups (sort result 'string-lessp))))
