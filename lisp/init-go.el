@@ -16,7 +16,7 @@
 (defvar gotools-list
   '(("godep"     "github.com/tools/godep")
     ("godoc"     "golang.org/x/tools/cmd/godoc")
-    ("goimports" "github.com/bradfitz/goimports")
+    ("goimports" "golang.org/x/tools/cmd/goimports")
     ("gocode"    "github.com/nsf/gocode")
     ("godef"     "github.com/rogpeppe/godef")))
 
@@ -51,8 +51,10 @@ refer to the installed tools."
   "Ensure that the tools installed by `gotools-update' are
 present in `exec-path' and the PATH environment variable."
   (when (file-exists-p gotools-gobin)
-    (let ((path-list (split-string (getenv "PATH") path-separator))
-          (eb (expand-file-name gotools-gobin)))
+    (let* ((path-list (split-string (getenv "PATH") path-separator))
+           (eb        (expand-file-name gotools-gobin))
+           (goimports (concat (file-name-as-directory eb) "goimports")))
+      (setq-default gofmt-command goimports)
       (add-to-list 'exec-path eb)
       (unless (member eb path-list)
         (setenv "PATH" (concat eb path-separator (getenv "PATH")))))))
@@ -82,8 +84,8 @@ Returns the new value of GOPATH."
           (setq dir (car gp))
           (setq new (car gp))
           ;; Add Godep workspace to path if detected.
-          (when (second gp)
-            (setq new (concat new path-separator (second gp)))))))
+          (when (cadr gp)
+            (setq new (concat new path-separator (cadr gp)))))))
     (unless (or (string-equal new old) (fjl/in-goroot-p dir) (fjl/in-godeps-p dir))
       (message (concat "GOPATH = " new))
       (setenv "GOBIN" (concat dir "/bin"))
@@ -186,7 +188,6 @@ found."
 
 ;; Keys
 (define-key go-mode-map (kbd "C-c i") 'go-toggle-initializer)
-(define-key go-mode-map (kbd "C-c C-f") 'gofmt)
 (define-key go-mode-map (kbd "C-c C-d") 'godef-describe)
 (define-key go-mode-map (kbd "C-c d") 'godoc)
 (define-key go-mode-map (kbd "M-.") 'godef-jump)
