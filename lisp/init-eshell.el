@@ -63,6 +63,7 @@ directory to the one of the current buffer."
   "Prompts for a recent directory, then switches to a non-busy
 Eshell buffer in that directory."
   (interactive)
+  (eshell-z--read-freq-dir-hash-table)
   (let* ((paths
           (sort (eshell-z--hash-table-values eshell-z-freq-dir-hash-table)
                 (lambda (elt1 elt2)
