@@ -108,6 +108,16 @@ and to setup the inital frame."
   (add-hook 'linum-before-numbering-hook 'fjl/linum-numbering-hook)
   (setq-default linum-format #'fjl/linum-format))
 
+;; Scrolling in compilation-mode
+
+(defun fjl/compilation-mode-hook ()
+  ;; These auto scroll settings make it so point isn't
+  ;; centered in the window when output reaches the bottom.
+  (setq-local scroll-conservatively 200)
+  (setq-local scroll-step 1))
+
+(add-hook 'compilation-mode-hook 'fjl/compilation-mode-hook)
+
 ;; Mode Line Setup.
 
 (defun fjl/mode-line-align-right (face format)
