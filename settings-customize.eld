@@ -41,6 +41,7 @@
  '(comint-completion-autolist t)
  '(comint-input-ignoredups t)
  '(comint-process-echoes nil)
+ '(comment-empty-lines (quote eol))
  '(comment-fill-column 70)
  '(company-auto-complete (quote (quote company-explicit-action-p)))
  '(company-auto-complete-chars (quote (41)))
@@ -58,6 +59,7 @@
  '(custom-safe-themes t)
  '(darkroom-text-scale-increase 0)
  '(display-battery-mode t)
+ '(display-buffer-reuse-frames t)
  '(display-time-format " %-I:%M%p")
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
@@ -282,7 +284,8 @@
  '(window-combination-resize t)
  '(window-min-width 90)
  '(window-sides-slots (quote (1 nil 3 nil)))
- '(winner-mode t))
+ '(winner-mode t)
+ '(with-editor-emacsclient-executable nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
