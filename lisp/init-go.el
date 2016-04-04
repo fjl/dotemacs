@@ -177,10 +177,10 @@ found."
 
 (defun fjl/search-forward-no-comment (what bound)
   "Like `search-forward' but skips any matches inside of a string or comment."
-  (loop for m = (search-forward what bound t)
-        for s = (and m (syntax-ppss m))
-        when (or (null m) (and (not (nth 3 s)) (not (nth 4 s))))
-        return m))
+  (cl-loop for m = (search-forward what bound t)
+           for s = (and m (syntax-ppss m))
+           when (or (null m) (and (not (nth 3 s)) (not (nth 4 s))))
+           return m))
 
 (defun fjl/delete-region-string (start end)
   (prog1 (buffer-substring start end)
