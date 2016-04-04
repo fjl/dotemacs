@@ -96,7 +96,7 @@
     ("/usr/local/etc/openssl/cert.pem" "/etc/ssl/certs/ca-certificates.crt" "/etc/pki/tls/certs/ca-bundle.crt" "/etc/ssl/ca-bundle.pem" "/usr/ssl/certs/ca-bundle.crt")))
  '(gnutls-verify-error t)
  '(go-fontify-function-calls nil)
- '(gofmt-show-errors (quote buffer))
+ '(gofmt-show-errors nil)
  '(grep-highlight-matches t)
  '(grep-use-null-device nil)
  '(history-delete-duplicates t)
