@@ -39,6 +39,7 @@
  '(calendar-week-start-day 1)
  '(column-number-mode t)
  '(comint-completion-autolist t)
+ '(comint-input-autoexpand (quote history))
  '(comint-input-ignoredups t)
  '(comint-process-echoes nil)
  '(comment-empty-lines (quote eol))
