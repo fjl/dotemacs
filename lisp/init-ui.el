@@ -133,13 +133,23 @@ and to setup the inital frame."
                  "  " mode-line-modes
                  (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
-;; Enable mouse support in terminal
+;; Terminal
+
+(defun xterm-title-update (&optional title)
+  (when (eq t (framep-on-display))
+    (send-string-to-terminal (concat "\033]0;" (or title (buffer-name)) "\007"))))
+
+(defun xterm-title-clear ()
+  (xterm-title-update ""))
+
 (unless window-system
   (xterm-mouse-mode 1)
   (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
-  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1))))
+  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1)))
+  (add-hook 'window-configuration-change-hook 'xterm-title-update)
+  (add-hook 'kill-emacs-hook 'xterm-title-clear)
+  (xterm-title-update))
 
-;; UTF-8 terminal
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
