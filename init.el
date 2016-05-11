@@ -37,20 +37,6 @@
 ;; Enable some built-in packages.
 (require 'uniquify)
 
-;; Set PATH on OS X. This is necessary because Emacs.app
-;; is started by launchd and does not have the shell environment.
-(when (eq system-type 'darwin)
-  (let* ((homebin (expand-file-name "~/bin"))
-         (path `(,homebin
-                 "/usr/local/bin"
-                 "/usr/bin" "/usr/sbin"
-                 "/bin" "/sbin"))
-         (cpath ""))
-    (dolist (dir path)
-      (setq cpath (concat cpath (if (cl-plusp (length cpath)) ":") dir)))
-    (setq exec-path path)
-    (setenv "PATH" cpath)))
-
 ;; Setup an autoload for mu4e because it doesn't have a package.
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
 (when (cl-some (lambda (d)
