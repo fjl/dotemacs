@@ -6,8 +6,7 @@
   (setq truncate-lines nil)
   (setq word-wrap t)
   (setq indent-tabs-mode nil)
-  (variable-pitch-mode 1)
-  (set-visual-wrap-column 90))
+  (variable-pitch-mode 1))
 
 ;;;###autoload
 (add-hook 'markdown-mode-hook 'fjl/markdown-mode-hook)
