@@ -127,6 +127,7 @@
  '(magit-restore-window-configuration nil)
  '(magit-revert-buffers -2 t)
  '(magit-revision-show-gravatars nil)
+ '(markdown-header-scaling t)
  '(message-cite-style (quote message-cite-style-thunderbird))
  '(message-kill-buffer-on-exit t)
  '(message-send-mail-function (quote message-send-mail-with-sendmail))
