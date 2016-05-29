@@ -123,6 +123,7 @@
  '(mac-mouse-wheel-mode t)
  '(magit-auto-revert-immediately nil)
  '(magit-completing-read-function (quote ivy-completing-read))
+ '(magit-display-buffer-function (quote magit-display-buffer-same-window-except-diff-v1))
  '(magit-restore-window-configuration nil)
  '(magit-revert-buffers -2 t)
  '(magit-revision-show-gravatars nil)
