@@ -88,8 +88,9 @@
    ;; Markdown
    `(markdown-pre-face ((,class (:inherit fixed-pitch :foreground "gray75"))))
    `(markdown-inline-code-face ((,class (:inherit fixed-pitch :foreground "gray75"))))
-   `(markdown-header-face-1 ((,class (:inherit default :weight bold :height 1.2))))
-   `(markdown-header-face-2 ((,class (:inherit default :weight bold :height 1.2))))
+   `(markdown-header-face-1 ((,class (:inherit markdown-header-face :height 1.2))))
+   `(markdown-header-face-2 ((,class (:inherit markdown-header-face :height 1.2))))
+   `(markdown-language-keyword-face ((,class (:inherit default :height 0.7))))
 
    ;; Org
    `(org-hide             ((,graphic (:foreground "gray15")) (t (:foreground "black"))))
@@ -98,10 +99,8 @@
    `(org-block            ((,class (:inherit fixed-pitch :foreground "gray75"))))
    `(org-table            ((,class (:inherit fixed-pitch :foreground "LightSkyBlue"))))
    `(org-meta-line        ((,class (:foreground "gray45"))))
-   `(org-block-begin-line ((,graphic (:underline "gray30" :foreground "gray45"))
-                           (t (:foreground "gray45"))))
-   `(org-block-end-line   ((,graphic (:overline "gray30" :foreground "gray45"))
-                           (t (:foreground "gray45"))))
+   `(org-block-begin-line ((,class (:foreground "gray45" :height 0.7))))
+   `(org-block-end-line   ((,class (:foreground "gray45" :height 0.7))))
    `(outline-1            ((,class (:weight bold :foreground ,slick-text-color))))
    `(outline-2            ((,class (:weight bold :foreground ,slick-text-color))))
    `(outline-3            ((,class (:weight bold :foreground ,slick-text-color))))
