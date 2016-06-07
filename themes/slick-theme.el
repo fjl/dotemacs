@@ -108,6 +108,7 @@
    ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
    `(term-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
+   `(term-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
 
    ;; Magit
    `(smerge-refined-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
