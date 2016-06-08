@@ -257,7 +257,6 @@
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)
  '(shell-completion-fignore (quote ("~" "#" "%")))
- '(shell-file-name "bash")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
  '(show-paren-mode t)
  '(show-paren-style (quote parenthesis))
