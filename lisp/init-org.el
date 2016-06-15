@@ -1,4 +1,5 @@
 (require 'org)
+(require 'org-agenda)
 
 (setq org-agenda-custom-commands
       '(("D" "Desktop Agenda"
