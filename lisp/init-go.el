@@ -4,14 +4,18 @@
 (require 'go-eldoc)
 (require 'cl-lib)
 (require 's)
+(require 'tramp)
 
-(defvar gotools-dir
-  (concat user-emacs-directory "gotools")
-  "Holds the directory that Go tools are installed in.")
+(defun gotools-dir ()
+  "Returns the directory that Go tools should be installed in."
+  (let ((remote (file-remote-p default-directory)))
+    (if remote
+        (concat remote user-emacs-directory "gotools")
+      (concat user-emacs-directory "gotools"))))
 
-(defvar gotools-gobin
-  (concat (file-name-as-directory gotools-dir) "bin")
-  "Holds the directory that Go tools binaries are installed in.")
+(defun gotools-gobin ()
+  "Returns the directory that Go tools binaries are installed in."
+  (concat (file-name-as-directory (gotools-dir)) "bin"))
 
 (defvar gotools-list
   '(("godep"     "github.com/tools/godep")
@@ -20,24 +24,30 @@
     ("gocode"    "github.com/nsf/gocode")
     ("godef"     "github.com/rogpeppe/godef")))
 
+(defun fjl/file-name-localname (file)
+  (if (tramp-tramp-file-p file)
+      (let ((tx (tramp-dissect-file-name file)))
+        (tramp-file-name-localname tx))
+    file))
+
 ;;;###autoload
 (defun gotools-update ()
   "Install go tools in `gotools-dir' and set up various variables to
 refer to the installed tools."
   (interactive)
-  (make-directory (concat (file-name-as-directory gotools-dir) "src") t)
   (switch-to-buffer "*gotools-update*")
   (erase-buffer)
-  (insert
-   (propertize
-    (format "Installing Go tools.\nGOPATH = %s\nGOBIN = %s\n\n" gotools-dir gotools-gobin)
-    'face 'bold))
-  (let ((proc nil))
-    (let ((process-environment (cl-copy-list process-environment)))
-      (setenv "GOPATH" (expand-file-name gotools-dir))
-      (setenv "GOBIN" (expand-file-name gotools-gobin))
-      (let ((command (cl-list* go-command "get" "-v" "-u" (mapcar #'cadr gotools-list))))
-        (setq proc (apply #'start-process "go get" (current-buffer) command))))
+  (let* ((gopath (fjl/file-name-localname (expand-file-name (gotools-dir))))
+         (gobin  (fjl/file-name-localname (expand-file-name (gotools-gobin))))
+         (packages (s-join " " (mapcar #'cadr gotools-list)))
+         (command (format "GOPATH='%s' GOBIN='%s' go get -v -u %s" gopath gobin packages))
+         (proc nil))
+    (insert
+     (propertize
+      (format "Installing Go tools to %s\nGOPATH=%s\n\n" (gotools-dir) gopath)
+      'face 'bold))
+    (make-directory (concat (file-name-as-directory (gotools-dir)) "src") t)
+    (setq proc (start-file-process-shell-command "go get" (current-buffer) command))
     (set-process-sentinel proc (lambda (proc event)
                                  (when (buffer-live-p (process-buffer proc))
                                    (with-current-buffer (process-buffer proc)
@@ -50,7 +60,8 @@ refer to the installed tools."
 (defun gotools-setup ()
   "Ensure that the tools installed by `gotools-update' are
 present in `exec-path' and the PATH environment variable."
-  (when (file-exists-p gotools-gobin)
+  (interactive)
+  (when (and (file-exists-p (gotools-gobin)) (not (file-remote-p (gotools-gobin))))
     (let* ((path-list (split-string (getenv "PATH") path-separator))
            (eb        (expand-file-name gotools-gobin))
            (goimports (concat (file-name-as-directory eb) "goimports")))
@@ -74,7 +85,8 @@ Returns the new value of GOPATH."
      (list (read-directory-name "GOPATH: " (getenv "GOPATH")))))
   (let ((old (getenv "GOPATH"))
         (new dir))
-    (when (null dir)
+    (if (not (null dir))
+        (setq new (fjl/file-name-localname dir))
       (let ((gp (fjl/find-gopath)))
         (if (not gp)
             (progn
@@ -82,10 +94,10 @@ Returns the new value of GOPATH."
               (setq new old))
           ;; A Go workspace was detected.
           (setq dir (car gp))
-          (setq new (car gp))
+          (setq new (fjl/file-name-localname (car gp)))
           ;; Add Godep workspace to path if detected.
           (when (cadr gp)
-            (setq new (concat new path-separator (cadr gp)))))))
+            (setq new (concat new path-separator (fjl/file-name-localname (cadr gp))))))))
     (unless (or (string-equal new old) (fjl/in-goroot-p dir) (fjl/in-godeps-p dir))
       (message (concat "GOPATH = " new))
       (setenv "GOBIN" (concat dir "/bin"))
