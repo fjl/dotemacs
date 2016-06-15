@@ -63,7 +63,7 @@ present in `exec-path' and the PATH environment variable."
   (interactive)
   (when (and (file-exists-p (gotools-gobin)) (not (file-remote-p (gotools-gobin))))
     (let* ((path-list (split-string (getenv "PATH") path-separator))
-           (eb        (expand-file-name gotools-gobin))
+           (eb        (expand-file-name (gotools-gobin)))
            (goimports (concat (file-name-as-directory eb) "goimports")))
       (setq-default gofmt-command goimports)
       (add-to-list 'exec-path eb)
@@ -213,9 +213,10 @@ found."
   (gopath)
   (gotools-setup)
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (go-eldoc-setup)
-  (set (make-local-variable 'company-backends) '(company-go))
-  (company-mode))
+  (unless (file-remote-p (buffer-file-name))
+    (go-eldoc-setup)
+    (setq-local company-backends '(company-go))
+    (company-mode)))
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)
