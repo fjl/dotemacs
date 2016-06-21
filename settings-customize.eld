@@ -99,6 +99,7 @@
     ("/usr/local/etc/openssl/cert.pem" "/etc/ssl/certs/ca-certificates.crt" "/etc/pki/tls/certs/ca-bundle.crt" "/etc/ssl/ca-bundle.pem" "/usr/ssl/certs/ca-bundle.crt")))
  '(gnutls-verify-error t)
  '(go-fontify-function-calls nil)
+ '(godoc-at-point-function (quote godoc-gogetdoc))
  '(gofmt-show-errors nil)
  '(graphviz-dot-auto-indent-on-semi nil)
  '(grep-highlight-matches t)
@@ -284,6 +285,13 @@
  '(vc-handled-backends nil)
  '(visible-bell nil)
  '(web-mode-enable-engine-detection t)
+ '(weechat-auto-monitor-buffers t)
+ '(weechat-buffer-kill-buffers-on-disconnect t)
+ '(weechat-color-list
+   (quote
+    (unspecified "black" "dark gray" "dark red" "red" "dark green" "light green" "brown" "yellow" "sky blue" "light blue" "dark magenta" "magenta" "dark cyan" "light cyan" "gray" "white")))
+ '(weechat-complete-nick-prefix-and-postfix-alist (quote (("gitter.*" "@" . ""))))
+ '(weechat-connect-hook (quote (weechat-re-monitor-buffers weechat-auto-monitor)))
  '(which-func-modes (quote (python-mode)))
  '(window-combination-resize t)
  '(window-min-width 90)
@@ -295,4 +303,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(weechat-highlight-face ((t (:background "gray30" :foreground "Cyan1")))))
