@@ -290,8 +290,11 @@
  '(weechat-color-list
    (quote
     (unspecified "black" "dark gray" "dark red" "red" "dark green" "light green" "brown" "yellow" "sky blue" "light blue" "dark magenta" "magenta" "dark cyan" "light cyan" "gray" "white")))
+ '(weechat-complete-nick-postfix ":")
  '(weechat-complete-nick-prefix-and-postfix-alist (quote (("gitter.*" "@" . ""))))
  '(weechat-connect-hook (quote (weechat-re-monitor-buffers weechat-auto-monitor)))
+ '(weechat-fill-column (quote window-body-width))
+ '(weechat-text-column 26)
  '(which-func-modes (quote (python-mode)))
  '(window-combination-resize t)
  '(window-min-width 90)
