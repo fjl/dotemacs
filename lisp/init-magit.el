@@ -13,6 +13,16 @@ The branch must be pushed to github and have a remote."
      (format "https://github.com/%s/%s/compare/%s...%s:%s"
              (car base-info) (cdr base-info) *pr-base-branch* (car branch-info) branch))))
 
+
+(defun magit-yank-github-url ()
+  (interactive)
+  (let* ((branch (magit-get-current-branch))
+         (info   (fjl/get-github-info branch #'magit-get-push-remote))
+         (url    (format "https://github.com/%s/%s/tree/%s"
+                         (car info) (cdr info) branch)))
+    (kill-new url)
+    (message url)))
+
 (defun fjl/get-github-info (branch get-remote)
   "Returns a cons containing the github username in the car and
 the remote repository name in the cdr."
