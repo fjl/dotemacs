@@ -1,9 +1,21 @@
 ;; -*- lexical-binding: t; -*-
 (require 'exwm)
 (require 'exwm-randr)
+(require 'exwm-systemtray)
 
 (setq use-dialog-box nil)
 (server-start)
+
+;; Disable auto update of keysyms to remove awkward
+;; typing pause after pressing space.
+(setq xcb:keysyms:auto-update nil)
+
+;; Enable XRANDR support. I don't really want to use the hook though, it's just needed so
+;; exwm resizes its frames when the display config changes.
+(exwm-randr-enable)
+
+;; Enable the system tray.
+(exwm-systemtray-enable)
 
 ;; Rename buffers to window title.
 (add-hook 'exwm-update-class-hook
@@ -58,16 +70,9 @@
 (exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   (sh! "brightness" "up"))
 (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")  (sh! "amixer" "set" "Master" "8%+"))
 (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")  (sh! "amixer" "set" "Master" "8%-"))
+(exwm-input-set-key (kbd "s-l") (sh! "loginctl" "lock-session"))
 
 ;; Flush key bindings. This should happen by default, but doesn't.
 (exwm-input--update-global-prefix-keys)
-
-;; Enable XRANDR support. I don't really want to use the hook though, it's just needed so
-;; exwm resizes its frames when the display config changes.
-(exwm-randr-enable)
-
-(defun xcape-reset ()
-  (interactive)
-  (shell-command "killall xcape; xmodmap ~/.xmodmap; sleep 0.2; ~/src/xcape/xcape -e Hyper_L=space" nil))
 
 (provide 'init-exwm)

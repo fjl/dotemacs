@@ -241,7 +241,9 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
   (shell-command (format "dconf write %s '%S'" path value)))
 (defun dconf-read-number (path)
   (string-to-number (shell-command-to-string (format "dconf read %s" path))))
+
 (defun toggle-retina ()
+  "Toggles the GTK font scale factor between 1.0 and 1.4."
   (interactive)
   (let ((cur (dconf-read-number "/org/gnome/desktop/interface/text-scaling-factor")))
     (cond ((= cur 1)
@@ -250,5 +252,10 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
           (t
            (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.0)
            (dconf-write "/org/gnome/settings-daemon/plugins/xsettings/antialiasing" "rgba")))))
+
+(defun xcape-reset ()
+  "Restarts the xcape daemon."
+  (interactive)
+  (shell-command "killall xcape; xmodmap ~/.xmodmap; sleep 0.2; xcape -e Hyper_L=space" nil))
 
 (provide 'init-commands)
