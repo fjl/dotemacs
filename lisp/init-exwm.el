@@ -61,16 +61,17 @@
    ([?\M-v] . prior)
    ([?\C-v] . next)))
 
-(defun sh! (command &rest args)
+(defun sh! (command)
   (lambda ()
     (interactive)
-    (apply 'start-process command nil command args)))
-
-(exwm-input-set-key (kbd "<XF86MonBrightnessDown>") (sh! "brightness" "down"))
-(exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   (sh! "brightness" "up"))
-(exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")  (sh! "amixer" "set" "Master" "8%+"))
-(exwm-input-set-key (kbd "<XF86AudioLowerVolume>")  (sh! "amixer" "set" "Master" "8%-"))
-(exwm-input-set-key (kbd "s-l") (sh! "loginctl" "lock-session"))
+    (shell-command command)))
+(progn
+  (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") (sh! "brightness down"))
+  (exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   (sh! "brightness up"))
+  (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")  (sh! "amixer set Master 8%+"))
+  (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")  (sh! "amixer set Master 8%-"))
+  (exwm-input-set-key (kbd "<XF86AudioMute>")         (sh! "amixer set Master 0"))
+  (exwm-input-set-key (kbd "s-l")                     (sh! "loginctl lock-session")))
 
 ;; Flush key bindings. This should happen by default, but doesn't.
 (exwm-input--update-global-prefix-keys)
