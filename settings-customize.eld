@@ -62,6 +62,11 @@
  '(darkroom-text-scale-increase 0)
  '(dired-async-mode t)
  '(display-battery-mode t)
+ '(display-buffer-alist
+   (quote
+    (("\\*shell.*"
+      (display-buffer-reuse-window display-buffer-same-window)
+      (nil)))))
  '(display-buffer-reuse-frames t)
  '(display-time-format " %-I:%M%p")
  '(display-time-mode t)
