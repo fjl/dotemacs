@@ -247,11 +247,9 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
   (interactive)
   (let ((cur (dconf-read-number "/org/gnome/desktop/interface/text-scaling-factor")))
     (cond ((= cur 1)
-           (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.4)
-           (dconf-write "/org/gnome/settings-daemon/plugins/xsettings/antialiasing" "grayscale"))
+           (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.4))
           (t
-           (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.0)
-           (dconf-write "/org/gnome/settings-daemon/plugins/xsettings/antialiasing" "rgba")))))
+           (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.0)))))
 
 (defun xcape-reset ()
   "Restarts the xcape daemon."
