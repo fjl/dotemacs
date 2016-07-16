@@ -128,6 +128,7 @@
  '(ivy-wrap t)
  '(mac-mouse-wheel-mode t)
  '(magit-auto-revert-immediately nil)
+ '(magit-buffer-name-format "*%M%v: %t*")
  '(magit-completing-read-function (quote ivy-completing-read))
  '(magit-display-buffer-function (quote magit-display-buffer-same-window-except-diff-v1))
  '(magit-restore-window-configuration nil)
