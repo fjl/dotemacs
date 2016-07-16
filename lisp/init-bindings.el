@@ -50,6 +50,7 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 ;; Redirect common operation through counsel. This enables
 ;; some of the more interesting features of ivy.
+(global-set-key (kbd "C-M-y") 'counsel-yank-pop)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
