@@ -45,9 +45,11 @@
    ([?\C-y] . ?\C-v)))
 
 (defun fjl/shell-lambda (command)
+  "Returns an interactive function which runs command as a local shell command."
   (lambda ()
     (interactive)
-    (shell-command command)))
+    (let ((default-directory "~/"))
+      (shell-command command))))
 
 ;; Set up global bindings.
 (progn
