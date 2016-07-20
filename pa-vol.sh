@@ -63,11 +63,11 @@ function get() {
 		LINES=$((VOL_NOW / DENOMINATOR))
 		DOTS=$((STEPS - LINES))
 		while [ $LINES -gt 0 ]; do
-			BAR="${BAR}|"
+			BAR="${BAR}█"
 			LINES=$((LINES - 1))
 		done
 		while [ $DOTS -gt 0 ]; do
-			BAR="${BAR}."
+			BAR="${BAR}░"
 			DOTS=$((DOTS - 1))
 		done
 	fi
