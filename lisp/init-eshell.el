@@ -38,7 +38,7 @@ They are orded by the time when the command was started (most recent first).")
                           (levenshtein-distance close-to-dir
                                                 (buffer-local-value 'default-directory b)))))
     (let* ((buf (car fjl/free-eshells))
-           (win (get-buffer-window buf 'visible)))
+           (win (get-buffer-window buf)))
       (cond (win          (select-window win))
             (other-window (switch-to-buffer-other-window buf))
             (t            (switch-to-buffer buf))))))
