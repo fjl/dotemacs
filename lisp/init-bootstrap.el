@@ -15,15 +15,19 @@
 
 ;; Setup package autoloads.
 (require 'package)
-(setq-default package-user-dir (concat +fjl-init+ "elpa"))
+(setq-default package-user-dir (file-name-as-directory (concat +fjl-init+ "elpa")))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-
 (package-initialize)
+
 ;; Prevent loading packages twice. All packages are already activated
 ;; above. package.el will do it again after the init file is loaded
 ;; unless disabled.
 (setq package-enable-at-startup nil)
+
+;; Add vendored packages to the load path.
+(dolist (d '("xelb" "exwm" "exim"))
+  (add-to-list 'load-path (concat package-user-dir d)))
 
 (defmacro after-package (pkg &rest body)
   "Run `body' when the given package is loaded."

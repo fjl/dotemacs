@@ -5,6 +5,7 @@
 !/lisp
 !/init.el
 !/settings-customize.eld
+!/scripts
 
 *.elc
 /lisp/init-autoloads.el

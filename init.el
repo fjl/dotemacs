@@ -31,9 +31,6 @@
 (require 'init-commands)
 (require 'init-bindings)
 
-(after-package exwm
-  (require 'init-exwm))
-
 ;; Enable some built-in packages.
 (require 'uniquify)
 
