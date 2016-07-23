@@ -2,11 +2,14 @@
 
 set -e
 
+PATH="/usr/local/bin:$PATH"
+BASEDIR="$(dirname $0)/.."
+
 # update desktop-agenda.txt
-/usr/local/bin/emacs -batch -q \
-                     -l ~/.emacs.d/init.el \
-                     -l ~/.emacs.d/lisp/init-org.el \
-                     -eval '(org-store-agenda-views "D")' \
-                     &>/dev/null 
+emacs -batch -q \
+      -l "$BASEDIR/init.el" \
+      -l "$BASEDIR/lisp/init-org.el" \
+      -eval '(org-store-agenda-views "D")' \
+   &>/dev/null
 
 cat ~/.desktop-agenda.txt
