@@ -2,14 +2,14 @@
 #+STARTUP: showall
 
 This document describes how a useable EXWM X session can be set up to run under
-gnome-session. I use this configuration with Arch Linux.
+gnome-session. I use this configuration with Arch Linux. Tangling this org file
+creates/updates all necessary config files. You probably don't want to do this unless
+you're me.
 
-Tangling the file creates/updates all necessary files.
-
-* EXWM Application
+** EXWM Application
 
 EXWM needs to be registered as an application so gnome-session can find it. The Exec
-command runs my [[file+emacs:run-exwm.sh][EXWM startup script]].
+command runs my [[file:run-exwm.sh][EXWM startup script]].
 
 #+BEGIN_SRC shell-script :noweb yes :tangle ~/.local/share/applications/exwm.desktop
 [Desktop Entry]
@@ -21,7 +21,7 @@ NoDisplay=true
 Exec=<<get-emacs-directory()>>scripts/run-exwm.sh
 #+END_SRC
 
-* XScreensaver Configuration
+** XScreensaver Configuration
 
 I use xscreensaver for screen locking.
 
@@ -39,7 +39,7 @@ Exec=xscreensaver -no-splash
 TryExec=xscreensaver
 #+END_SRC
 
-* GNOME Session
+** GNOME Session
 
 gnome-session sessions need to be set up so it knows which applications should be started.
 Obviously we want EXWM to run, but xscreensaver is also requested here.
@@ -50,7 +50,7 @@ Name=EXWM Session
 RequiredComponents=exwm;gnome-settings-daemon;xscreensaver;notification-daemon
 #+END_SRC
 
-* X Session
+** X Session
 
 The session we configured is invoked by the display manager. Per-user local sessions are
 not supported (by GDM), the only location that works seems to be ~/usr/share/xsessions~.
@@ -67,7 +67,7 @@ Type=Application
 DesktopNames=GNOME
 #+END_SRC
 
-* Disabling The GNOME Keyring SSH Agent
+** Disabling The GNOME Keyring SSH Agent
 
 The gnome-keyring ssh agent doesn't support ecdsa or ed25519 keys. Since gnome-keyring
 updates the value of ~SSH_AUTH_SOCK~ in the session's environent, the only way to truly
@@ -82,7 +82,7 @@ Hidden=true
 X-GNOME-Autostart-Phase=PreDisplayServer
 #+END_SRC
 
-* GPG Agent
+** GPG Agent
 
 gpg-agent provides a nice ssh-agent replacement.
 
@@ -99,12 +99,12 @@ enable-ssh-support
 allow-emacs-pinentry
 #+END_SRC
 
-* xss-lock
+** xss-lock
 
 [[https://bitbucket.org/raymonad/xss-lock][xss-lock]] ([[https://aur.archlinux.org/packages/xss-lock-git/][AUR package]]) is a nifty helper that listens for systemd screen lock events and
 invokes the given command when such an event is fired. I use it to trigger xscreensaver.
 
-xss-lock launched as an autostart item because it is optional.
+xss-lock is launched as an autostart item because it is optional.
 
 #+BEGIN_SRC shell-script :tangle ~/.config/autostart/xss-lock.desktop
 [Desktop Entry]
@@ -117,12 +117,12 @@ StartupNotify=false
 X-GNOME-AutoRestart=true
 #+END_SRC
 
-* xcape
+** xcape
 
 [[https://github.com/alols/xcape][xcape]] ([[https://aur.archlinux.org/packages/xcape/][AUR package]]) can remap modifier keys so that they behave differently
 depending on whether the key is pressed alone or with another key.
 
-I use it to [[file+emacs:xcape.sh][map space to control]]. xss-lock launched as an autostart item because it is
+I use it to [[file:run-xcape.sh][map space to control]]. xcape is launched as an autostart item because it is
 optional. The mapping stops working sometimes, in which case [[help:xcape-reset][the xcape-reset command]] can
 bring it back.
 
@@ -135,7 +135,7 @@ Terminal=false
 Type=Application
 #+END_SRC
 
-* The Emacs Configuration Directory
+** Emacs Configuration Directory
 
 For references to files in .emacs.d this snippet generates the absolute path of .emacs.d.
 
