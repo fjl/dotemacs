@@ -254,6 +254,6 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
 (defun xcape-reset ()
   "Restarts the xcape daemon."
   (interactive)
-  (shell-command "killall xcape; xmodmap ~/.xmodmap; sleep 0.2; xcape -e Hyper_L=space" nil))
+  (shell-command (format "killall xcape; %s/scripts/run-xcape.sh" user-emacs-directory) nil))
 
 (provide 'init-commands)
