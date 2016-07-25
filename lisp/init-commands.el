@@ -236,24 +236,4 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
           (push file result))))
     (delete-dups (sort result 'string-lessp))))
 
-;; Quick hack to switch GTK text scale factor.
-(defun dconf-write (path value)
-  (shell-command (format "dconf write %s '%S'" path value)))
-(defun dconf-read-number (path)
-  (string-to-number (shell-command-to-string (format "dconf read %s" path))))
-
-(defun toggle-retina ()
-  "Toggles the GTK font scale factor between 1.0 and 1.4."
-  (interactive)
-  (let ((cur (dconf-read-number "/org/gnome/desktop/interface/text-scaling-factor")))
-    (cond ((= cur 1)
-           (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.4))
-          (t
-           (dconf-write "/org/gnome/desktop/interface/text-scaling-factor" 1.0)))))
-
-(defun xcape-reset ()
-  "Restarts the xcape daemon."
-  (interactive)
-  (shell-command (format "killall xcape; %s/scripts/run-xcape.sh" user-emacs-directory) nil))
-
 (provide 'init-commands)

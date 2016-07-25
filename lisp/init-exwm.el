@@ -83,8 +83,8 @@
   ;; Launching programs.
   (exwm-input-set-key (kbd "s-1") 'launcher)
   ;; Brightness/audio.
-  (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") (fjl/shell-lambda "brightness down"))
-  (exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   (fjl/shell-lambda "brightness up"))
+  (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") 'backlight-brightness-down)
+  (exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   'backlight-brightness-up)
   (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")  (fjl/shell-lambda (concat user-emacs-directory "scripts/pa-vol.sh plus")))
   (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")  (fjl/shell-lambda (concat user-emacs-directory "scripts/pa-vol.sh minus")))
   (exwm-input-set-key (kbd "<XF86AudioMute>")         (fjl/shell-lambda (concat user-emacs-directory "scripts/pa-vol.sh mute")))
