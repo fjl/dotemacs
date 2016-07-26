@@ -21,7 +21,7 @@ NoDisplay=true
 Exec=<<get-emacs-directory()>>scripts/run-exwm.sh
 #+END_SRC
 
-** XScreensaver Configuration
+** XScreensaver
 
 I use xscreensaver for screen locking.
 
@@ -94,9 +94,18 @@ Exec=gpg-agent --daemon
 Terminal=false
 #+END_SRC
 
+SSH agent emulation needs to be enabled in the agent config file.
+
 #+BEGIN_SRC shell-script :tangle ~/.gnupg/gpg-agent.conf
 enable-ssh-support
 allow-emacs-pinentry
+#+END_SRC
+
+Finally, SSH_AUTH_SOCK must be set to point to the gpg-agent socket
+in the session environment.
+
+#+BEGIN_SRC shell-script :tangle ~/.pam_environment
+SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh
 #+END_SRC
 
 ** xss-lock
@@ -133,6 +142,15 @@ TryExec=xcape
 Exec=<<get-emacs-directory()>>scripts/run-xcape.sh
 Terminal=false
 Type=Application
+#+END_SRC
+
+** Miscellaneous Settings
+
+freetype >= 2.6.4 ships with support for subpixel hinting. Enable it in the session
+environment.
+
+#+BEGIN_SRC shell-script :tangle ~/.pam_environment
+FT2_SUBPIXEL_HINTING=2
 #+END_SRC
 
 ** Emacs Configuration Directory
