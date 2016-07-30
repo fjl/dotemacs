@@ -98,6 +98,7 @@ corresponding buffer.")
 (declare-function exwm-workspace--current-height "exwm-workspace.el")
 (declare-function exwm-workspace--current-width  "exwm-workspace.el")
 (declare-function exwm-workspace--set-desktop "exwm-workspace.el" (id))
+(declare-function exwm-workspace--count "exwm-workspace.el" ())
 (declare-function exwm-workspace-move-window "exwm-workspace.el"
                   (frame-or-index &optional id))
 
@@ -111,6 +112,11 @@ corresponding buffer.")
                              :window id :value-mask xcb:CW:EventMask
                              :event-mask exwm--client-event-mask))
       (throw 'return 'dead))
+    ;; Add this X window to save-set.
+    (xcb:+request exwm--connection
+        (make-instance 'xcb:ChangeSaveSet
+                       :mode xcb:SetMode:Insert
+                       :window id))
     (with-current-buffer (generate-new-buffer "*EXWM*")
       ;; Keep the oldest X window first.
       (setq exwm--id-buffer-alist
@@ -254,7 +260,10 @@ corresponding buffer.")
             desktop)
         (when reply
           (setq desktop (slot-value reply 'value)))
-        (if (and desktop (/= desktop exwm-workspace-current-index))
+        (if (and desktop
+                 (/= desktop exwm-workspace-current-index)
+                 ;; Check the range.
+                 (< desktop (exwm-workspace--count)))
             (exwm-workspace-move-window desktop id)
           (exwm-workspace--set-desktop id)))
       (with-current-buffer (exwm--id->buffer id)
@@ -348,14 +357,26 @@ manager is shutting down."
         ;; Destroy the X window container (and the frame container if any).
         (xcb:+request exwm--connection
             (make-instance 'xcb:DestroyWindow :window exwm--container))
-        (let ((kill-buffer-query-functions nil)
-              (floating exwm--floating-frame))
-          (kill-buffer)
-          (when floating
-            (select-window
-             (frame-selected-window exwm-workspace--current)))))
-      (exwm-manage--set-client-list)
-      (xcb:flush exwm--connection))))
+        (exwm-manage--set-client-list)
+        (xcb:flush exwm--connection))
+      (let ((kill-buffer-func
+             (lambda (buffer)
+               (with-current-buffer buffer
+                 (let ((kill-buffer-query-functions nil)
+                       (floating exwm--floating-frame))
+                   (kill-buffer)
+                   (when floating
+                     (select-window
+                      (frame-selected-window exwm-workspace--current))))))))
+        (if (not (active-minibuffer-window))
+            ;; Kill the buffer as usual.
+            (funcall kill-buffer-func buffer)
+          ;; This can happen when this buffer was requested to be killed
+          ;; from the minibuffer (e.g. with `ido-kill-buffer-at-head').
+          ;; We have to exit the minibuffer first or there'll be a
+          ;; "selecting deleted buffer" error.
+          (run-with-idle-timer 0 nil kill-buffer-func buffer)
+          (exit-minibuffer))))))
 
 (defun exwm-manage--scan ()
   "Search for existing windows and try to manage them."

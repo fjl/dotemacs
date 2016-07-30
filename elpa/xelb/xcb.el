@@ -332,6 +332,9 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
                (when (/= 0 (logand x #x80)) ;synthetic event
                  (setq synthetic t
                        x (logand x #x7f))) ;low 7 bits is the event number
+               (when (<= 64 x 127)
+                 ;; Extension event; add the second byte.
+                 (cl-incf x (aref cache 1)))
                (setq listener
                      (plist-get (slot-value connection 'event-plist) x))
                (when listener
@@ -364,6 +367,7 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
 
 (cl-defmethod xcb:disconnect ((obj xcb:connection))
   "Disconnect from X server."
+  (xcb:flush obj)
   (delete-process (slot-value obj 'process))
   ;; Reset every slot to its default value
   (let ((slots (eieio-class-slots 'xcb:connection)))
