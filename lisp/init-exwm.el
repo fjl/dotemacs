@@ -10,14 +10,6 @@
 (server-start)
 (exwm-enable)
 
-;; Set configuration variables
-(setq exwm-workspace-show-all-buffers nil)
-(setq exwm-layout-show-all-buffers nil)
-
-;; Disable auto update of keysyms to remove awkward
-;; typing pause after pressing space.
-(setq xcb:keysyms:auto-update nil)
-
 ;; Enable XRANDR support. I don't really want to use the hook though, it's just needed so
 ;; exwm resizes its frames when the display config changes.
 (exwm-randr-enable)
