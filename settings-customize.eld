@@ -13,6 +13,7 @@
  '(async-bytecomp-package-mode t)
  '(auth-sources nil)
  '(avy-background t)
+ '(aw-scope (quote frame))
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backup/"))))
  '(battery-load-low 15)
  '(battery-mode-line-format " Bat: %p")
