@@ -40,7 +40,7 @@
       `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
         (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
         (w32 . ((font . ,(fpfont 12))))
-        (x   . ((font . ,(fpfont 12))))))
+        (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
 (set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
