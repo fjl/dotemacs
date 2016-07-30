@@ -356,15 +356,21 @@ This value should always be overwritten.")
 (defvar exwm-input--during-command nil
   "Indicate whether between `pre-command-hook' and `post-command-hook'.")
 
+(defun fjl/strip-hyper-modifier (event)
+  (if (not (integerp event))
+      event
+    (logand (lognot (lsh 1 24)) event)))
+
 (defun exwm-input--on-KeyPress-line-mode (key-press raw-data)
   "Parse X KeyPress event to Emacs key event and then feed the command loop."
   (with-slots (detail state) key-press
     (let ((keysym (xcb:keysyms:keycode->keysym exwm--connection detail state))
           event minibuffer-window mode)
       (when (and (/= 0 (car keysym))
-                 (setq event (xcb:keysyms:keysym->event
-                              exwm--connection (car keysym)
-                              (logand state (lognot (cdr keysym)))))
+                 (setq event (fjl/strip-hyper-modifier
+                              (xcb:keysyms:keysym->event
+                               exwm--connection (car keysym)
+                               (logand state (lognot (cdr keysym))))))
                  (or exwm-input--during-key-sequence
                      exwm-input--during-command
                      (setq minibuffer-window (active-minibuffer-window))
@@ -402,9 +408,10 @@ This value should always be overwritten.")
     (let ((keysym (xcb:keysyms:keycode->keysym exwm--connection detail state))
           event)
       (when (and (/= 0 (car keysym))
-                 (setq event (xcb:keysyms:keysym->event
-                              exwm--connection (car keysym)
-                              (logand state (lognot (cdr keysym))))))
+                 (setq event (fjl/strip-hyper-modifier
+                              (xcb:keysyms:keysym->event
+                               exwm--connection (car keysym)
+                               (logand state (lognot (cdr keysym)))))))
         (when (eq major-mode 'exwm-mode)
           ;; FIXME: This functionality seems not working, e.g. when this
           ;;        command would activate the minibuffer, the temporary
