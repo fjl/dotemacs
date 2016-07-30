@@ -44,13 +44,13 @@
    `(font-lock-string-face ((,class (:inherit default :foreground "cadet blue"))))
 
    ;; Disable some font lock faces for less color.
-   `(font-lock-function-name-face ((,class (:inherit default :weight bold :foreground ,slick-text-color))))
-   `(font-lock-keyword-face ((,class (:inherit default :foreground ,slick-text-color))))
-   `(font-lock-type-face ((,class (:inherit default :foreground ,slick-text-color))))
-   `(font-lock-operator-face ((,class (:inherit default :foreground ,slick-text-color))))
-   `(font-lock-constant-face ((,class (:inherit default :foreground ,slick-text-color))))
-   `(font-lock-builtin-face ((,class (:inherit default :foreground ,slick-text-color))))
-   `(font-lock-variable-name-face ((,class (:inherit default :foreground ,slick-text-color))))
+   `(font-lock-function-name-face ((,class (:inherit nil :weight bold))))
+   `(font-lock-keyword-face ((,class (:inherit nil))))
+   `(font-lock-type-face ((,class (:inherit nil))))
+   `(font-lock-operator-face ((,class (:inherit nil))))
+   `(font-lock-constant-face ((,class (:inherit nil))))
+   `(font-lock-builtin-face ((,class (:inherit nil))))
+   `(font-lock-variable-name-face ((,class (:inherit nil))))
 
    ;; Button and link
    `(link ((,class (:underline t :foreground "tan3"))))
