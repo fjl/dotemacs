@@ -25,6 +25,8 @@
 
 ;;; Code:
 
+(require 'server)
+
 (require 'exwm-core)
 
 (defvar exwm-workspace-number 1 "Initial number of workspaces.")
@@ -45,6 +47,10 @@ NIL if FRAME is not a workspace"
 (defsubst exwm-workspace--workspace-p (frame)
   "Return t if FRAME is a workspace."
   (memq frame exwm-workspace--list))
+
+(defsubst exwm-workspace--client-p (&optional frame)
+  "Return non-nil if FRAME is an emacsclient frame."
+  (frame-parameter frame 'client))
 
 (defun exwm-workspace--workspace-from-frame-or-index (frame-or-index)
   "Retrieve the workspace frame from FRAME-OR-INDEX."
@@ -571,7 +577,8 @@ before it."
                      (eq (elt exwm-workspace--list nth)
                          exwm-workspace--current)))
       ;; Do the move.
-      (pop (nthcdr pos exwm-workspace--list))
+      (with-no-warnings                 ;For Emacs 24.
+        (pop (nthcdr pos exwm-workspace--list)))
       (push workspace (nthcdr nth exwm-workspace--list))
       ;; Update the _NET_WM_DESKTOP property of each X window affected.
       (setq start (min pos nth)
@@ -879,24 +886,25 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
 
 (defun exwm-workspace--update-minibuffer-height (&optional echo-area)
   "Update the minibuffer frame height."
-  (let ((height
-         (with-current-buffer
-             (window-buffer (minibuffer-window exwm-workspace--minibuffer))
-           (max 1
-                (if echo-area
-                    (let ((width (frame-width exwm-workspace--minibuffer))
-                          (result 0))
-                      (mapc (lambda (i)
-                              (setq result
-                                    (+ result
-                                       (ceiling (1+ (length i)) width))))
-                            (split-string (or (current-message) "") "\n"))
-                      result)
-                  (count-screen-lines))))))
-    (when (and (integerp max-mini-window-height)
-               (> height max-mini-window-height))
-      (setq height max-mini-window-height))
-    (set-frame-height exwm-workspace--minibuffer height)))
+  (unless (exwm-workspace--client-p)
+    (let ((height
+           (with-current-buffer
+               (window-buffer (minibuffer-window exwm-workspace--minibuffer))
+             (max 1
+                  (if echo-area
+                      (let ((width (frame-width exwm-workspace--minibuffer))
+                            (result 0))
+                        (mapc (lambda (i)
+                                (setq result
+                                      (+ result
+                                         (ceiling (1+ (length i)) width))))
+                              (split-string (or (current-message) "") "\n"))
+                        result)
+                    (count-screen-lines))))))
+      (when (and (integerp max-mini-window-height)
+                 (> height max-mini-window-height))
+        (setq height max-mini-window-height))
+      (set-frame-height exwm-workspace--minibuffer height))))
 
 (defun exwm-workspace--on-ConfigureNotify (data _synthetic)
   "Adjust the container to fit the minibuffer frame."
@@ -983,8 +991,7 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
 (defun exwm-workspace--on-minibuffer-setup ()
   "Run in minibuffer-setup-hook to show the minibuffer and its container."
   (when (and (= 1 (minibuffer-depth))
-             ;; Exclude non-graphical frames.
-             (frame-parameter nil 'exwm-outer-id))
+             (not (exwm-workspace--client-p)))
     (add-hook 'post-command-hook #'exwm-workspace--update-minibuffer-height)
     (exwm-workspace--show-minibuffer))
   ;; FIXME: This is a temporary fix for the *Completions* buffer not
@@ -994,15 +1001,18 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
   ;;        frame is the 'selected frame'.  `get-buffer-window' will
   ;;        fail to retrieve the correct window.  It's likely there are
   ;;        other related issues.
-  (let ((window (get-buffer-window "*Completions*" exwm-workspace--current)))
-    (when window
-      (fit-window-to-buffer window nil nil nil nil t))))
+  ;; This is not required by Emacs 24.
+  (when (fboundp 'window-preserve-size)
+    (let ((window (get-buffer-window "*Completions*"
+                                     exwm-workspace--current)))
+      (when window
+        (fit-window-to-buffer window)
+        (window-preserve-size window)))))
 
 (defun exwm-workspace--on-minibuffer-exit ()
   "Run in minibuffer-exit-hook to hide the minibuffer container."
   (when (and (= 1 (minibuffer-depth))
-             ;; Exclude non-graphical frames.
-             (frame-parameter nil 'exwm-outer-id))
+             (not (exwm-workspace--client-p)))
     (remove-hook 'post-command-hook #'exwm-workspace--update-minibuffer-height)
     (exwm-workspace--hide-minibuffer)))
 
@@ -1011,8 +1021,7 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
 (defun exwm-workspace--on-echo-area-dirty ()
   "Run when new message arrives to show the echo area and its container."
   (when (and (not (active-minibuffer-window))
-             ;; Exclude non-graphical frames.
-             (frame-parameter nil 'exwm-outer-id)
+             (not (exwm-workspace--client-p))
              (or (current-message)
                  cursor-in-echo-area))
     (exwm-workspace--update-minibuffer-height t)
@@ -1026,7 +1035,7 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
 
 (defun exwm-workspace--on-echo-area-clear ()
   "Run in echo-area-clear-hook to hide echo area container."
-  (when (frame-parameter nil 'exwm-outer-id) ;Exclude non-graphical frames.
+  (unless (exwm-workspace--client-p)
     (unless (active-minibuffer-window)
       (exwm-workspace--hide-minibuffer))
     (when exwm-workspace--display-echo-area-timer
@@ -1039,12 +1048,34 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
 (declare-function exwm-manage--unmanage-window "exwm-manage.el")
 (declare-function exwm--exit "exwm.el")
 
-(defun exwm-workspace--confirm-kill-emacs (prompt)
+(defun exwm-workspace--confirm-kill-emacs (prompt &optional force)
   "Confirm before exiting Emacs."
-  (when (pcase (length exwm--id-buffer-alist)
-          (0 (y-or-n-p prompt))
-          (x (yes-or-no-p (format "[EXWM] %d window%s currently alive. %s"
-                                  x (if (= x 1) "" "s") prompt))))
+  (when (cond
+         ((and force (not (eq force 'no-check)))
+          ;; Force killing Emacs.
+          t)
+         ((or (eq force 'no-check) (not exwm--id-buffer-alist))
+          ;; Check if there's any unsaved file.
+          (pcase (catch 'break
+                   (let ((kill-emacs-query-functions
+                          (append kill-emacs-query-functions
+                                  (list (lambda ()
+                                          (throw 'break 'break))))))
+                     (save-buffers-kill-emacs)))
+            (`break (y-or-n-p prompt))
+            (x x)))
+         (t
+          (yes-or-no-p (format "[EXWM] %d window(s) will be destroyed.  %s"
+                               (length exwm--id-buffer-alist) prompt))))
+    ;; Run `kill-emacs-hook' (`server-force-stop' excluded) before Emacs
+    ;; frames are unmapped so that errors (if any) can be visible.
+    (if (memq #'server-force-stop kill-emacs-hook)
+        (progn
+          (setq kill-emacs-hook (delq #'server-force-stop kill-emacs-hook))
+          (run-hooks 'kill-emacs-hook)
+          (setq kill-emacs-hook (list #'server-force-stop)))
+      (run-hooks 'kill-emacs-hook)
+      (setq kill-emacs-hook nil))
     ;; Hide & reparent out all frames (save-set can't be used here since
     ;; X windows will be re-mapped).
     (when (exwm-workspace--minibuffer-own-frame-p)
@@ -1069,22 +1100,20 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
                            :parent exwm--root
                            :x 0
                            :y 0))))
-    ;; Exit each module.
-    (exwm--exit)
-    ;; Destroy all resources created by this connection.
-    (xcb:disconnect exwm--connection)
-    (setq exwm--connection nil)
-    ;; Extra cleanups for emacsclient.
+    ;; Restore the 'client' frame parameter (before `exwm--exit').
     (when exwm-workspace--client
       (dolist (f exwm-workspace--list)
         (set-frame-parameter f 'client exwm-workspace--client))
       (when (exwm-workspace--minibuffer-own-frame-p)
         (set-frame-parameter exwm-workspace--minibuffer 'client
-                             exwm-workspace--client))
-      ;; Kill the client.
-      (server-save-buffers-kill-terminal nil))
+                             exwm-workspace--client)))
+    ;; Exit each module.
+    (exwm--exit)
+    ;; Destroy all resources created by this connection.
+    (xcb:disconnect exwm--connection)
+    (setq exwm--connection nil)
     ;; Set the return value.
-    (not exwm-workspace--client)))
+    t))
 
 (defun exwm-workspace--set-desktop-geometry ()
   "Set _NET_DESKTOP_GEOMETRY."
@@ -1126,6 +1155,8 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
       (set-frame-parameter frame 'exwm-outer-id outer-id)
       (set-frame-parameter frame 'exwm-container container)
       (set-frame-parameter frame 'exwm-workspace workspace)
+      ;; In case it's created by emacsclient.
+      (set-frame-parameter frame 'client nil)
       ;; Copy RandR frame parameters from the first workspace to
       ;; prevent potential problems.  The values do not matter here as
       ;; they'll be updated by the RandR module later.
@@ -1297,7 +1328,7 @@ applied to all subsequently created X frames."
             (unless (frame-parameter i 'window-id)
               (setq initial-workspaces (delq i initial-workspaces))))
           (setq exwm-workspace--client
-                (frame-parameter (car exwm-workspace--list) 'client))
+                (frame-parameter (car initial-workspaces) 'client))
           (let ((f (car initial-workspaces)))
             ;; Remove the possible internal border.
             (set-frame-parameter f 'internal-border-width 0)

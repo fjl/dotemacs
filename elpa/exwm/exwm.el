@@ -4,8 +4,8 @@
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 ;; Maintainer: Chris Feng <chris.w.feng@gmail.com>
-;; Version: 0.7
-;; Package-Requires: ((xelb "0.9"))
+;; Version: 0.8
+;; Package-Requires: ((xelb "0.10"))
 ;; Keywords: unix
 ;; URL: https://github.com/ch11ng/exwm
 
@@ -87,15 +87,30 @@
 (defun exwm-restart ()
   "Restart EXWM."
   (interactive)
-  (when (exwm-workspace--confirm-kill-emacs "[EXWM] Restart? ")
-    (server-force-delete)
-    (run-hooks 'kill-emacs-hook)
-    ;; FIXME: more?
-    (apply #'call-process (car command-line-args) nil nil nil
-           (cdr command-line-args))
-    ;; Kill this instance at last.
-    (let ((kill-emacs-hook nil))
-      (kill-emacs))))
+  (when (exwm-workspace--confirm-kill-emacs "[EXWM] Restart? " 'no-check)
+    (let* ((attr (process-attributes (emacs-pid)))
+           (args (cdr (assq 'args attr)))
+           (ppid (cdr (assq 'ppid attr)))
+           (pargs (cdr (assq 'args (process-attributes ppid)))))
+      (cond
+       ((= ppid 1)
+        ;; The parent is the init process.  This probably means this
+        ;; instance is an emacsclient.  Anyway, start a control instance
+        ;; to manage the subsequent ones.
+        (call-process (car command-line-args))
+        (kill-emacs))
+       ((string= args pargs)
+        ;; This is a subordinate instance.  Return a magic number to
+        ;; inform the parent (control instance) to start another one.
+        (kill-emacs ?R))
+       (t
+        ;; This is the control instance.  Keep starting subordinate
+        ;; instances until told to exit.
+        ;; Run `server-force-stop' if it exists.
+        (run-hooks 'kill-emacs-hook)
+        (with-temp-buffer
+          (while (= ?R (shell-command-on-region (point) (point) args))))
+        (kill-emacs))))))
 
 (defun exwm--update-window-type (id &optional force)
   "Update _NET_WM_WINDOW_TYPE."
