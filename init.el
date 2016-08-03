@@ -44,6 +44,9 @@
   (eval-after-load 'mu4e '(require 'init-mu4e))
   (setq mail-user-agent 'mu4e-user-agent))
 
+;; Set EDITOR for all subprocesses.
+(setenv "EDITOR" "emacsclient")
+
 ;; Setup autoloads for darkroom.el because it doesn't define them.
 (autoload 'darkroom-mode "darkroom" "" t)
 (autoload 'darkroom-tentative-mode "darkroom" "" t)
