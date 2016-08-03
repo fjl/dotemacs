@@ -56,7 +56,6 @@
 ;; Set up global bindings.
 (progn
   (exwm-input-set-key (kbd "C-c r") 'exwm-reset)
-  (exwm-input-set-key (kbd "<C-escape>") 'exwm-reset)
   (exwm-input-set-key (kbd "M-o") 'ace-window)
   ;; Switch workspace interactively.
   (exwm-input-set-key (kbd "C-c v") 'exwm-workspace-switch)
