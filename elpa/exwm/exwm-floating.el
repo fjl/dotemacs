@@ -34,9 +34,11 @@
   "Border color of the floating window.")
 
 (defvar exwm-floating-setup-hook nil
-  "Normal hook run when a window has been made floating.")
+  "Normal hook run when an X window has been made floating, in the
+context of the corresponding buffer.")
 (defvar exwm-floating-exit-hook nil
-  "Normal hook run when a window has exited floating state.")
+  "Normal hook run when an X window has exited floating state, in the
+context of the corresponding buffer.")
 
 ;; Cursors for moving/resizing a window
 (defvar exwm-floating--cursor-move nil)
@@ -97,25 +99,28 @@
                      (height . ,window-min-height)
                      (unsplittable . t))))) ;and fix the size later
          (outer-id (string-to-number (frame-parameter frame 'outer-window-id)))
-         (container (buffer-local-value 'exwm--container (exwm--id->buffer id)))
+         (window-id (string-to-number (frame-parameter frame 'window-id)))
+         (container (buffer-local-value 'exwm--container
+                                        (exwm--id->buffer id)))
          (frame-container (xcb:generate-id exwm--connection))
          (window (frame-first-window frame)) ;and it's the only window
          (x (slot-value exwm--geometry 'x))
          (y (slot-value exwm--geometry 'y))
          (width (slot-value exwm--geometry 'width))
-         (height (slot-value exwm--geometry 'height))
-         (frame-geometry (frame-parameter original-frame 'exwm-geometry)))
+         (height (slot-value exwm--geometry 'height)))
     (exwm--log "Floating geometry (original, absolute): %dx%d%+d%+d"
                width height x y)
-    (when (and frame-geometry
-               (/= x 0)
+    (when (and (/= x 0)
                (/= y 0))
-      (setq x (- x (slot-value frame-geometry 'x))
-            y (- y (slot-value frame-geometry 'y))))
+      (let ((workarea (elt exwm-workspace--workareas
+                           (exwm-workspace--position original-frame))))
+        (setq x (- x (aref workarea 0))
+              y (- y (aref workarea 1)))))
     (exwm--log "Floating geometry (original, relative): %dx%d%+d%+d"
                width height x y)
     ;; Save frame parameters.
     (set-frame-parameter frame 'exwm-outer-id outer-id)
+    (set-frame-parameter frame 'exwm-id window-id)
     (set-frame-parameter frame 'exwm-container frame-container)
     ;; Fix illegal parameters
     ;; FIXME: check normal hints restrictions
@@ -252,7 +257,8 @@
                                              xcb:ConfigWindow:Y)
                          :x 0 :y 0))
       (xcb:flush exwm--connection)))
-  (run-hooks 'exwm-floating-setup-hook)
+  (with-current-buffer (exwm--id->buffer id)
+    (run-hooks 'exwm-floating-setup-hook))
   ;; Redraw the frame.
   (redisplay))
 
@@ -324,7 +330,8 @@
       (let ((window (frame-selected-window exwm-workspace--current)))
         (set-window-buffer window buffer)
         (select-window window))))
-  (run-hooks 'exwm-floating-exit-hook))
+  (with-current-buffer (exwm--id->buffer id)
+    (run-hooks 'exwm-floating-exit-hook)))
 
 ;;;###autoload
 (defun exwm-floating-toggle-floating ()
@@ -557,14 +564,12 @@
 (defun exwm-floating--do-moveresize (data _synthetic)
   "Perform move/resize."
   (when exwm-floating--moveresize-calculate
-    (let ((obj (make-instance 'xcb:MotionNotify))
-          (geometry (frame-parameter exwm-workspace--current 'exwm-geometry))
-          (frame-x 0)
-          (frame-y 0)
-          result value-mask width height buffer-or-id container-or-id)
-      (when geometry
-        (setq frame-x (slot-value geometry 'x)
-              frame-y (slot-value geometry 'y)))
+    (let* ((obj (make-instance 'xcb:MotionNotify))
+           (workarea (elt exwm-workspace--workareas
+                          exwm-workspace-current-index))
+           (frame-x (aref workarea 0))
+           (frame-y (aref workarea 1))
+           result value-mask width height buffer-or-id container-or-id)
       (xcb:unmarshal obj data)
       (setq result (funcall exwm-floating--moveresize-calculate
                             (slot-value obj 'root-x) (slot-value obj 'root-y))
