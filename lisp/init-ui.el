@@ -100,6 +100,9 @@ and to setup the inital frame."
   (setq confirm-kill-emacs 'y-or-n-p)
 )
 
+(when (memq window-system '(gtk))
+  (set-fontset-font t 'unicode "Symbola" nil 'prepend))
+
 ;; Display margin content on the inside of the fringe.
 ;; It looks nicer.
 (setq-default fringes-outside-margins t)
