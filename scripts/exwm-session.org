@@ -108,6 +108,26 @@ in the session environment.
 SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh
 #+END_SRC
 
+** emacsclient application
+
+Launching emacs from other apps should use emacsclient instead of spawning a new nested
+emacs instance. Create an application file for emacsclient and set it as the file type
+handler to make this work.
+
+#+BEGIN_SRC shell-script :tangle ~/.local/share/applications/emacsclient.desktop
+[Desktop Entry]
+Name=Emacs Client
+MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+Exec=emacsclient --alternate-editor= %F
+TryExec=emacsclient
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Development;TextEditor;
+StartupWMClass=Emacs
+Keywords=Text;Editor;
+#+END_SRC
+
 ** xss-lock
 
 [[https://bitbucket.org/raymonad/xss-lock][xss-lock]] ([[https://aur.archlinux.org/packages/xss-lock-git/][AUR package]]) is a nifty helper that listens for systemd screen lock events and
