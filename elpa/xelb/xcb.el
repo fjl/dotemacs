@@ -67,7 +67,7 @@
   (when xcb:debug-on
     `(message (concat "[XELB LOG] " ,format-string) ,@args)))
 
-(defvar xcb:connection-timeout 10 "Connection timeout.")
+(defvar xcb:connection-timeout 3 "Connection timeout.")
 
 ;;;; X connection related
 
@@ -91,23 +91,10 @@
    (extension-first-error-alist :initform nil)
    (extension-first-event-alist :initform nil)
    (request-sequence :initform 0)
-   (error-sequence :initform 0)
-   (reply-sequence :initform 0)
+   (last-seen-sequence :initform 0)
    (xid :initform 0)            ;last used X resource ID
    (extra-plist :initform nil)) ;for storing extra data (e.g. by extensions)
   :documentation "X connection.")
-
-(defsubst xcb:-sequence-cmp16 (sequence1 sequence2)
-  "Compare 16-bit sequence numbers SEQUENCE1 and SEQUENCE2.
-
-Return a positive value if SEQUENCE1 is larger than SEQUENCE2, 0 if they are
-equal.  Otherwise a negative value would be returned."
-  (if (= sequence1 sequence2)
-      0
-    (let ((diff (- sequence1 sequence2)))
-      (if (< #x7FFF (abs diff))
-          (- diff)                      ;overflowed
-        diff))))
 
 (defclass xcb:auth-info ()
   ((name :initarg :name :initform "" :type string)
@@ -213,7 +200,7 @@ equal.  Otherwise a negative value would be returned."
     (set-process-plist process
                        (plist-put (process-plist process) 'connection obj))
     (set-process-coding-system process 'binary 'binary)
-    (set-process-filter process 'xcb:-connection-filter)
+    (set-process-filter process #'xcb:-connection-setup-filter)
     (process-send-string                ;send setup packet
      process
      (apply #'unibyte-string
@@ -234,6 +221,66 @@ equal.  Otherwise a negative value would be returned."
       (while (not (slot-value obj 'setup-data))
         (accept-process-output process 1 nil 1)))))
 
+(defconst xcb:-SEQUENCE-SEGMENT-MASK (lognot #xFFFF))
+
+(defun xcb:-connection-setup-filter (process message)
+  "Process filter used during connection setup."
+  (let* ((connection (plist-get (process-plist process) 'connection))
+         (cache (vconcat (slot-value connection 'message-cache) message)))
+    (setf (slot-value connection 'message-cache) cache)
+    (unless (or (slot-value connection 'lock)
+                ;; Shorter than the setup header.
+                (> 8 (length cache)))
+      (setf (slot-value connection 'lock) t)
+      (let ((data-len (+ 8 (* 4 (if xcb:lsb
+                                    (xcb:-unpack-u2-lsb cache 6)
+                                  (xcb:-unpack-u2 cache 6)))))
+            obj)
+        (when (>= (length cache) data-len)
+          (xcb:-log "Setup response: %s" cache)
+          (pcase (aref cache 0)
+            (0
+             ;; Connection failed.
+             (setq obj (make-instance 'xcb:SetupFailed))
+             (xcb:unmarshal obj cache)
+             (setq cache (substring cache data-len))
+             (error "[XELB] Connection failed: %s" (slot-value obj 'reason)))
+            (1
+             ;; Connection established.
+             (setf (slot-value connection 'message-cache) [])
+             (set-process-filter process #'xcb:-connection-filter)
+             (setq obj (make-instance 'xcb:Setup))
+             (xcb:unmarshal obj cache)
+             (setq cache (substring cache data-len))
+             (setf (slot-value connection 'setup-data) obj)
+             (setf (slot-value connection 'connected) t))
+            (2
+             ;; Authentication required.
+             (setq obj (make-instance 'xcb:SetupAuthenticate))
+             (xcb:unmarshal obj cache)
+             (setq cache (substring cache data-len))
+             (error "[XELB] Authentication not supported: %s"
+                    (slot-value obj 'reason)))
+            (x (error "Unrecognized setup status: %d" x)))))
+      (setf (slot-value connection 'lock) nil))))
+
+(cl-defmethod xcb:-convert-sequence ((obj xcb:connection) sequence16)
+  "Convert 16-bit sequence number SEQUENCE16 (read from a packet).
+
+The result would be 29 or 61 bits, depending on the machine."
+  (with-slots (request-sequence) obj
+    ;; Assume there are no more than #xFFFF requests sent since the
+    ;; request corresponding to this packet was made.  Because errors
+    ;; and replies are always read out in the process filter, this
+    ;; assumption is quite safe.
+    (let ((sequence (logior (logand request-sequence
+                                    xcb:-SEQUENCE-SEGMENT-MASK)
+                            sequence16)))
+      ;; `xcb:-cache-request' ensures sequence number never wraps.
+      (when (> sequence request-sequence)
+        (cl-decf sequence #x10000))
+      sequence)))
+
 (defun xcb:-connection-filter (process message)
   "Filter function for an X connection.
 
@@ -242,43 +289,9 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
          (cache (vconcat (slot-value connection 'message-cache) message))
          (cache-length (length cache)))
     (setf (slot-value connection 'message-cache) cache)
-    (catch 'return
-      ;; Queue message when locked
-      (when (slot-value connection 'lock)
-        (throw 'return 'lock))
+    (unless (slot-value connection 'lock)
       ;; Start parsing message
       (setf (slot-value connection 'lock) t)
-      ;; Connection setup
-      (unless (slot-value connection 'connected)
-        (when (<= 8 (length cache)) ;at least setup header is available
-          (let ((data-len (+ 8 (* 4 (funcall (if xcb:lsb #'xcb:-unpack-u2-lsb
-                                               #'xcb:-unpack-u2)
-                                             cache 6))))
-                obj)
-            (when (>= (length cache) data-len)
-              (xcb:-log "Setup response: %s" cache)
-              (pcase (aref cache 0)
-                (0                      ;failed
-                 (setq obj (make-instance 'xcb:SetupFailed))
-                 (xcb:unmarshal obj cache)
-                 (setq cache (substring cache data-len))
-                 (error "[XELB] Connection failed: %s"
-                        (slot-value obj 'reason)))
-                (1                      ;success
-                 (setq obj (make-instance 'xcb:Setup))
-                 (xcb:unmarshal obj cache)
-                 (setq cache (substring cache data-len))
-                 (setf (slot-value connection 'setup-data) obj)
-                 (setf (slot-value connection 'connected) t))
-                (2                      ;authentication
-                 (setq obj (make-instance 'xcb:SetupAuthenticate))
-                 (xcb:unmarshal obj cache)
-                 (setq cache (substring cache data-len))
-                 (error "[XELB] Authentication not supported: %s"
-                        (slot-value obj 'reason)))
-                (x (error "Unrecognized setup status: %d" x))))))
-        (setf (slot-value connection 'lock) nil)
-        (throw 'return 'setup))
       ;; Process error/reply/event
       (catch 'break
         (while (<= 32 (length cache))
@@ -290,6 +303,7 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
                                       cache 2))
                    (plist (slot-value connection 'error-plist))
                    struct)
+               (setq sequence (xcb:-convert-sequence connection sequence))
                (when (plist-member plist sequence)
                  (setq struct (plist-get plist sequence))
                  (setf (slot-value connection 'error-plist)
@@ -298,7 +312,7 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
                                           ,(substring cache 0 32))
                                         struct))))
                (setq cache (substring cache 32))
-               (setf (slot-value connection 'error-sequence) sequence)))
+               (setf (slot-value connection 'last-seen-sequence) sequence)))
             (1                          ;reply
              (let* ((reply-words (funcall (if xcb:lsb #'xcb:-unpack-u4-lsb
                                             #'xcb:-unpack-u4)
@@ -310,7 +324,8 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
                (xcb:-log "Reply received: %s" (substring cache 0 reply-length))
                (setq sequence (funcall (if xcb:lsb #'xcb:-unpack-u2-lsb
                                          #'xcb:-unpack-u2)
-                                       cache 2))
+                                       cache 2)
+                     sequence (xcb:-convert-sequence connection sequence))
                (setq plist (slot-value connection 'reply-plist))
                (setq struct (plist-get plist sequence))
                (when struct
@@ -325,7 +340,7 @@ Concurrency is disabled as it breaks the orders of errors, replies and events."
                                     `(,(car struct) ,@(cdr struct)
                                       ,(substring cache 0 reply-length))))))
                (setq cache (substring cache reply-length))
-               (setf (slot-value connection 'reply-sequence) sequence)))
+               (setf (slot-value connection 'last-seen-sequence) sequence)))
             (x                          ;event
              (let (synthetic listener event-length)
                (when (/= 0 (logand x #x80)) ;synthetic event
@@ -527,22 +542,26 @@ classes of EVENT (since they have the same event number)."
              (+ (length msg) (length cache))) ;flush on cache full
       (xcb:flush obj)
       (setq cache []))
-    (with-slots (request-cache request-sequence) obj
+    (with-slots (request-cache request-sequence last-seen-sequence) obj
+      (when (>= request-sequence most-positive-fixnum)
+        ;; Force wrapping the sequence number.
+        (xcb:aux:sync obj)
+        (setf request-sequence 0
+              last-seen-sequence 0))
       (setf request-cache (vconcat cache msg)
             request-sequence (1+ request-sequence))
       (xcb:-log "Cache request #%d: %s" request-sequence request)
       request-sequence)))
 
 (cl-defmethod xcb:-+request ((obj xcb:connection) request)
-  (let* ((sequence (xcb:-cache-request obj request))
-         (sequence-lsw (logand #xFFFF sequence))
-         (class (eieio-object-class request)))
+  (let ((sequence (xcb:-cache-request obj request))
+        (class (eieio-object-class request)))
     (when (fboundp (xcb:-request-class->reply-class class))
       ;; This request has a reply
       (setf (slot-value obj 'reply-plist) ;require reply
-            (plist-put (slot-value obj 'reply-plist) sequence-lsw class))
+            (plist-put (slot-value obj 'reply-plist) sequence class))
       (setf (slot-value obj 'error-plist) ;require error
-            (plist-put (slot-value obj 'error-plist) sequence-lsw nil)))
+            (plist-put (slot-value obj 'error-plist) sequence nil)))
     sequence))
 
 (defmacro xcb:+request (obj request)
@@ -557,10 +576,9 @@ Otherwise no error will ever be reported."
   (when (fboundp
          (xcb:-request-class->reply-class (eieio-object-class request)))
     (error "This method shall not be called with request that has a reply"))
-  (let* ((sequence (xcb:-cache-request obj request))
-         (sequence-lsw (logand #xFFFF sequence)))
+  (let ((sequence (xcb:-cache-request obj request)))
     (setf (slot-value obj 'error-plist)
-          (plist-put (slot-value obj 'error-plist) sequence-lsw nil))
+          (plist-put (slot-value obj 'error-plist) sequence nil))
     sequence))
 
 (defmacro xcb:+request-checked (obj request)
@@ -572,11 +590,10 @@ Otherwise no error will ever be reported."
   (unless (fboundp
            (xcb:-request-class->reply-class (eieio-object-class request)))
     (error "This method shall not be called with request that has no reply"))
-  (let* ((sequence (xcb:-cache-request obj request))
-         (sequence-lsw (logand #xFFFF sequence)))
+  (let ((sequence (xcb:-cache-request obj request)))
     (setf (slot-value obj 'reply-plist)
           (plist-put (slot-value obj 'reply-plist)
-                     sequence-lsw (eieio-object-class request)))
+                     sequence (eieio-object-class request)))
     sequence))
 
 (defmacro xcb:+request-unchecked (obj request)
@@ -585,27 +602,20 @@ Otherwise no error will ever be reported."
   `(xcb:-+request-unchecked ,obj ,request))
 
 (cl-defmethod xcb:-+reply ((obj xcb:connection) sequence &optional multiple)
-  (setq sequence (logand #xFFFF sequence)) ;only the LSW is used
   (unless (plist-member (slot-value obj 'reply-plist) sequence)
     (error "This method is intended for requests with replies"))
   (xcb:flush obj)                      ;or we may have to wait forever
   (if multiple
       ;; Multiple replies
-      (when (and (<= 0 (xcb:-sequence-cmp16 sequence
-                                            (slot-value obj 'reply-sequence)))
-                 (<= 0 (xcb:-sequence-cmp16 sequence
-                                            (slot-value obj 'error-sequence))))
-        (xcb:aux:sync obj))
+      (xcb:aux:sync obj)
     ;; Single reply
     (let ((process (slot-value obj 'process)))
       ;; Wait until the request processed
       (cl-incf (slot-value obj 'event-lock))
       (with-timeout (xcb:connection-timeout
                      (warn "[XELB] Retrieve reply timeout"))
-        (while (and (< 0 (xcb:-sequence-cmp16
-                          sequence (slot-value obj 'reply-sequence)))
-                    (< 0 (xcb:-sequence-cmp16
-                          sequence (slot-value obj 'error-sequence))))
+        (while (and (> sequence (slot-value obj 'last-seen-sequence))
+                    (<= sequence (slot-value obj 'request-sequence)))
           (accept-process-output process 1 nil 1)))
       (cl-decf (slot-value obj 'event-lock))))
   (let* ((reply-plist (slot-value obj 'reply-plist))
@@ -649,7 +659,6 @@ MULTIPLE value, or some replies may be lost!"
   `(xcb:-+reply ,obj ,sequence ,multiple))
 
 (cl-defmethod xcb:-request-check ((obj xcb:connection) sequence)
-  (setq sequence (logand #xFFFF sequence)) ;only the LSW is used
   (when (plist-member (slot-value obj 'reply-plist) sequence)
     (error "This method is intended for requests with no reply"))
   (xcb:flush obj)                      ;or we may have to wait forever
@@ -657,7 +666,7 @@ MULTIPLE value, or some replies may be lost!"
         error-obj tmp)
     (unless (plist-member error-plist sequence)
       (error "This method shall be called after `xcb:+request-checked'"))
-    (when (< 0 (xcb:-sequence-cmp16 sequence (slot-value obj 'error-sequence)))
+    (when (> sequence (slot-value obj 'last-seen-sequence))
       (xcb:aux:sync obj))         ;wait until the request is processed
     (setq error-obj
           (mapcar (lambda (i)
@@ -711,17 +720,20 @@ MULTIPLE value, or some replies may be lost!"
   "Force sync with X server.
 
 Sync by sending a GetInputFocus request and waiting until it's processed."
-  (let* ((sequence (xcb:-cache-request obj (make-instance 'xcb:GetInputFocus)))
-         (sequence-lsw (logand #xFFFF sequence))
-         (process (slot-value obj 'process)))
+  (let ((sequence (xcb:-cache-request obj (make-instance 'xcb:GetInputFocus)))
+        (process (slot-value obj 'process)))
     (xcb:flush obj)
     ;; Wait until request processed
     (cl-incf (slot-value obj 'event-lock))
     (with-timeout (xcb:connection-timeout (warn "[XELB] Sync timeout"))
-      (while (< 0 (xcb:-sequence-cmp16 sequence-lsw
-                                       (slot-value obj 'reply-sequence)))
+      (while (and (> sequence (slot-value obj 'last-seen-sequence))
+                  ;; In case the sequence number has been wrapped.
+                  (<= sequence (slot-value obj 'request-sequence)))
         (accept-process-output process 1 nil 1)))
-    (cl-decf (slot-value obj 'event-lock))))
+    (cl-decf (slot-value obj 'event-lock))
+    ;; Discard any reply or error.
+    (cl-remf (slot-value obj 'reply-plist) sequence)
+    (cl-remf (slot-value obj 'error-plist) sequence)))
 
 (cl-defmethod xcb:-error-or-event-class->number ((obj xcb:connection) class)
   "Return the error/event number of a error/event class CLASS.

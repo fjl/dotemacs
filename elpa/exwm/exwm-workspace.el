@@ -29,6 +29,8 @@
 
 (require 'exwm-core)
 
+(defvar exwm-manage--desktop)
+
 (defvar exwm-workspace-number 1 "Initial number of workspaces.")
 (defvar exwm-workspace--list nil "List of all workspaces (Emacs frames).")
 (defvar exwm-workspace--current nil "Current active workspace.")
@@ -230,18 +232,19 @@ Value nil means to use the default position which is fixed at bottom, while
   (let (struts struts*)
     (dolist (pair exwm-workspace--id-struts-alist)
       (setq struts (cdr pair))
-      (dotimes (i 4)
-        (when (/= 0 (aref struts i))
-          (setq struts*
-                (vector (aref [left right top bottom] i)
-                        (aref struts i)
-                        (when (= 12 (length struts))
-                          (substring struts (+ 4 (* i 2)) (+ 6 (* i 2))))))
-          (if (= 0 (mod i 2))
-              ;; Make left/top processed first.
-              (push struts* exwm-workspace--struts)
-            (setq exwm-workspace--struts
-                  (append exwm-workspace--struts (list struts*)))))))))
+      (when struts
+        (dotimes (i 4)
+          (when (/= 0 (aref struts i))
+            (setq struts*
+                  (vector (aref [left right top bottom] i)
+                          (aref struts i)
+                          (when (= 12 (length struts))
+                            (substring struts (+ 4 (* i 2)) (+ 6 (* i 2))))))
+            (if (= 0 (mod i 2))
+                ;; Make left/top processed first.
+                (push struts* exwm-workspace--struts)
+              (setq exwm-workspace--struts
+                    (append exwm-workspace--struts (list struts*))))))))))
 
 (defvar exwm-workspace--workareas nil "Workareas (struts excluded).")
 
@@ -369,11 +372,17 @@ If the minibuffer is detached, this value is 0.")
                        :value-mask (logior xcb:ConfigWindow:X
                                            xcb:ConfigWindow:Y
                                            xcb:ConfigWindow:Width
+                                           (if exwm-manage--desktop
+                                               xcb:ConfigWindow:Sibling
+                                             0)
                                            xcb:ConfigWindow:StackMode)
                        :x (aref workarea 0)
                        :y y
                        :width width
-                       :stack-mode xcb:StackMode:Below))
+                       :sibling exwm-manage--desktop
+                       :stack-mode (if exwm-manage--desktop
+                                       xcb:StackMode:Above
+                                     xcb:StackMode:Below)))
     (xcb:+request exwm--connection
         (make-instance 'xcb:ConfigureWindow
                        :window (frame-parameter exwm-workspace--minibuffer
@@ -437,7 +446,9 @@ PREFIX-DIGITS is a list of the digits introduced so far."
 The optional FORCE option is for internal use only."
   (interactive
    (list
-    (unless (and (eq major-mode 'exwm-mode) exwm--fullscreen) ;it's invisible
+    (unless (and (eq major-mode 'exwm-mode)
+                 ;; The prompt is invisible in fullscreen mode.
+                 (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state))
       (let ((exwm-workspace--prompt-add-allowed t)
             (exwm-workspace--prompt-delete-allowed t))
         (exwm-workspace--prompt-for-workspace "Switch to [+/-]: ")))))
@@ -455,7 +466,8 @@ The optional FORCE option is for internal use only."
                          :value-mask xcb:ConfigWindow:StackMode
                          :stack-mode xcb:StackMode:Above))
       ;; Raise X windows with struts set if there's no fullscreen X window.
-      (unless (buffer-local-value 'exwm--fullscreen (window-buffer window))
+      (unless (with-current-buffer (window-buffer window)
+                (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state))
         (dolist (pair exwm-workspace--id-struts-alist)
           (xcb:+request exwm--connection
               (make-instance 'xcb:ConfigureWindow
@@ -529,7 +541,9 @@ deleted, moved, etc).")
 (defun exwm-workspace-swap (workspace1 workspace2)
   "Interchange position of WORKSPACE1 with that of WORKSPACE2."
   (interactive
-   (unless (and (eq major-mode 'exwm-mode) exwm--fullscreen) ;it's invisible
+   (unless (and (eq major-mode 'exwm-mode)
+                ;; The prompt is invisible in fullscreen mode.
+                (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state))
      (let (w1 w2)
        (let ((exwm-workspace--prompt-add-allowed t)
              (exwm-workspace--prompt-delete-allowed t))
@@ -564,7 +578,9 @@ deleted, moved, etc).")
 When called interactively, prompt for a workspace and move current one just
 before it."
   (interactive
-   (unless (and (eq major-mode 'exwm-mode) exwm--fullscreen) ;it's invisible
+   (unless (and (eq major-mode 'exwm-mode)
+                ;; The prompt is invisible in fullscreen mode.
+                (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state))
      (list exwm-workspace--current
            (exwm-workspace--position
             (exwm-workspace--prompt-for-workspace "Move workspace to: ")))))
@@ -987,8 +1003,14 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
       (make-instance 'xcb:ConfigureWindow
                      :window (frame-parameter exwm-workspace--minibuffer
                                               'exwm-container)
-                     :value-mask xcb:ConfigWindow:StackMode
-                     :stack-mode xcb:StackMode:Below))
+                     :value-mask (logior (if exwm-manage--desktop
+                                             xcb:ConfigWindow:Sibling
+                                           0)
+                                         xcb:ConfigWindow:StackMode)
+                     :sibling exwm-manage--desktop
+                     :stack-mode (if exwm-manage--desktop
+                                     xcb:StackMode:Above
+                                   xcb:StackMode:Below)))
   (xcb:flush exwm--connection))
 
 (defun exwm-workspace--on-minibuffer-setup ()
@@ -1171,14 +1193,20 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
           (set-frame-parameter frame param (frame-parameter w param))))
       (xcb:+request exwm--connection
           (make-instance 'xcb:CreateWindow
-                         :depth 0 :wid workspace :parent exwm--root
-                         :x 0 :y 0
+                         :depth 0
+                         :wid workspace
+                         :parent exwm--root
+                         :x 0
+                         :y 0
                          :width (x-display-pixel-width)
                          :height (x-display-pixel-height)
-                         :border-width 0 :class xcb:WindowClass:CopyFromParent
-                         :visual 0      ;CopyFromParent
-                         :value-mask (logior xcb:CW:OverrideRedirect
+                         :border-width 0
+                         :class xcb:WindowClass:InputOutput
+                         :visual 0
+                         :value-mask (logior xcb:CW:BackPixmap
+                                             xcb:CW:OverrideRedirect
                                              xcb:CW:EventMask)
+                         :background-pixmap xcb:BackPixmap:ParentRelative
                          :override-redirect 1
                          :event-mask xcb:EventMask:SubstructureRedirect))
       (xcb:+request exwm--connection
@@ -1188,13 +1216,19 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
                          :stack-mode xcb:StackMode:Below))
       (xcb:+request exwm--connection
           (make-instance 'xcb:CreateWindow
-                         :depth 0 :wid container :parent workspace
-                         :x 0 :y 0
+                         :depth 0
+                         :wid container
+                         :parent workspace
+                         :x 0
+                         :y 0
                          :width (x-display-pixel-width)
                          :height (x-display-pixel-height)
-                         :border-width 0 :class xcb:WindowClass:CopyFromParent
-                         :visual 0      ;CopyFromParent
-                         :value-mask xcb:CW:OverrideRedirect
+                         :border-width 0
+                         :class xcb:WindowClass:InputOutput
+                         :visual 0
+                         :value-mask (logior xcb:CW:BackPixmap
+                                             xcb:CW:OverrideRedirect)
+                         :background-pixmap xcb:BackPixmap:ParentRelative
                          :override-redirect 1))
       (exwm--debug
        (xcb:+request exwm--connection
@@ -1286,11 +1320,6 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
                        :window exwm--root :data num-workspaces))
     ;; Set _NET_DESKTOP_GEOMETRY.
     (exwm-workspace--set-desktop-geometry)
-    ;; Set _NET_DESKTOP_VIEWPORT (we don't support large desktop).
-    (xcb:+request exwm--connection
-        (make-instance 'xcb:ewmh:set-_NET_DESKTOP_VIEWPORT
-                       :window exwm--root
-                       :data (make-vector (* 2 num-workspaces) 0)))
     ;; Update and set _NET_WORKAREA.
     (exwm-workspace--update-workareas)
     ;; Set _NET_VIRTUAL_ROOTS.
@@ -1372,12 +1401,19 @@ applied to all subsequently created X frames."
                              container)
         (xcb:+request exwm--connection
             (make-instance 'xcb:CreateWindow
-                           :depth 0 :wid container :parent exwm--root
-                           :x -1 :y -1 :width 1 :height 1
+                           :depth 0
+                           :wid container
+                           :parent exwm--root
+                           :x 0
+                           :y 0
+                           :width 1
+                           :height 1
                            :border-width 0
-                           :class xcb:WindowClass:CopyFromParent
-                           :visual 0        ;CopyFromParent
-                           :value-mask xcb:CW:OverrideRedirect
+                           :class xcb:WindowClass:InputOutput
+                           :visual 0
+                           :value-mask (logior xcb:CW:BackPixmap
+                                               xcb:CW:OverrideRedirect)
+                           :background-pixmap xcb:BackPixmap:ParentRelative
                            :override-redirect 1))
         (exwm--debug
          (xcb:+request exwm--connection

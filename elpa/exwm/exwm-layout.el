@@ -177,7 +177,7 @@
   "Make window ID fullscreen."
   (interactive)
   (with-current-buffer (if id (exwm--id->buffer id) (window-buffer))
-    (when exwm--fullscreen
+    (when (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
       (user-error "Already in full-screen mode."))
     ;; Save the position of floating frame.
     (when exwm--floating-frame
@@ -221,7 +221,7 @@
                        :window exwm--id
                        :data (vector xcb:Atom:_NET_WM_STATE_FULLSCREEN)))
     (xcb:flush exwm--connection)
-    (setq exwm--fullscreen t)
+    (cl-pushnew xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
     (call-interactively #'exwm-input-release-keyboard)))
 
 ;;;###autoload
@@ -229,7 +229,7 @@
   "Restore window from fullscreen state."
   (interactive)
   (with-current-buffer (if id (exwm--id->buffer id) (window-buffer))
-    (unless exwm--fullscreen
+    (unless (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
       (user-error "Not in full-screen mode."))
     ;; Restore the size of this workspace.
     (exwm-workspace--set-fullscreen exwm--frame)
@@ -256,7 +256,8 @@
     (xcb:+request exwm--connection
         (make-instance 'xcb:ewmh:set-_NET_WM_STATE :window exwm--id :data []))
     (xcb:flush exwm--connection)
-    (setq exwm--fullscreen nil)
+    (setq exwm--ewmh-state
+          (delq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state))
     (call-interactively #'exwm-input-grab-keyboard)))
 
 (defvar exwm-layout--other-buffer-exclude-exwm-mode-buffers nil
@@ -314,11 +315,14 @@ selected by `other-buffer'."
                        :data (vconcat (append clients-other clients-iconic
                                               clients clients-floating))))))
 
-(defun exwm-layout--refresh ()
+(defun exwm-layout--refresh (&optional frame)
   "Refresh layout."
-  (let ((frame (selected-frame))
-        covered-buffers             ;EXWM-buffers covered by a new X window.
-        vacated-windows             ;Windows previously displaying EXWM-buffers.
+  ;; `window-size-change-functions' sets this argument while
+  ;; `window-configuration-change-hook' makes the frame selected.
+  (unless frame
+    (setq frame (selected-frame)))
+  (let (covered-buffers   ;EXWM-buffers covered by a new X window.
+        vacated-windows   ;Windows previously displaying EXWM-buffers.
         windows)
     (if (not (exwm-workspace--workspace-p frame))
         (if (frame-parameter frame 'exwm-outer-id)
@@ -566,6 +570,9 @@ See also `exwm-layout-enlarge-window'."
   "Initialize layout module."
   ;; Auto refresh layout
   (add-hook 'window-configuration-change-hook #'exwm-layout--refresh)
+  ;; The behavior of `window-configuration-change-hook' will be changed.
+  (when (fboundp 'window-pixel-width-before-size-change)
+    (add-hook 'window-size-change-functions #'exwm-layout--refresh))
   (unless (exwm-workspace--minibuffer-own-frame-p)
     ;; Refresh when minibuffer grows
     (add-hook 'minibuffer-setup-hook #'exwm-layout--on-minibuffer-setup t)

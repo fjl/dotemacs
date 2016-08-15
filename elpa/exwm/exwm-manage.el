@@ -37,6 +37,8 @@ You can still make the X windows floating afterwards.")
   "Normal hook run after a window is just managed, in the context of the
 corresponding buffer.")
 
+(defvar exwm-manage--desktop nil "The desktop X window.")
+
 (defun exwm-manage--update-geometry (id &optional force)
   "Update window geometry."
   (with-current-buffer (exwm--id->buffer id)
@@ -45,6 +47,16 @@ corresponding buffer.")
                        (make-instance 'xcb:GetGeometry :drawable id))))
         (when reply                     ;nil when destroyed
           (setq exwm--geometry reply))))))
+
+(defun exwm-manage--update-ewmh-state (id)
+  "Update _NET_WM_STATE."
+  (with-current-buffer (exwm--id->buffer id)
+    (unless exwm--ewmh-state
+      (let ((reply (xcb:+request-unchecked+reply exwm--connection
+                       (make-instance 'xcb:ewmh:get-_NET_WM_STATE
+                                      :window id))))
+        (when reply
+          (setq exwm--ewmh-state (append (slot-value reply 'value) nil)))))))
 
 ;; The _MOTIF_WM_HINTS atom (see <Xm/MwmUtil.h> for more details)
 ;; It's currently only used in 'exwm-manage' module
@@ -83,6 +95,7 @@ corresponding buffer.")
 (defvar exwm-workspace--current)
 (defvar exwm-workspace--switch-history-outdated)
 (defvar exwm-workspace-current-index)
+(defvar exwm-workspace--workareas)
 
 (declare-function exwm--update-window-type "exwm.el" (id &optional force))
 (declare-function exwm--update-class "exwm.el" (id &optional force))
@@ -197,6 +210,16 @@ corresponding buffer.")
                                :y (/ (- (exwm-workspace--current-height)
                                         height)
                                      2)))))
+        ;; Check for desktop.
+        (when (memq xcb:Atom:_NET_WM_WINDOW_TYPE_DESKTOP exwm-window-type)
+          ;; There should be only one desktop X window.
+          (setq exwm-manage--desktop id)
+          ;; Put it at bottom.
+          (xcb:+request exwm--connection
+              (make-instance 'xcb:ConfigureWindow
+                             :window id
+                             :value-mask xcb:ConfigWindow:StackMode
+                             :stack-mode xcb:StackMode:Below)))
         (xcb:flush exwm--connection)
         (setq exwm--id-buffer-alist (assq-delete-all id exwm--id-buffer-alist))
         (let ((kill-buffer-query-functions nil))
@@ -208,14 +231,21 @@ corresponding buffer.")
       (setq exwm--container (xcb:generate-id exwm--connection))
       (xcb:+request exwm--connection
           (make-instance 'xcb:CreateWindow
-                         :depth 0 :wid exwm--container
+                         :depth 0
+                         :wid exwm--container
                          :parent (frame-parameter exwm-workspace--current
                                                   'exwm-workspace)
-                         :x 0 :y 0 :width 1 :height 1 :border-width 0
-                         :class xcb:WindowClass:CopyFromParent
-                         :visual 0      ;CopyFromParent
-                         :value-mask (logior xcb:CW:OverrideRedirect
+                         :x 0
+                         :y 0
+                         :width 1
+                         :height 1
+                         :border-width 0
+                         :class xcb:WindowClass:InputOutput
+                         :visual 0
+                         :value-mask (logior xcb:CW:BackPixmap
+                                             xcb:CW:OverrideRedirect
                                              xcb:CW:EventMask)
+                         :background-pixmap xcb:BackPixmap:ParentRelative
                          :override-redirect 1
                          :event-mask xcb:EventMask:SubstructureRedirect))
       (exwm--debug
@@ -266,7 +296,12 @@ corresponding buffer.")
                  (< desktop (exwm-workspace--count)))
             (exwm-workspace-move-window desktop id)
           (exwm-workspace--set-desktop id)))
+      (exwm-manage--update-ewmh-state id)
       (with-current-buffer (exwm--id->buffer id)
+        (when (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
+          (setq exwm--ewmh-state
+                (delq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state))
+          (exwm-layout-set-fullscreen id))
         (run-hooks 'exwm-manage-finish-hook)))))
 
 (defvar exwm-workspace--id-struts-alist)
@@ -287,7 +322,8 @@ manager is shutting down."
                id buffer withdraw-only)
     (setq exwm--id-buffer-alist (assq-delete-all id exwm--id-buffer-alist))
     ;; Update workspaces when a dock is destroyed.
-    (when (assq id exwm-workspace--id-struts-alist)
+    (when (and (null withdraw-only)
+               (assq id exwm-workspace--id-struts-alist))
       (setq exwm-workspace--id-struts-alist
             (assq-delete-all id exwm-workspace--id-struts-alist))
       (exwm-workspace--update-struts)
@@ -352,7 +388,7 @@ manager is shutting down."
                 (make-instance 'xcb:ReparentWindow
                                :window window :parent exwm--root :x 0 :y 0))))
         ;; Restore the workspace if this X window is currently fullscreen.
-        (when exwm--fullscreen
+        (when (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
           (exwm-workspace--set-fullscreen exwm--frame))
         ;; Destroy the X window container (and the frame container if any).
         (xcb:+request exwm--connection
@@ -381,16 +417,23 @@ manager is shutting down."
 (defun exwm-manage--scan ()
   "Search for existing windows and try to manage them."
   (let* ((tree (xcb:+request-unchecked+reply exwm--connection
-                   (make-instance 'xcb:QueryTree :window exwm--root))))
+                   (make-instance 'xcb:QueryTree
+                                  :window exwm--root)))
+         reply)
     (dolist (i (slot-value tree 'children))
-      (with-slots (override-redirect map-state)
-          (xcb:+request-unchecked+reply exwm--connection
-              (make-instance 'xcb:GetWindowAttributes :window i))
-        (when (and (= 0 override-redirect) (= xcb:MapState:Viewable map-state))
-          (xcb:+request exwm--connection
-              (make-instance 'xcb:UnmapWindow :window i))
-          (xcb:flush exwm--connection)
-          (exwm-manage--manage-window i))))))
+      (setq reply (xcb:+request-unchecked+reply exwm--connection
+                      (make-instance 'xcb:GetWindowAttributes
+                                     :window i)))
+      ;; It's possible the X window has been destroyed.
+      (when reply
+        (with-slots (override-redirect map-state) reply
+          (when (and (= 0 override-redirect)
+                     (= xcb:MapState:Viewable map-state))
+            (xcb:+request exwm--connection
+                (make-instance 'xcb:UnmapWindow
+                               :window i))
+            (xcb:flush exwm--connection)
+            (exwm-manage--manage-window i)))))))
 
 (defvar exwm-manage--ping-lock nil
   "Non-nil indicates EXWM is pinging a window.")
@@ -524,7 +567,7 @@ border-width: %d; sibling: #x%x; stack-mode: %d"
                  border-width sibling stack-mode)
       (if (and (setq buffer (exwm--id->buffer window))
                (with-current-buffer buffer
-                 (or exwm--fullscreen
+                 (or (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
                      ;; Make sure it's a floating X window wanting to resize
                      ;; itself.
                      (or (not exwm--floating-frame)
@@ -550,7 +593,7 @@ border-width: %d; sibling: #x%x; stack-mode: %d"
           ;; Send client message for managed windows
           (with-current-buffer buffer
             (setq edges
-                  (if exwm--fullscreen
+                  (if (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
                       (list 0 0
                             (exwm-workspace--current-width)
                             (exwm-workspace--current-height))

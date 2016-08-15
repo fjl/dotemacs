@@ -4,8 +4,8 @@
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 ;; Maintainer: Chris Feng <chris.w.feng@gmail.com>
-;; Version: 0.8
-;; Package-Requires: ((xelb "0.10"))
+;; Version: 0.9
+;; Package-Requires: ((xelb "0.11"))
 ;; Keywords: unix
 ;; URL: https://github.com/ch11ng/exwm
 
@@ -36,6 +36,7 @@
 ;; + Dynamic workspace support
 ;; + ICCCM/EWMH compliance
 ;; + (Optional) RandR (multi-monitor) support
+;; + (Optional) Built-in composting manager
 ;; + (Optional) Builtin system tray
 
 ;; Installation & configuration
@@ -78,7 +79,8 @@
   (interactive)
   (with-current-buffer (window-buffer)
     (when (eq major-mode 'exwm-mode)
-      (when exwm--fullscreen (exwm-layout-unset-fullscreen))
+      (when (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN exwm--ewmh-state)
+        (exwm-layout-unset-fullscreen))
       ;; Force refresh
       (exwm-layout--refresh)
       (call-interactively #'exwm-input-grab-keyboard))))
@@ -267,13 +269,9 @@
                                      :window id)))
       (when reply
         (setq struts (slot-value reply 'value))
-        (if struts
-            (if pair
-                (setcdr pair struts)
-              (push (cons id struts) exwm-workspace--id-struts-alist))
-          (when pair
-            (setq exwm-workspace--id-struts-alist
-                  (assq-delete-all id exwm-workspace--id-struts-alist))))
+        (if pair
+            (setcdr pair struts)
+          (push (cons id struts) exwm-workspace--id-struts-alist))
         (exwm-workspace--update-struts))
       ;; Update workareas and set _NET_WORKAREA.
       (exwm-workspace--update-workareas)
@@ -290,13 +288,9 @@
     (when reply
       (setq struts (slot-value reply 'value)
             pair (assq id exwm-workspace--id-struts-alist))
-      (if struts
-          (if pair
-              (setcdr pair struts)
-            (push (cons id struts) exwm-workspace--id-struts-alist))
-        (when pair
-          (setq exwm-workspace--id-struts-alist
-                (assq-delete-all id exwm-workspace--id-struts-alist))))
+      (if pair
+          (setcdr pair struts)
+        (push (cons id struts) exwm-workspace--id-struts-alist))
       (exwm-workspace--update-struts))
     ;; Update workareas and set _NET_WORKAREA.
     (exwm-workspace--update-workareas)
@@ -464,12 +458,17 @@
             (when (or (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN props)
                       (memq xcb:Atom:_NET_WM_STATE_ABOVE props))
               (cond ((= action xcb:ewmh:_NET_WM_STATE_ADD)
-                     (unless exwm--fullscreen (exwm-layout-set-fullscreen id))
+                     (unless (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN
+                                   exwm--ewmh-state)
+                       (exwm-layout-set-fullscreen id))
                      (push xcb:Atom:_NET_WM_STATE_FULLSCREEN props-new))
                     ((= action xcb:ewmh:_NET_WM_STATE_REMOVE)
-                     (when exwm--fullscreen (exwm-layout-unset-fullscreen id)))
+                     (when (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN
+                                 exwm--ewmh-state)
+                       (exwm-layout-unset-fullscreen id)))
                     ((= action xcb:ewmh:_NET_WM_STATE_TOGGLE)
-                     (if exwm--fullscreen
+                     (if (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN
+                               exwm--ewmh-state)
                          (exwm-layout-unset-fullscreen id)
                        (exwm-layout-set-fullscreen id)
                        (push xcb:Atom:_NET_WM_STATE_FULLSCREEN props-new)))))
@@ -609,10 +608,17 @@
   (let ((new-id (xcb:generate-id exwm--connection)))
     (xcb:+request exwm--connection
         (make-instance 'xcb:CreateWindow
-                       :depth 0 :wid new-id :parent exwm--root
-                       :x -1 :y -1 :width 1 :height 1
-                       :border-width 0 :class xcb:WindowClass:CopyFromParent
-                       :visual 0 :value-mask xcb:CW:OverrideRedirect
+                       :depth 0
+                       :wid new-id
+                       :parent exwm--root
+                       :x 0
+                       :y 0
+                       :width 1
+                       :height 1
+                       :border-width 0
+                       :class xcb:WindowClass:InputOnly
+                       :visual 0
+                       :value-mask xcb:CW:OverrideRedirect
                        :override-redirect 1))
     (dolist (i (list exwm--root new-id))
       ;; Set _NET_SUPPORTING_WM_CHECK
@@ -623,6 +629,11 @@
       (xcb:+request exwm--connection
           (make-instance 'xcb:ewmh:set-_NET_WM_NAME
                          :window i :data "EXWM"))))
+  ;; Set _NET_DESKTOP_VIEWPORT (we don't support large desktop).
+  (xcb:+request exwm--connection
+      (make-instance 'xcb:ewmh:set-_NET_DESKTOP_VIEWPORT
+                     :window exwm--root
+                     :data [0 0]))
   (xcb:flush exwm--connection))
 
 (defun exwm--exit-icccm-ewmh ()
