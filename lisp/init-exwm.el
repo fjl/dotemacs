@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t; -*-
-
 (require 'exwm)
 (require 'exwm-randr)
 (require 'exwm-systemtray)
 (require 'exim)
+(require 'counsel)
 
 ;; Enable exwm.
 (setq use-dialog-box nil)
@@ -74,7 +74,7 @@
   (exwm-input-set-key (kbd "C-c <f3>") (lambda () (interactive) (exwm-workspace-switch-create 2)))
   (exwm-input-set-key (kbd "C-c <f4>") (lambda () (interactive) (exwm-workspace-switch-create 3)))
   ;; Launching programs.
-  (exwm-input-set-key (kbd "s-1") 'launcher)
+  (exwm-input-set-key (kbd "s-1") 'counsel-linux-app)
   ;; Brightness/audio.
   (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") 'backlight-brightness-down)
   (exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   'backlight-brightness-up)
