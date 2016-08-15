@@ -165,7 +165,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode org-mac-iCal cl-generic cm-mode levenshtein hydra ox-gfm virtualenvwrapper fuel darkroom ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime web-mode wgrep yaml-mode)))
+    (go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode org-mac-iCal cl-generic cm-mode levenshtein hydra ox-gfm virtualenvwrapper fuel darkroom ace-window ag company-go counsel dtrt-indent ember-mode erlang eshell-z expand-region fish-mode geiser gist go-eldoc go-scratch magit markdown-mode nginx-mode org projectile qml-mode restclient smex speed-type slime web-mode wgrep yaml-mode)))
  '(projectile-completion-system (quote ivy))
  '(projectile-global-mode t)
  '(projectile-ignored-project-function (quote file-remote-p))
