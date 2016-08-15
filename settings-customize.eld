@@ -264,6 +264,7 @@
  '(savehist-mode t)
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)
+ '(server-window (quote pop-to-buffer))
  '(shell-completion-fignore (quote ("~" "#" "%")))
  '(shell-file-name "bash")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
