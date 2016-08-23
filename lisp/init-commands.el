@@ -196,7 +196,9 @@ such as HTTP, URL, they are left as is."
 
 (defun update-visual-wrap-column ()
   (if (not visual-wrap-column)
-      (set-window-margins nil nil)
+      (progn
+        (set-window-margins nil nil)
+        (set-window-parameter nil 'min-margins nil))
     (let* ((current-margins (window-margins))
            (right-margin (or (cdr current-margins) 0))
            (current-width (window-width))
@@ -204,7 +206,10 @@ such as HTTP, URL, they are left as is."
       (if (<= current-available visual-wrap-column)
           (set-window-margins nil (car current-margins))
         (set-window-margins nil (car current-margins)
-                            (- current-available visual-wrap-column))))))
+                            (- current-available visual-wrap-column)))
+      ;; Very recent emacs (> emacs 25.1), this parameter allows splitting the window
+      ;; regardless of the huge margin.
+      (set-window-parameter nil 'min-margins (cons 0 1)))))
 
 ;; search
 
