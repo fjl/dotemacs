@@ -3,8 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "macrostep" "macrostep.el" (22193 53485 228123
-;;;;;;  380000))
+;;;### (autoloads nil "macrostep" "macrostep.el" (0 0 0 0))
 ;;; Generated autoloads from macrostep.el
 
 (autoload 'macrostep-mode "macrostep" "\
@@ -34,10 +33,11 @@ behaviors.
 
 \(fn &optional TOGGLE-SEPARATE-BUFFER)" t nil)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "macrostep" '("macrostep-")))
+
 ;;;***
 
-;;;### (autoloads nil "macrostep-c" "macrostep-c.el" (22193 53485
-;;;;;;  221456 714000))
+;;;### (autoloads nil "macrostep-c" "macrostep-c.el" (0 0 0 0))
 ;;; Generated autoloads from macrostep-c.el
 
 (autoload 'macrostep-c-mode-hook "macrostep-c" "\
@@ -47,10 +47,11 @@ behaviors.
 
 (add-hook 'c-mode-hook #'macrostep-c-mode-hook)
 
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "macrostep-c" '("macrostep-c-")))
+
 ;;;***
 
-;;;### (autoloads nil nil ("macrostep-pkg.el") (22193 53485 211456
-;;;;;;  715000))
+;;;### (autoloads nil nil ("macrostep-pkg.el") (0 0 0 0))
 
 ;;;***
 
