@@ -121,20 +121,18 @@ ARGS are additional arguments to CALLBACK."
                (cdr exwm-input--timestamp-callback))
         (setq exwm-input--timestamp-callback nil)))))
 
-(defun exwm-input--on-FocusIn (data _synthetic)
+(defun exwm-input--on-FocusIn (&rest _args)
   "Handle FocusIn events."
-  (let ((obj (make-instance 'xcb:FocusIn)))
-    (xcb:unmarshal obj data)
-    ;; Not sure if this is the right thing to do but the point is the
-    ;; input focus should not stay at the root window or any container,
-    ;; or the result would be unpredictable.  `x-focus-frame' would
-    ;; first set the input focus to the (previously) selected frame, and
-    ;; then `select-window' would further update the input focus if the
-    ;; selected window is displaying an `exwm-mode' buffer.  Perhaps we
-    ;; should carefully filter out FocusIn events with certain 'detail'
-    ;; and 'mode' combinations, but this just works.
-    (x-focus-frame (selected-frame))
-    (select-window (selected-window))))
+  ;; Not sure if this is the right thing to do but the point is the
+  ;; input focus should not stay at the root window or any container,
+  ;; or the result would be unpredictable.  `x-focus-frame' would
+  ;; first set the input focus to the (previously) selected frame, and
+  ;; then `select-window' would further update the input focus if the
+  ;; selected window is displaying an `exwm-mode' buffer.  Perhaps we
+  ;; should carefully filter out FocusIn events with certain 'detail'
+  ;; and 'mode' combinations, but this just works.
+  (x-focus-frame (selected-frame))
+  (select-window (selected-window)))
 
 (defun exwm-input--on-workspace-list-change ()
   "Run in `exwm-input--update-global-prefix-keys'."
@@ -162,6 +160,7 @@ This value should always be overwritten.")
   "Run in `buffer-list-update-hook' to track input focus."
   (when (and (not (minibufferp)) ;Do not set input focus on minibuffer window.
              (eq (current-buffer) (window-buffer)) ;e.g. `with-temp-buffer'.
+             (not (eq this-command #'handle-switch-frame))
              (not (exwm-workspace--client-p)))
     (setq exwm-input--update-focus-window (selected-window))
     (exwm-input--update-focus-defer)))
@@ -216,14 +215,7 @@ This value should always be overwritten.")
     (with-current-buffer (window-buffer window)
       (if (eq major-mode 'exwm-mode)
           (if (not (eq exwm--frame exwm-workspace--current))
-              ;; Do not focus X windows on other workspace.
-              (progn
-                (set-frame-parameter exwm--frame 'exwm-urgency t)
-                (setq exwm-workspace--switch-history-outdated t)
-                (force-mode-line-update)
-                ;; The application may have changed its input focus
-                (select-window
-                 (frame-selected-window exwm-workspace--current)))
+              (exwm-workspace-switch exwm--frame)
             (exwm--log "Set focus on #x%x" exwm--id)
             (exwm-input--set-focus exwm--id)
             (when exwm--floating-frame
@@ -462,7 +454,11 @@ This value should always be overwritten.")
                              :propagate 0
                              :destination (slot-value key-press 'event)
                              :event-mask xcb:EventMask:NoEvent
-                             :event raw-data))))
+                             :event raw-data)))
+        ;; Make Emacs aware of this event when defining keyboard macros.
+        (when (and defining-kbd-macro event)
+          (set-transient-map '(keymap (t . (lambda () (interactive)))))
+          (exwm-input--unread-event event)))
       (xcb:+request exwm--connection
           (make-instance 'xcb:AllowEvents
                          :mode mode

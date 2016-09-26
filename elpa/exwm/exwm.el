@@ -399,19 +399,20 @@
      ;; _NET_REQUEST_FRAME_EXTENTS
      ((= type xcb:Atom:_NET_REQUEST_FRAME_EXTENTS)
       (let ((buffer (exwm--id->buffer id))
-            left right top btm)
+            top btm)
         (if (or (not buffer)
                 (not (buffer-local-value 'exwm--floating-frame buffer)))
-            (setq left 0 right 0 top 0 btm 0)
-          (setq left exwm-floating-border-width
-                right exwm-floating-border-width
-                top (+ exwm-floating-border-width (window-header-line-height))
-                btm (+ exwm-floating-border-width
-                       (window-mode-line-height))))
+            (setq top 0
+                  btm 0)
+          (setq top (window-header-line-height)
+                btm (window-mode-line-height)))
         (xcb:+request exwm--connection
             (make-instance 'xcb:ewmh:set-_NET_FRAME_EXTENTS
-                           :window id :left left :right right
-                           :top top :bottom btm)))
+                           :window id
+                           :left 0
+                           :right 0
+                           :top top
+                           :bottom btm)))
       (xcb:flush exwm--connection))
      ;; _NET_WM_DESKTOP.
      ((= type xcb:Atom:_NET_WM_DESKTOP)
@@ -440,20 +441,6 @@
               (xcb:flush exwm--connection))))
         (when buffer                    ;ensure it's managed
           (with-current-buffer buffer
-            ;; _NET_WM_STATE_MODAL
-            (when (memq xcb:Atom:_NET_WM_STATE_MODAL props)
-              (cond ((= action xcb:ewmh:_NET_WM_STATE_ADD)
-                     (unless exwm--floating-frame
-                       (exwm-floating--set-floating id))
-                     (push xcb:Atom:_NET_WM_STATE_MODAL props-new))
-                    ((= action xcb:ewmh:_NET_WM_STATE_REMOVE)
-                     (when exwm--floating-frame
-                       (exwm-floating--unset-floating id)))
-                    ((= action xcb:ewmh:_NET_WM_STATE_TOGGLE)
-                     (if exwm--floating-frame
-                         (exwm-floating--unset-floating id)
-                       (exwm-floating--set-floating id)
-                       (push xcb:Atom:_NET_WM_STATE_MODAL props-new)))))
             ;; _NET_WM_STATE_FULLSCREEN
             (when (or (memq xcb:Atom:_NET_WM_STATE_FULLSCREEN props)
                       (memq xcb:Atom:_NET_WM_STATE_ABOVE props))
@@ -557,7 +544,7 @@
                             xcb:Atom:_NET_WM_WINDOW_TYPE_NORMAL
                             ;;
                             xcb:Atom:_NET_WM_STATE
-                            xcb:Atom:_NET_WM_STATE_MODAL
+                            ;; xcb:Atom:_NET_WM_STATE_MODAL
                             ;; xcb:Atom:_NET_WM_STATE_STICKY
                             ;; xcb:Atom:_NET_WM_STATE_MAXIMIZED_VERT
                             ;; xcb:Atom:_NET_WM_STATE_MAXIMIZED_HORZ

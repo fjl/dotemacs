@@ -32,6 +32,12 @@
 (defvar exwm-floating-border-width 1 "Border width of the floating window.")
 (defvar exwm-floating-border-color "navy"
   "Border color of the floating window.")
+(defvar exwm-floating--border-pixel nil
+  "Border pixel drawn around floating X windows.")
+(defvar exwm-floating--border-colormap nil
+  "Colormap used by the border pixel.
+
+This is also used by X window containers.")
 
 (defvar exwm-floating-setup-hook nil
   "Normal hook run when an X window has been made floating, in the
@@ -82,8 +88,9 @@ context of the corresponding buffer.")
 (defun exwm-floating--set-floating (id)
   "Make window ID floating."
   (let ((window (get-buffer-window (exwm--id->buffer id))))
-    (when window                        ;window in non-floating state
-      (set-window-buffer window (other-buffer)))) ;hide it first
+    (when window
+      ;; Hide the non-floating X window first.
+      (set-window-buffer window (other-buffer nil t))))
   (let* ((original-frame exwm-workspace--current)
          ;; Create new frame
          (frame (with-current-buffer
@@ -94,8 +101,6 @@ context of the corresponding buffer.")
                           (get-buffer "*scratch*")))
                   (make-frame
                    `((minibuffer . nil) ;use the default minibuffer.
-                     (background-color . ,exwm-floating-border-color)
-                     (internal-border-width . ,exwm-floating-border-width)
                      (left . 10000)
                      (top . 10000)
                      (width . ,window-min-width)
@@ -134,8 +139,7 @@ context of the corresponding buffer.")
                                 (window-pixel-height (minibuffer-window
                                                       original-frame)))
                               (* 2 (window-mode-line-height))
-                              (window-header-line-height window)
-                              (* 2 exwm-floating-border-width)))
+                              (window-header-line-height window)))
            (display-height (* 2 (/ display-height 2)))) ;round to even
       (if (> width display-width)
           ;; Too wide
@@ -228,14 +232,17 @@ context of the corresponding buffer.")
         (make-instance 'xcb:ReparentWindow
                        :window outer-id :parent frame-container :x 0 :y 0))
     ;; Place the X window container.
+    ;; Also show the floating border.
     (xcb:+request exwm--connection
         (make-instance 'xcb:ConfigureWindow
                        :window container
                        :value-mask (eval-when-compile
                                      (logior xcb:ConfigWindow:X
-                                             xcb:ConfigWindow:Y))
-                       :x (- x exwm-floating-border-width)
-                       :y (- y exwm-floating-border-width)))
+                                             xcb:ConfigWindow:Y
+                                             xcb:ConfigWindow:BorderWidth))
+                       :x x
+                       :y y
+                       :border-width exwm-floating-border-width))
     (exwm-floating--set-allowed-actions id nil)
     (xcb:flush exwm--connection)
     ;; Set window/buffer
@@ -293,14 +300,6 @@ context of the corresponding buffer.")
             (make-instance 'xcb:ChangeWindowAttributes
                            :window id :value-mask xcb:CW:EventMask
                            :event-mask exwm--client-event-mask))
-        ;; The X window might have been moved due to the floating border.
-        (xcb:+request exwm--connection
-            (make-instance 'xcb:ConfigureWindow
-                           :window id
-                           :value-mask (logior xcb:ConfigWindow:X
-                                               xcb:ConfigWindow:Y)
-                           :x 0
-                           :y 0))
         ;; Reparent the floating frame back to the root window.
         (let ((frame-id (frame-parameter exwm--floating-frame 'exwm-outer-id))
               (frame-container (frame-parameter exwm--floating-frame
@@ -317,11 +316,14 @@ context of the corresponding buffer.")
               (make-instance 'xcb:DestroyWindow :window frame-container))))
       ;; Put the X window container just above the Emacs frame container
       ;; (the stacking order won't change from now on).
+      ;; Also hide the possible floating border.
       (xcb:+request exwm--connection
           (make-instance 'xcb:ConfigureWindow
                          :window exwm--container
-                         :value-mask (logior xcb:ConfigWindow:Sibling
+                         :value-mask (logior xcb:ConfigWindow:BorderWidth
+                                             xcb:ConfigWindow:Sibling
                                              xcb:ConfigWindow:StackMode)
+                         :border-width 0
                          :sibling (frame-parameter exwm-workspace--current
                                                    'exwm-container)
                          :stack-mode xcb:StackMode:Above)))
@@ -549,22 +551,35 @@ context of the corresponding buffer.")
              ;; Unmanaged.
              (eq major-mode 'exwm-mode))
     (let ((edges (window-inside-absolute-pixel-edges (frame-selected-window)))
-          (id (buffer-local-value 'exwm--id
-                                  (window-buffer (frame-selected-window)))))
+          x y width height id)
+      (setq x (pop edges)
+            y (pop edges)
+            width (- (pop edges) x)
+            height (- (pop edges) y))
+      (with-current-buffer (window-buffer (frame-selected-window))
+        (setq id exwm--id)
+        (with-slots ((x* x)
+                     (y* y)
+                     (width* width)
+                     (height* height))
+            exwm--geometry
+          (setf x* x
+                y* y
+                width* width
+                height* height)))
       (xcb:+request exwm--connection
           (make-instance 'xcb:SendEvent
-                         :propagate 0 :destination id
+                         :propagate 0
+                         :destination id
                          :event-mask xcb:EventMask:StructureNotify
                          :event (xcb:marshal
                                  (make-instance 'xcb:ConfigureNotify
                                                 :event id :window id
                                                 :above-sibling xcb:Window:None
-                                                :x (elt edges 0)
-                                                :y (elt edges 1)
-                                                :width (- (elt edges 2)
-                                                          (elt edges 0))
-                                                :height (- (elt edges 3)
-                                                           (elt edges 1))
+                                                :x x
+                                                :y y
+                                                :width width
+                                                :height height
                                                 :border-width 0
                                                 :override-redirect 0)
                                  exwm--connection)))))
@@ -667,6 +682,29 @@ Both DELTA-X and DELTA-Y default to 1.  This command should be bound locally."
 
 (defun exwm-floating--init ()
   "Initialize floating module."
+  ;; Check border width.
+  (unless (and (integerp exwm-floating-border-width)
+               (> exwm-floating-border-width 0))
+    (setq exwm-floating-border-width 0))
+  ;; Initialize border pixel.
+  (when (> exwm-floating-border-width 0)
+    (setq exwm-floating--border-colormap
+          (slot-value (car (slot-value
+                            (xcb:get-setup exwm--connection) 'roots))
+                      'default-colormap))
+    (unless (stringp exwm-floating-border-color)
+      (setq exwm-floating-border-color ""))
+    (let* ((color (x-color-values exwm-floating-border-color))
+           reply)
+      (when color
+        (setq reply (xcb:+request-unchecked+reply exwm--connection
+                        (make-instance 'xcb:AllocColor
+                                       :cmap exwm-floating--border-colormap
+                                       :red (pop color)
+                                       :green (pop color)
+                                       :blue (pop color))))
+        (when reply
+          (setq exwm-floating--border-pixel (slot-value reply 'pixel))))))
   ;; Initialize cursors for moving/resizing a window
   (xcb:cursor:init exwm--connection)
   (setq exwm-floating--cursor-move

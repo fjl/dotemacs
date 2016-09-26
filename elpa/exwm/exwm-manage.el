@@ -92,6 +92,8 @@ corresponding buffer.")
                      :window exwm--root
                      :data (vconcat (mapcar #'car exwm--id-buffer-alist)))))
 
+(defvar exwm-floating--border-colormap)
+(defvar exwm-floating--border-pixel)
 (defvar exwm-workspace--current)
 (defvar exwm-workspace--switch-history-outdated)
 (defvar exwm-workspace-current-index)
@@ -243,11 +245,16 @@ corresponding buffer.")
                          :class xcb:WindowClass:InputOutput
                          :visual 0
                          :value-mask (logior xcb:CW:BackPixmap
+                                             (if exwm-floating--border-pixel
+                                                 xcb:CW:BorderPixel 0)
                                              xcb:CW:OverrideRedirect
-                                             xcb:CW:EventMask)
+                                             xcb:CW:EventMask
+                                             xcb:CW:Colormap)
                          :background-pixmap xcb:BackPixmap:ParentRelative
+                         :border-pixel exwm-floating--border-pixel
                          :override-redirect 1
-                         :event-mask xcb:EventMask:SubstructureRedirect))
+                         :event-mask xcb:EventMask:SubstructureRedirect
+                         :colormap exwm-floating--border-colormap))
       (exwm--debug
        (xcb:+request exwm--connection
            (make-instance 'xcb:ewmh:set-_NET_WM_NAME
@@ -442,14 +449,19 @@ manager is shutting down."
 (defun exwm-manage--kill-buffer-query-function ()
   "Run in `kill-buffer-query-functions'."
   (catch 'return
-    (when (xcb:+request-checked+request-check exwm--connection
-              (make-instance 'xcb:MapWindow :window exwm--id))
+    (when (or (not exwm--id)
+              (not exwm--container)
+              (xcb:+request-checked+request-check exwm--connection
+                  (make-instance 'xcb:MapWindow
+                                 :window exwm--id)))
       ;; The X window is no longer alive so just close the buffer.
       ;; Destroy the container.
       ;; Hide the container to prevent flickering.
-      (xcb:+request exwm--connection
-          (make-instance 'xcb:UnmapWindow :window exwm--container))
-      (xcb:flush exwm--connection)
+      (when exwm--container
+        (xcb:+request exwm--connection
+            (make-instance 'xcb:UnmapWindow
+                           :window exwm--container))
+        (xcb:flush exwm--connection))
       (when exwm--floating-frame
         (let ((window (frame-parameter exwm--floating-frame 'exwm-outer-id)))
           (xcb:+request exwm--connection
@@ -459,8 +471,10 @@ manager is shutting down."
                              :window window
                              :parent exwm--root
                              :x 0 :y 0))))
-      (xcb:+request exwm--connection
-          (make-instance 'xcb:DestroyWindow :window exwm--container))
+      (when exwm--container
+        (xcb:+request exwm--connection
+            (make-instance 'xcb:DestroyWindow
+                           :window exwm--container)))
       (xcb:flush exwm--connection)
       (throw 'return t))
     (unless (memq xcb:Atom:WM_DELETE_WINDOW exwm--protocols)
@@ -485,15 +499,8 @@ manager is shutting down."
       (xcb:flush exwm--connection)
       ;;
       (unless (memq xcb:Atom:_NET_WM_PING exwm--protocols)
-        ;; The window does not support _NET_WM_PING.  To make sure it'll die,
-        ;; kill it after the time runs out.
-        ;; Hide the container to prevent flickering.
-        (xcb:+request exwm--connection
-            (make-instance 'xcb:UnmapWindow :window exwm--container))
-        (xcb:flush exwm--connection)
-        (run-with-timer exwm-manage-ping-timeout nil #'exwm-manage--kill-client
-                        id)
-        ;; Wait for DestroyNotify event.
+        ;; For X windows without _NET_WM_PING support, we'd better just
+        ;; wait for DestroyNotify events.
         (throw 'return nil))
       ;; Try to determine if the X window is dead with _NET_WM_PING.
       (setq exwm-manage--ping-lock t)
@@ -510,7 +517,7 @@ manager is shutting down."
                                  exwm--connection)))
       (xcb:flush exwm--connection)
       (with-timeout (exwm-manage-ping-timeout
-                     (if (yes-or-no-p (format "'%s' is not responding. \
+                     (if (y-or-n-p (format "'%s' is not responding.  \
 Would you like to kill it? "
                                               (buffer-name)))
                          (progn (exwm-manage--kill-client id)
@@ -552,6 +559,20 @@ Would you like to kill it? "
 ;; FIXME: Make the following values as small as possible.
 (defconst exwm-manage--width-delta-min 5)
 (defconst exwm-manage--height-delta-min 5)
+
+(defvar exwm-manage--frame-outer-id-list nil
+  "List of window-outer-id's of all frames.")
+
+(defun exwm-manage--add-frame (frame)
+  "Run in `after-make-frame-functions'."
+  (push (string-to-number (frame-parameter frame 'outer-window-id))
+        exwm-manage--frame-outer-id-list))
+
+(defun exwm-manage--remove-frame (frame)
+  "Run in `delete-frame-functions'."
+  (setq exwm-manage--frame-outer-id-list
+        (delq (string-to-number (frame-parameter frame 'outer-window-id))
+              exwm-manage--frame-outer-id-list)))
 
 (defun exwm-manage--on-ConfigureRequest (data _synthetic)
   "Handle ConfigureRequest event."
@@ -631,14 +652,19 @@ border-width: %d; sibling: #x%x; stack-mode: %d"
                                   nil t)))
           (exwm--log "ConfigureWindow (preserve geometry)")
           ;; Configure the unmanaged window.
-          (xcb:+request exwm--connection
-              (make-instance 'xcb:ConfigureWindow
-                             :window window
-                             :value-mask value-mask
-                             :x x :y y :width width :height height
-                             :border-width border-width
-                             :sibling sibling
-                             :stack-mode stack-mode))))))
+          ;; But Emacs frames should be excluded.  Generally we don't
+          ;; receive ConfigureRequest events from Emacs frames since we
+          ;; have set OverrideRedirect on them, but this is not true for
+          ;; Lucid build (as of 25.1).
+          (unless (memq window exwm-manage--frame-outer-id-list)
+            (xcb:+request exwm--connection
+                (make-instance 'xcb:ConfigureWindow
+                               :window window
+                               :value-mask value-mask
+                               :x x :y y :width width :height height
+                               :border-width border-width
+                               :sibling sibling
+                               :stack-mode stack-mode)))))))
   (xcb:flush exwm--connection))
 
 (declare-function exwm-layout--iconic-state-p "exwm-layout.el" (&optional id))
@@ -691,6 +717,8 @@ border-width: %d; sibling: #x%x; stack-mode: %d"
                                          :name-len (length atom-name)
                                          :name atom-name))
                       'atom)))
+  (add-hook 'after-make-frame-functions #'exwm-manage--add-frame)
+  (add-hook 'delete-frame-functions #'exwm-manage--remove-frame)
   (xcb:+event exwm--connection 'xcb:ConfigureRequest
               #'exwm-manage--on-ConfigureRequest)
   (xcb:+event exwm--connection 'xcb:MapRequest #'exwm-manage--on-MapRequest)
