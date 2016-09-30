@@ -81,6 +81,7 @@
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
    `(which-func          ((,class (:foreground "chartreuse3"))))
+   `(compilation-mode-line-exit ((,class (:foreground "yellow green"))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
