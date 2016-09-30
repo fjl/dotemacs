@@ -7,6 +7,8 @@
 
 (setq exwm-floating-border-color "DimGray")
 (setq exwm-floating-border-width 5)
+(setq exwm-workspace-show-all-buffers t)
+(setq exwm-layout-show-all-buffers t)
 
 ;; Enable exwm.
 (setq use-dialog-box nil)
@@ -55,9 +57,6 @@
     (interactive)
     (let ((default-directory "~/"))
       (shell-command command))))
-
-;; Ensure that switching buffers works regardless of workspace.
-(substitute-key-definition 'switch-to-buffer 'exwm-workspace-switch-to-buffer global-map)
 
 ;; Set up global bindings.
 (progn
