@@ -66,6 +66,7 @@
   ;; Switch workspace interactively.
   (exwm-input-set-key (kbd "C-c v") 'exwm-workspace-switch)
   (exwm-input-set-key (kbd "C-c M-v") 'exwm-workspace-move-window)
+  (exwm-input-set-key (kbd "C-c b") 'exwm-workspace-switch-to-buffer)
   ;; Set shortcuts to switch to a certain workspace.
   (exwm-input-set-key (kbd "s-<f1>") (lambda () (interactive) (exwm-workspace-switch-create 0)))
   (exwm-input-set-key (kbd "s-<f2>") (lambda () (interactive) (exwm-workspace-switch-create 1)))
