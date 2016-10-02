@@ -1,18 +1,16 @@
 (require 'magit)
 
-(defvar *pr-base-branch* "develop")
-
 (defun magit-visit-pull-request-url ()
   "Visit the current branch's PR on Github.
 The branch must be pushed to github and have a remote."
   (interactive)
   (let* ((branch      (magit-get-current-branch))
-         (base-info   (fjl/get-github-info *pr-base-branch* #'magit-get-remote))
-         (branch-info (fjl/get-github-info branch #'magit-get-push-remote)))
+         (branch-info (fjl/get-github-info branch (magit-get-push-remote branch)))
+         (base        (magit-split-branch-name (magit-get-upstream-branch)))
+         (base-info   (fjl/get-github-info (cdr base) (car base))))
     (browse-url
      (format "https://github.com/%s/%s/compare/%s...%s:%s"
-             (car base-info) (cdr base-info) *pr-base-branch* (car branch-info) branch))))
-
+             (car base-info) (cdr base-info) (cdr base) (car branch-info) branch))))
 
 (defun magit-yank-github-url ()
   (interactive)
@@ -23,10 +21,10 @@ The branch must be pushed to github and have a remote."
     (kill-new url)
     (message url)))
 
-(defun fjl/get-github-info (branch get-remote)
+(defun fjl/get-github-info (branch remote-name)
   "Returns a cons containing the github username in the car and
 the remote repository name in the cdr."
-  (let ((remote (magit-get "remote" (funcall get-remote branch) "url")))
+  (let ((remote (magit-get "remote" remote-name "url")))
     (when (null remote)
       (error "current branch has no remote"))
     (save-match-data
