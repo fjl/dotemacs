@@ -80,25 +80,30 @@ and to setup the inital frame."
   (interactive)
   (add-hook 'focus-in-hook 'fjl/fix-frame-size))
 
-;; OS X stuff
-(when (memq window-system '(ns mac))
+(defun fjl/setup-mac-gui ()
+  "Applies macOS settings."
   (setq-default line-spacing 0.1)
+  (setq ns-use-native-fullscreen nil)
   ;; enable emoji font as fallback
   (set-fontset-font t 'unicode "Symbola" nil 'prepend)
+  ;; keyboard settings
   (setq mac-command-modifier 'super)
   (setq mac-option-modifier 'meta)
   (setq mac-mouse-wheel-smooth-scroll nil)
-  ;; enable ligatures on OS X.
-  (when (functionp 'mac-auto-operator-composition-mode)
-    (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
-    (mac-auto-operator-composition-mode))
-  (setq ns-use-native-fullscreen nil)
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
-  ;; confirm quit
-  (setq confirm-kill-emacs 'y-or-n-p)
-)
+  (when (eq window-system 'mac)
+    ;; enable ligatures
+    (when (functionp 'mac-auto-operator-composition-mode)
+      (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
+      (mac-auto-operator-composition-mode))
+    ;; save/restore frame configuration on mac port.
+    (desktop-save-mode 1)
+    (setq desktop-save t)))
+
+(when (memq window-system '(ns mac))
+  (fjl/setup-mac-gui))
 
 (when (memq window-system '(gtk))
   (set-fontset-font t 'unicode "Symbola" nil 'prepend))
