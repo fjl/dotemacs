@@ -127,7 +127,6 @@
  '(ivy-use-virtual-buffers t)
  '(ivy-virtual-abbreviate (quote full))
  '(ivy-wrap t)
- '(mac-mouse-wheel-mode t)
  '(magit-auto-revert-immediately nil)
  '(magit-buffer-name-format "*%M%v: %t*")
  '(magit-completing-read-function (quote ivy-completing-read))
@@ -141,12 +140,9 @@
  '(message-send-mail-function (quote message-send-mail-with-sendmail))
  '(message-signature nil)
  '(message-signature-insert-empty-line nil)
- '(mouse-wheel-progressive-speed t)
- '(mouse-wheel-scroll-amount (quote (2 ((shift) . 1) ((control)))))
+ '(mouse-wheel-progressive-speed nil)
  '(multi-isearch-pause nil)
  '(next-screen-context-lines 8)
- '(ns-alternate-modifier (quote meta))
- '(ns-command-modifier (quote super))
  '(org-agenda-files
    (quote
     ("~/Documents/org/work.org" "~/Documents/org/personal.org")))

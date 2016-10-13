@@ -89,7 +89,9 @@ and to setup the inital frame."
   ;; keyboard settings
   (setq mac-command-modifier 'super)
   (setq mac-option-modifier 'meta)
+  (setq mac-mouse-wheel-mode t)
   (setq mac-mouse-wheel-smooth-scroll nil)
+  (setq mac-drawing-use-gcd nil)
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
