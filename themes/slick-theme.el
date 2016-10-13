@@ -25,7 +25,7 @@
    ;; Compilation
    `(compilation-mode-line-fail ((,class (:foreground "dark green"))))
    `(compilation-mode-line-run  ((,class (:foreground "dark goldenrod"))))
-   `(compilation-mode-line-exit ((,class (:foreground "SpringGreen4"))))
+   `(compilation-mode-line-exit ((,class (:foreground "yellow green"))))
    `(compilation-error ((,class (:foreground "tan3" :weight bold :underline t))))
 
    ;; Highlighting
@@ -81,7 +81,6 @@
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
    `(which-func          ((,class (:foreground "chartreuse3"))))
-   `(compilation-mode-line-exit ((,class (:foreground "yellow green"))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
