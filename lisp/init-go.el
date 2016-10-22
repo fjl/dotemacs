@@ -120,20 +120,15 @@ Returns the new value of GOPATH."
 The second return value is the path to the innermost Godep
 workspace above START or nil if no Godep workspace directory was
 found."
-  (when (null start) (setq start default-directory))
-  (setq start (expand-file-name start))
-  (cl-flet ((popdir (path) (file-name-directory (directory-file-name path)))
-            (fnd    (path) (file-name-nondirectory (directory-file-name path))))
-    (let* ((p              start)
-           (name           (fnd start))
-           (godep-workspace nil))
-      (while (and (not (string-equal p "/")) (not (file-exists-p (concat p "src"))))
-        (let ((ws (concat p "Godeps/_workspace/")))
-          (when (and (not godep-workspace) (file-exists-p ws))
-            (setq godep-workspace ws)))
-        (setq p (popdir p))
-        (setq name (fnd p)))
-      (and (not (string-equal p "/")) (list p godep-workspace)))))
+  (let ((godep-workspace nil))
+    (let ((gopath (locate-dominating-file
+                   (or start ".")
+                   (lambda (dir)
+                     (let ((ws (concat dir "Godeps/_workspace/")))
+                       (when (and (not godep-workspace) (file-exists-p ws))
+                         (setq godep-workspace (expand-file-name ws))))
+                     (file-exists-p (concat dir "src"))))))
+      (and gopath (list (expand-file-name gopath) godep-workspace)))))
 
 (defun fjl/in-goroot-p (dir)
   (let ((root (s-chomp (shell-command-to-string "go env GOROOT"))))
