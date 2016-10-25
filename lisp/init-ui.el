@@ -37,7 +37,7 @@
 
 ;; Per window-system overrides and additions to default-frame-alist.
 (setq window-system-default-frame-alist
-      `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14))))
+      `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 95)))
         (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 95)))
         (w32 . ((font . ,(fpfont 12))))
         (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
@@ -87,22 +87,22 @@ and to setup the inital frame."
   ;; enable emoji font as fallback
   (set-fontset-font t 'unicode "Symbola" nil 'prepend)
   ;; keyboard settings
-  (setq mac-command-modifier 'super)
-  (setq mac-option-modifier 'meta)
-  (setq mac-mouse-wheel-mode t)
-  (setq mac-mouse-wheel-smooth-scroll nil)
-  (setq mac-drawing-use-gcd nil)
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
   (when (eq window-system 'mac)
+    (setq mac-command-modifier 'super)
+    (setq mac-option-modifier 'meta)
+    (setq mac-mouse-wheel-mode t)
+    (setq mac-mouse-wheel-smooth-scroll nil)
+    (setq mac-drawing-use-gcd nil)
     ;; enable ligatures
     (when (functionp 'mac-auto-operator-composition-mode)
       (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
-      (mac-auto-operator-composition-mode))
-    ;; save/restore frame configuration on mac port.
-    (desktop-save-mode 1)
-    (setq desktop-save t)))
+      (mac-auto-operator-composition-mode)))
+  ;; save/restore frame configuration on mac port.
+  (desktop-save-mode 1)
+  (setq desktop-save t))
 
 (when (memq window-system '(ns mac))
   (fjl/setup-mac-gui))
