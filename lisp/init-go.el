@@ -23,7 +23,8 @@
     ("goimports" "golang.org/x/tools/cmd/goimports")
     ("gocode"    "github.com/nsf/gocode")
     ("godef"     "github.com/rogpeppe/godef")
-    ("guru"      "golang.org/x/tools/cmd/guru")))
+    ("guru"      "golang.org/x/tools/cmd/guru")
+    ("govendor"  "github.com/kardianos/govendor")))
 
 (defun fjl/file-name-localname (file)
   (if (tramp-tramp-file-p file)
