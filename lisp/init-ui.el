@@ -109,6 +109,12 @@ and to setup the inital frame."
 (when (memq window-system '(ns mac))
   (fjl/setup-mac-gui))
 
+;; fix up PATH on macOS.
+(when (eq window-system 'ns)
+  (setenv "PATH" (concat "/usr/local/bin:/usr/local/sbin:" (getenv "PATH")))
+  (add-to-list 'exec-path "/usr/local/sbin")
+  (add-to-list 'exec-path "/usr/local/bin"))
+
 (when (memq window-system '(gtk))
   (set-fontset-font t 'unicode "Symbola" nil 'prepend))
 
