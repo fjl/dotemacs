@@ -102,7 +102,9 @@ and to setup the inital frame."
       (mac-auto-operator-composition-mode)))
   ;; save/restore frame configuration on mac port.
   (desktop-save-mode 1)
-  (setq desktop-save t))
+  (setq desktop-save t)
+  ;; add exit confirmation because I hit C-x C-c by accident all the time.
+  (setq confirm-kill-emacs 'y-or-n-p))
 
 (when (memq window-system '(ns mac))
   (fjl/setup-mac-gui))
