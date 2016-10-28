@@ -1,5 +1,9 @@
+;; -*- lexical-binding: t -*-
+
 (require 'cl-lib)
-(eval-when-compile (require 'cl)) ;; for lexical-let*
+(eval-when-compile
+  (require 'cl) ;; for lexical-let*
+  (require 'desktop))
 
 ;; Theme
 (setq-default custom-safe-themes t) ;; accept any theme
@@ -13,7 +17,8 @@
 (add-hook 'eshell-mode-hook 'fjl/setup-ansi-color-theme)
 (add-hook 'shell-mode-hook 'fjl/setup-ansi-color-theme)
 
-;; Font
+;; Fonts
+
 (defmacro fjl/define-font-class (name &rest alternates)
   (let ((alts (cl-gensym)) (sel (cl-gensym)))
     `(lexical-let* ((,alts ',alternates)
@@ -26,6 +31,103 @@
 
 (fjl/define-font-class fpfont "PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace")
 (fjl/define-font-class vpfont "Avenir" "Noto Sans" "Dejavu Sans" "Sans Serif")
+
+(set-face-attribute 'fixed-pitch nil :family (fpfont))
+(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
+
+(defvar fjl/setting-up-first-frame t
+  "This variable is set to nil after setting up the first frame.")
+
+;; Mac/NS Display
+
+;; (quieten the byte compiler)
+(defvar mac-command-modifier)
+(defvar mac-option-modifier)
+(defvar mac-mouse-wheel-mode)
+(defvar mac-mouse-wheel-smooth-scroll)
+(defvar mac-drawing-use-gcd)
+(defvar mac-auto-operator-composition-characters)
+
+(defun fjl/setup-mac-gui (&optional frame)
+  "Applies macOS gui settings."
+  (setq-default line-spacing 0.1)
+  (setq ns-use-native-fullscreen nil)
+  ;; enable emoji font as fallback
+  (set-fontset-font t 'unicode "Symbola" frame 'prepend)
+  ;; keyboard settings
+  (setq ns-command-modifier 'super)
+  (setq ns-alternate-modifier 'meta)
+  (setq ns-auto-hide-menu-bar nil)
+  (when (eq window-system 'mac)
+    (setq mac-command-modifier 'super)
+    (setq mac-option-modifier 'meta)
+    (setq mac-mouse-wheel-mode t)
+    (setq mac-mouse-wheel-smooth-scroll nil)
+    (setq mac-drawing-use-gcd nil)
+    ;; enable ligatures
+    (when (functionp 'mac-auto-operator-composition-mode)
+      (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
+      (mac-auto-operator-composition-mode))))
+
+(defun fjl/mac-path-helper-path ()
+  (with-temp-buffer
+    (let ((process-environment
+           (cons "PATH"
+                 (cl-remove-if (lambda (s) (string-prefix-p "PATH=" s)) process-environment))))
+      (process-file "/usr/libexec/path_helper" nil (current-buffer) nil))
+    (zap-to-char -1 ?\") ;; trim "\nexport PATH; at end
+    (goto-char (point-min))
+    (zap-to-char 1 ?\") ;; trim PATH=" at beginning
+    (buffer-string)))
+
+(defun fjl/setup-mac-path ()
+  "Sets executable path variables according to /etc/paths.
+Applications started via launchd get the system default PATH
+which isn't very useful."
+  (let ((p (fjl/mac-path-helper-path))
+        (home-bin (expand-file-name "~/bin")))
+    (when (file-exists-p home-bin)
+      (setq p (concat p ":" home-bin)))
+    (setenv "PATH" p)
+    (setq exec-path (nconc (split-string p ":") (last exec-path)))))
+
+(defun fjl/setup-mac (&optional frame)
+  (fjl/setup-mac-gui frame)
+  (when fjl/setting-up-first-frame
+    (fjl/setup-mac-path)
+    ;; Save/restore frame configuration.
+    (desktop-save-mode 1)
+    (setq desktop-save 'if-exists)
+    ;; Add exit confirmation because I hit C-x C-c by accident all the time.
+    (setq confirm-kill-emacs 'y-or-n-p)))
+
+;; GTK Display
+
+(defun fjl/setup-gtk (&optional frame)
+  "Applies GTK gui settings."
+  (set-fontset-font t 'unicode "Symbola" frame 'prepend))
+
+;; TTY Display
+
+(defun xterm-title-update (&optional title)
+  (when (eq t (framep-on-display))
+    (send-string-to-terminal (concat "\033]0;" (or title (buffer-name)) "\007"))))
+
+(defun xterm-title-clear ()
+  (xterm-title-update ""))
+
+(defun fjl/setup-tty ()
+  (declare (ignore frame))
+  (xterm-mouse-mode 1)
+  (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
+  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1)))
+  (add-hook 'window-configuration-change-hook 'xterm-title-update)
+  (add-hook 'kill-emacs-hook 'xterm-title-clear)
+  (xterm-title-update))
+
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 ;; Frame parameters for all frames, regardless of window-system.
 (setq default-frame-alist
@@ -42,9 +144,6 @@
         (w32 . ((font . ,(fpfont 12))))
         (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
 
-(set-face-attribute 'fixed-pitch nil :family (fpfont))
-(set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
-
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
 `window-system-default-frame-alist'. This is useful while tweaking
@@ -55,9 +154,13 @@ and to setup the inital frame."
       (set-frame-parameter frame (car p) (cdr p)))
     (when special
       (dolist (p (cdr special))
-        (set-frame-parameter frame (car p) (cdr p))))))
+        (set-frame-parameter frame (car p) (cdr p))))
+    (cond ((or (eq type 'ns) (eq type 'mac))  (fjl/setup-mac frame))
+          ((eq type 'gtk)                     (fjl/setup-gtk frame))
+          ((eq type t)                        (fjl/setup-tty)))
+    (setq fjl/setting-up-first-frame nil)))
 
-(defun fjl/setup-all-frames (&optional frame)
+(defun fjl/setup-all-frames ()
   (dolist (frame (frame-list))
     (fjl/setup-frame frame)))
 
@@ -68,55 +171,6 @@ and to setup the inital frame."
 
 ;; Apply the parameters for all initial frames.
 (fjl/setup-all-frames)
-
-;; This is a workaround for a bug in the GTK interface
-;; where it resets the frame size to something very small
-;; on focus out.
-(defun fjl/fix-frame-size ()
-  (set-frame-size (selected-frame) 9999 9999 t)
-  (set-frame-size (selected-frame) 9999 9999 nil))
-
-(defun enable-frame-size-hack ()
-  (interactive)
-  (add-hook 'focus-in-hook 'fjl/fix-frame-size))
-
-(defun fjl/setup-mac-gui ()
-  "Applies macOS settings."
-  (setq-default line-spacing 0.1)
-  (setq ns-use-native-fullscreen nil)
-  ;; enable emoji font as fallback
-  (set-fontset-font t 'unicode "Symbola" nil 'prepend)
-  ;; keyboard settings
-  (setq ns-command-modifier 'super)
-  (setq ns-alternate-modifier 'meta)
-  (setq ns-auto-hide-menu-bar nil)
-  (when (eq window-system 'mac)
-    (setq mac-command-modifier 'super)
-    (setq mac-option-modifier 'meta)
-    (setq mac-mouse-wheel-mode t)
-    (setq mac-mouse-wheel-smooth-scroll nil)
-    (setq mac-drawing-use-gcd nil)
-    ;; enable ligatures
-    (when (functionp 'mac-auto-operator-composition-mode)
-      (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
-      (mac-auto-operator-composition-mode)))
-  ;; save/restore frame configuration on mac port.
-  (desktop-save-mode 1)
-  (setq desktop-save t)
-  ;; add exit confirmation because I hit C-x C-c by accident all the time.
-  (setq confirm-kill-emacs 'y-or-n-p))
-
-(when (memq window-system '(ns mac))
-  (fjl/setup-mac-gui))
-
-;; fix up PATH on macOS.
-(when (eq window-system 'ns)
-  (setenv "PATH" (concat "/usr/local/bin:/usr/local/sbin:" (getenv "PATH")))
-  (add-to-list 'exec-path "/usr/local/sbin")
-  (add-to-list 'exec-path "/usr/local/bin"))
-
-(when (memq window-system '(gtk))
-  (set-fontset-font t 'unicode "Symbola" nil 'prepend))
 
 ;; Display margin content on the inside of the fringe.
 ;; It looks nicer.
@@ -158,27 +212,6 @@ and to setup the inital frame."
                  (vc-mode vc-mode)
                  "  " mode-line-modes
                  (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
-
-;; Terminal
-
-(defun xterm-title-update (&optional title)
-  (when (eq t (framep-on-display))
-    (send-string-to-terminal (concat "\033]0;" (or title (buffer-name)) "\007"))))
-
-(defun xterm-title-clear ()
-  (xterm-title-update ""))
-
-(unless window-system
-  (xterm-mouse-mode 1)
-  (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
-  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1)))
-  (add-hook 'window-configuration-change-hook 'xterm-title-update)
-  (add-hook 'kill-emacs-hook 'xterm-title-clear)
-  (xterm-title-update))
-
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
 
 ;; Rename and hide certain modes in the mode-line to reduce display clutter.
 (defvar fjl/mode-line-cleaner-alist
