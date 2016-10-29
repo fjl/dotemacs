@@ -117,7 +117,6 @@ which isn't very useful."
   (xterm-title-update ""))
 
 (defun fjl/setup-tty ()
-  (declare (ignore frame))
   (xterm-mouse-mode 1)
   (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
   (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1)))

@@ -36,6 +36,8 @@
   (declare (indent defun))
   `(eval-after-load ,(symbol-name pkg) (lambda () ,@body)))
 
+(defvar generated-autoload-file)
+
 (defun make-init-autoloads (&optional skip-if-exists)
   (let ((generated-autoload-file (concat +fjl-init-lisp+ "init-autoloads.el")))
     (unless (and skip-if-exists (file-exists-p generated-autoload-file))
