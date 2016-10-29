@@ -4,6 +4,7 @@
 (require 'cl-lib)
 
 (eval-when-compile
+  (require 'term)
   (require 'ace-window)
   (require 'company)
   (require 'expand-region)
@@ -74,7 +75,9 @@
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
 ;; compilation
-(define-key compilation-mode-map (kbd "C-c C-q") '(lambda () (interactive) (quit-process)))
+(defun fjl/bind-compilation-keys ()
+  (define-key compilation-mode-map (kbd "C-c C-q") '(lambda () (interactive) (quit-process))))
+(add-hook 'compilation-mode-hook 'fjl/bind-compilation-keys)
 
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -89,13 +92,13 @@
 (global-set-key (kbd "C-x 7 r") 'fjl/eshell-restart-command)
 
 ;; term
-(defun fjl/setup-term-mode ()
+(defun fjl/bind-term-keys ()
   (setq truncate-lines nil)
   (define-key term-raw-map (kbd "M-o") 'ace-window)
   (define-key term-raw-map (kbd "M-x") 'counsel-M-x)
   (define-key term-raw-map (kbd "M-w") 'kill-ring-save)
   (define-key term-raw-map (kbd "C-y") 'term-paste))
-(add-hook 'term-mode-hook 'fjl/setup-term-mode)
+(add-hook 'term-mode-hook 'fjl/bind-term-keys)
 
 (when (memq window-system '(ns mac))
   ;; disable print-buffer on OS X
