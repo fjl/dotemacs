@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'init-bootstrap)
 
 (defun init-compile ()
@@ -43,7 +45,7 @@ Deletes any indentation. If point is inside a comment, also
 deletes the comment start characters on the following line."
   (interactive "p")
   (save-excursion
-    (dotimes (n times)
+    (dotimes (_ times)
       (forward-line 1)
       (delete-indentation)
       (when (nth 4 (syntax-ppss))

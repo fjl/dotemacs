@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;; This file contains definitions shared among all init files.
 ;; These things need to be in their own file because the byte-compiler
 ;; will not expand/use them correctly when compiling init files

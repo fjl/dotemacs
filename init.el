@@ -1,5 +1,3 @@
-;; -*- mode: Emacs-Lisp; fill-column: 78; -*-
-
 ;; Added by Package.el.
 ;(package-initialize)
 
