@@ -51,6 +51,7 @@
    `(font-lock-constant-face ((,class (:inherit nil))))
    `(font-lock-builtin-face ((,class (:inherit nil))))
    `(font-lock-variable-name-face ((,class (:inherit nil))))
+   `(sh-heredoc ((,class (:inherit font-lock-string-face :background "gray20"))))
 
    ;; Button and link
    `(link ((,class (:underline t :foreground "tan3"))))
