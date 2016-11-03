@@ -6,7 +6,7 @@ The branch must be pushed to github and have a remote."
   (interactive)
   (let* ((branch      (magit-get-current-branch))
          (branch-info (fjl/get-github-info branch (magit-get-push-remote branch)))
-         (base        (magit-split-branch-name (magit-get-upstream-branch)))
+         (base        (fjl/get-branch-upstream branch))
          (base-info   (fjl/get-github-info (cdr base) (car base))))
     (browse-url
      (format "https://github.com/%s/%s/compare/%s...%s:%s"
@@ -15,11 +15,17 @@ The branch must be pushed to github and have a remote."
 (defun magit-yank-github-url ()
   (interactive)
   (let* ((branch (magit-get-current-branch))
-         (info   (fjl/get-github-info branch #'magit-get-push-remote))
+         (info   (fjl/get-github-info branch (magit-get-push-remote branch)))
          (url    (format "https://github.com/%s/%s/tree/%s"
                          (car info) (cdr info) branch)))
     (kill-new url)
     (message url)))
+
+(defun fjl/get-branch-upstream (&optional branch)
+  (let ((name (magit-split-branch-name (magit-get-upstream-branch branch))))
+    (if (string= (car name) ".")
+        (magit-split-branch-name (magit-get-push-branch (cdr name)))
+      name)))
 
 (defun fjl/get-github-info (branch remote-name)
   "Returns a cons containing the github username in the car and
