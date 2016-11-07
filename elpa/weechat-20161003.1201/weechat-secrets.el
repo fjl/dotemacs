@@ -34,7 +34,7 @@
 ;;; Code:
 
 (require 'weechat)
-(require 'secrets)
+;;(require 'secrets)
 
 (defgroup weechat-secrets nil
   "Secrets.el support for WeeChat."
