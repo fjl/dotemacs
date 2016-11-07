@@ -130,6 +130,7 @@
  '(magit-auto-revert-immediately nil)
  '(magit-buffer-name-format "*%M%v: %t*")
  '(magit-completing-read-function (quote ivy-completing-read))
+ '(magit-diff-arguments (quote ("--ignore-all-space" "--no-ext-diff" "--stat")))
  '(magit-display-buffer-function (quote magit-display-buffer-same-window-except-diff-v1))
  '(magit-restore-window-configuration nil)
  '(magit-revert-buffers -2 t)
