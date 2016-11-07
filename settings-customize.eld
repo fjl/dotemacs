@@ -163,8 +163,8 @@
    (quote
     (markdown-mode projectile geiser org slime web-mode yaml-mode fuel magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode org-mac-iCal cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper darkroom ace-window ag company-go counsel dtrt-indent ember-mode eshell-z expand-region fish-mode gist go-eldoc go-scratch nginx-mode qml-mode restclient smex speed-type wgrep)))
  '(projectile-completion-system (quote ivy))
- '(projectile-mode t)
  '(projectile-ignored-project-function (quote file-remote-p))
+ '(projectile-mode t nil (projectile))
  '(projectile-mode-line
    (quote
     (:eval
@@ -280,8 +280,8 @@
  '(temp-buffer-resize-mode t)
  '(term-input-ignoredups t)
  '(tls-checktrust t)
- '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))))
- '(tramp-connection-timeout 10)
+ '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))) nil (tramp))
+ '(tramp-connection-timeout 10 nil (tramp))
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(use-file-dialog nil)
