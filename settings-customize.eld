@@ -97,6 +97,8 @@
  '(fuel-factor-root-dir "~/src/factor")
  '(fuel-listener-factor-binary "~/src/factor/factor")
  '(fuel-listener-window-allow-split nil)
+ '(git-commit-fill-column 72)
+ '(git-commit-style-convention-checks (quote (non-empty-second-line overlong-summary-line)))
  '(git-commit-summary-max-length 80)
  '(gnutls-algorithm-priority "PFS")
  '(gnutls-min-prime-bits 1024)
