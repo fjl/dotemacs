@@ -188,7 +188,10 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(safe-local-variable-values
    (quote
-    ((eval c-add-style "ethereum"
+    ((Base . 10)
+     (Package . CL-PPCRE)
+     (Syntax . COMMON-LISP)
+     (eval c-add-style "ethereum"
            (quote
             ("bsd"
              (indent-tabs-mode . t)
