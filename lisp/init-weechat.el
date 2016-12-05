@@ -14,7 +14,8 @@
   (setq truncate-lines nil)
   (setq word-wrap t)
   (visual-line-mode 1)
-  (require 'weechat-tracking))
+  (require 'weechat-tracking)
+  (require 'weechat-read-marker))
 
 ;;;###autoload
 (add-hook 'weechat-mode-hook 'fjl/weechat-mode-setup)
