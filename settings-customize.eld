@@ -108,6 +108,7 @@
  '(gnutls-verify-error t)
  '(go-fontify-function-calls nil)
  '(godoc-at-point-function (quote godoc-gogetdoc))
+ '(godoc-command "godoc")
  '(gofmt-show-errors nil)
  '(graphviz-dot-auto-indent-on-semi nil)
  '(grep-highlight-matches t)
