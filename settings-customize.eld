@@ -189,7 +189,8 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(safe-local-variable-values
    (quote
-    ((Base . 10)
+    ((Package . CL-WHO)
+     (Base . 10)
      (Package . CL-PPCRE)
      (Syntax . COMMON-LISP)
      (eval c-add-style "ethereum"
