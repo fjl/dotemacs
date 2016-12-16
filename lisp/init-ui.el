@@ -147,7 +147,7 @@ which isn't very useful."
 
 ;; Per window-system overrides and additions to default-frame-alist.
 (setq window-system-default-frame-alist
-      `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 75)))
+      `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 93)))
         (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 75)))
         (w32 . ((font . ,(fpfont 12))))
         (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
