@@ -80,16 +80,25 @@
     (zap-to-char 1 ?\") ;; trim PATH=" at beginning
     (buffer-string)))
 
+(defun fjl/mac-app-resources-bin ()
+  (save-match-data
+    (let ((cmd (first command-line-args)))
+      (when (string-match "\\.app/Contents/\\(MacOS/Emacs\\)$" cmd)
+        (replace-match "Resources/bin" t t cmd 1)))))
+
 (defun fjl/setup-mac-path ()
   "Sets executable path variables according to /etc/paths.
 Applications started via launchd get the system default PATH
 which isn't very useful."
-  (let ((p (fjl/mac-path-helper-path))
+  (let ((path     (fjl/mac-path-helper-path))
+        (tool-bin (fjl/mac-app-resources-bin))
         (home-bin (expand-file-name "~/bin")))
     (when (file-exists-p home-bin)
-      (setq p (concat p ":" home-bin)))
-    (setenv "PATH" p)
-    (setq exec-path (nconc (split-string p ":") (last exec-path)))))
+      (setq path (concat path ":" home-bin)))
+    (when tool-bin
+      (setq path (concat path ":" tool-bin)))
+    (setenv "PATH" path)
+    (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
