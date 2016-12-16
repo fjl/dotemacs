@@ -270,6 +270,7 @@
  '(send-mail-function (quote smtpmail-send-it))
  '(sentence-end-double-space nil)
  '(server-window (quote pop-to-buffer))
+ '(shell-command-with-editor-mode t)
  '(shell-completion-fignore (quote ("~" "#" "%")))
  '(shell-file-name "bash")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
@@ -290,7 +291,7 @@
  '(term-input-ignoredups t)
  '(tls-checktrust t)
  '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))))
- '(tramp-connection-timeout 10 nil (tramp))
+ '(tramp-connection-timeout 10)
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(use-file-dialog nil)
@@ -314,8 +315,7 @@
  '(window-combination-resize t)
  '(window-min-width 90)
  '(window-sides-slots (quote (1 nil 3 nil)))
- '(winner-mode t)
- '(with-editor-emacsclient-executable nil))
+ '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
