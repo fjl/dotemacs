@@ -96,7 +96,7 @@ which isn't very useful."
     (when (file-exists-p home-bin)
       (setq path (concat path ":" home-bin)))
     (when tool-bin
-      (setq path (concat path ":" tool-bin)))
+      (setq path (concat tool-bin ":" path)))
     (setenv "PATH" path)
     (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
@@ -196,15 +196,17 @@ and to setup the inital frame."
   (add-hook 'linum-before-numbering-hook 'fjl/linum-numbering-hook)
   (setq-default linum-format #'fjl/linum-format))
 
-;; Scrolling in compilation-mode
-
+;; For the compilation buffer, these auto scroll settings make it so point isn't centered
+;; in the window when output reaches the bottom.
 (defun fjl/compilation-mode-hook ()
-  ;; These auto scroll settings make it so point isn't
-  ;; centered in the window when output reaches the bottom.
   (setq-local scroll-conservatively 200)
   (setq-local scroll-step 1))
 
 (add-hook 'compilation-mode-hook 'fjl/compilation-mode-hook)
+
+;; When quitting server edits, kill the window with them
+;; if it was opened for the edit.
+(add-hook 'server-done-hook 'quit-window)
 
 ;; Mode Line Setup.
 
