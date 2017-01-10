@@ -18,7 +18,8 @@
   (concat (file-name-as-directory (gotools-dir)) "bin"))
 
 (defvar gotools-list
-  '(("eg"          "golang.org/x/tools/cmd/eg")
+  '(("benchstat"   "rsc.io/benchstat")
+    ("eg"          "golang.org/x/tools/cmd/eg")
     ("gocode"      "github.com/nsf/gocode")
     ("godef"       "github.com/rogpeppe/godef")
     ("godep"       "github.com/tools/godep")
@@ -30,6 +31,7 @@
     ("gosimple"    "honnef.co/go/simple/cmd/gosimple")
     ("govendor"    "github.com/kardianos/govendor")
     ("guru"        "golang.org/x/tools/cmd/guru")
+    ("ineffassign" "github.com/gordonklaus/ineffassign")
     ("staticcheck" "honnef.co/go/staticcheck/cmd/staticcheck")
     ("stress"      "golang.org/x/tools/cmd/stress")))
 
