@@ -32,6 +32,7 @@
 
 ;; dired binds C-x C-j in some local map, so it needs to be overridden here.
 (define-key prog-mode-map (kbd "C-x C-j") 'fjl/join-next-line)
+(define-key text-mode-map (kbd "C-x C-j") 'fjl/join-next-line)
 
 ;; overwrites one of the many bindings for undo. not a problem so far.
 (global-set-key (kbd "C-/") 'hippie-expand)
