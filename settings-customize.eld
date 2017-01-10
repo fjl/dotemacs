@@ -138,6 +138,7 @@
  '(magit-restore-window-configuration nil)
  '(magit-revert-buffers -2 t)
  '(magit-revision-show-gravatars nil)
+ '(magit-show-refs-arguments (quote ("--sort=-committerdate")))
  '(markdown-header-scaling t)
  '(message-cite-style (quote message-cite-style-thunderbird))
  '(message-kill-buffer-on-exit t)
