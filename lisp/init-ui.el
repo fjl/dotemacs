@@ -168,7 +168,7 @@ and to setup the inital frame."
           ((eq type t)                        (fjl/setup-tty)))
     (setq fjl/setting-up-first-frame nil)))
 
-(defun fjl/setup-all-frames ()
+(defun fjl/setup-all-frames (&rest args)
   (dolist (frame (frame-list))
     (fjl/setup-frame frame)))
 
