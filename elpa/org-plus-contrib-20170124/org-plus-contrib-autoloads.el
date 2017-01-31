@@ -1,4 +1,4 @@
-;;; org-autoloads.el --- automatically extracted autoloads
+;;; org-plus-contrib-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
@@ -73,6 +73,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "ob-csharp" "ob-csharp.el" (0 0 0 0))
+;;; Generated autoloads from ob-csharp.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-csharp" '("org-babel-")))
+
+;;;***
+
 ;;;### (autoloads nil "ob-css" "ob-css.el" (0 0 0 0))
 ;;; Generated autoloads from ob-css.el
 
@@ -108,6 +115,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "ob-eukleides" "ob-eukleides.el" (0 0 0 0))
+;;; Generated autoloads from ob-eukleides.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-eukleides" '("org-")))
+
+;;;***
+
 ;;;### (autoloads nil "ob-eval" "ob-eval.el" (0 0 0 0))
 ;;; Generated autoloads from ob-eval.el
 
@@ -119,6 +133,13 @@
 ;;; Generated autoloads from ob-exp.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-exp" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "ob-fomus" "ob-fomus.el" (0 0 0 0))
+;;; Generated autoloads from ob-fomus.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-fomus" '("org-babel-")))
 
 ;;;***
 
@@ -178,6 +199,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "ob-julia" "ob-julia.el" (0 0 0 0))
+;;; Generated autoloads from ob-julia.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-julia" '("org-babel-")))
+
+;;;***
+
 ;;;### (autoloads nil "ob-latex" "ob-latex.el" (0 0 0 0))
 ;;; Generated autoloads from ob-latex.el
 
@@ -220,6 +248,21 @@
 
 ;;;***
 
+;;;### (autoloads nil "ob-mathematica" "ob-mathematica.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from ob-mathematica.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-mathematica" '("org-babel-")))
+
+;;;***
+
+;;;### (autoloads nil "ob-mathomatic" "ob-mathomatic.el" (0 0 0 0))
+;;; Generated autoloads from ob-mathomatic.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-mathomatic" '("org-babel-")))
+
+;;;***
+
 ;;;### (autoloads nil "ob-maxima" "ob-maxima.el" (0 0 0 0))
 ;;; Generated autoloads from ob-maxima.el
 
@@ -252,6 +295,13 @@
 ;;; Generated autoloads from ob-org.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-org" '("org-babel-")))
+
+;;;***
+
+;;;### (autoloads nil "ob-oz" "ob-oz.el" (0 0 0 0))
+;;; Generated autoloads from ob-oz.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-oz" '("oz-send-string-expression" "org-babel-")))
 
 ;;;***
 
@@ -374,10 +424,31 @@
 
 ;;;***
 
+;;;### (autoloads nil "ob-stata" "ob-stata.el" (0 0 0 0))
+;;; Generated autoloads from ob-stata.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-stata" '("org-babel-")))
+
+;;;***
+
 ;;;### (autoloads nil "ob-table" "ob-table.el" (0 0 0 0))
 ;;; Generated autoloads from ob-table.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-table" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "ob-tcl" "ob-tcl.el" (0 0 0 0))
+;;; Generated autoloads from ob-tcl.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-tcl" '("org-babel-")))
+
+;;;***
+
+;;;### (autoloads nil "ob-vbnet" "ob-vbnet.el" (0 0 0 0))
+;;; Generated autoloads from ob-vbnet.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ob-vbnet" '("org-babel-")))
 
 ;;;***
 
@@ -880,10 +951,59 @@ to override `appt-message-warning-time'.
 
 ;;;***
 
+;;;### (autoloads nil "org-annotate-file" "org-annotate-file.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from org-annotate-file.el
+
+(autoload 'org-annotate-file "org-annotate-file" "\
+Visit `org-annotate-file-storage-file` and add a new annotation section.
+The annotation is opened at the new section which will be referencing
+the point in the current file.
+
+\(fn)" t nil)
+
+(autoload 'org-annotate-file-show-section "org-annotate-file" "\
+Add or show annotation entry in STORAGE-FILE and return the buffer.
+The annotation will link to ANNOTATED-BUFFER if specified,
+  otherwise the current buffer is used.
+
+\(fn STORAGE-FILE &optional ANNOTATED-BUFFER)" nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-annotate-file" '("org-annotate-file-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-bibtex" "org-bibtex.el" (0 0 0 0))
 ;;; Generated autoloads from org-bibtex.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bibtex" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-bibtex-extras" "org-bibtex-extras.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from org-bibtex-extras.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bibtex-extras" '("obe-")))
+
+;;;***
+
+;;;### (autoloads nil "org-bookmark" "org-bookmark.el" (0 0 0 0))
+;;; Generated autoloads from org-bookmark.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bookmark" '("org-bookmark-")))
+
+;;;***
+
+;;;### (autoloads nil "org-bullets" "org-bullets.el" (0 0 0 0))
+;;; Generated autoloads from org-bullets.el
+
+(autoload 'org-bullets-mode "org-bullets" "\
+UTF-8 bullets for `org-mode'.
+
+\(fn &optional ARG)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-bullets" '("org-bullets-")))
 
 ;;;***
 
@@ -929,6 +1049,27 @@ Set `org-capture-templates' to be similar to `org-remember-templates'.
 \(fn)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-capture" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-checklist" "org-checklist.el" (0 0 0 0))
+;;; Generated autoloads from org-checklist.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-checklist" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-choose" "org-choose.el" (0 0 0 0))
+;;; Generated autoloads from org-choose.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-choose" '("org-choose-")))
+
+;;;***
+
+;;;### (autoloads nil "org-collector" "org-collector.el" (0 0 0 0))
+;;; Generated autoloads from org-collector.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-collector" '("org-" "and-rest")))
 
 ;;;***
 
@@ -1014,6 +1155,18 @@ Try very hard to provide sensible version strings.
 
 ;;;***
 
+;;;### (autoloads nil "org-contacts" "org-contacts.el" (0 0 0 0))
+;;; Generated autoloads from org-contacts.el
+
+(autoload 'org-contacts "org-contacts" "\
+Create agenda view for contacts matching NAME.
+
+\(fn NAME)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-contacts" '("org-co" "erc-nicknames-list")))
+
+;;;***
+
 ;;;### (autoloads nil "org-crypt" "org-crypt.el" (0 0 0 0))
 ;;; Generated autoloads from org-crypt.el
 
@@ -1028,10 +1181,61 @@ Try very hard to provide sensible version strings.
 
 ;;;***
 
+;;;### (autoloads nil "org-depend" "org-depend.el" (0 0 0 0))
+;;; Generated autoloads from org-depend.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-depend" '("org-depend-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-docview" "org-docview.el" (0 0 0 0))
 ;;; Generated autoloads from org-docview.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-docview" '("org-docview-")))
+
+;;;***
+
+;;;### (autoloads nil "org-drill" "org-drill.el" (0 0 0 0))
+;;; Generated autoloads from org-drill.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-drill" '("org-" "shuffle-list" "spelln-integer-in-language" "*org-drill-" "with-" "drill-answer" "determine-next-interval-s" "initial-optimal-factor-sm5" "inter-repetition-interval-sm5" "get-optimal-factor-sm5" "pop-random" "push-end" "pseudonormal" "time-to-" "command-keybinding-to-string" "round-float" "free-marker")))
+
+;;;***
+
+;;;### (autoloads nil "org-ebib" "org-ebib.el" (0 0 0 0))
+;;; Generated autoloads from org-ebib.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-ebib" '("org-ebib-")))
+
+;;;***
+
+;;;### (autoloads nil "org-effectiveness" "org-effectiveness.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from org-effectiveness.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-effectiveness" '("org-effectiveness-")))
+
+;;;***
+
+;;;### (autoloads nil "org-eldoc" "org-eldoc.el" (0 0 0 0))
+;;; Generated autoloads from org-eldoc.el
+
+(autoload 'org-eldoc-load "org-eldoc" "\
+Set up org-eldoc documentation function.
+
+\(fn)" t nil)
+
+(add-hook 'org-mode-hook #'org-eldoc-load)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eldoc" '("org-eldoc-")))
+
+;;;***
+
+;;;### (autoloads nil "org-elisp-symbol" "org-elisp-symbol.el" (0
+;;;;;;  0 0 0))
+;;; Generated autoloads from org-elisp-symbol.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-elisp-symbol" '("org-elisp-symbol-")))
 
 ;;;***
 
@@ -1049,6 +1253,21 @@ Try very hard to provide sensible version strings.
 
 ;;;***
 
+;;;### (autoloads nil "org-eval" "org-eval.el" (0 0 0 0))
+;;; Generated autoloads from org-eval.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eval" '("org-eval-")))
+
+;;;***
+
+;;;### (autoloads nil "org-eval-light" "org-eval-light.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from org-eval-light.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-eval-light" '("org-eval-light-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-eww" "org-eww.el" (0 0 0 0))
 ;;; Generated autoloads from org-eww.el
 
@@ -1056,10 +1275,24 @@ Try very hard to provide sensible version strings.
 
 ;;;***
 
+;;;### (autoloads nil "org-expiry" "org-expiry.el" (0 0 0 0))
+;;; Generated autoloads from org-expiry.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-expiry" '("org-expiry-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-faces" "org-faces.el" (0 0 0 0))
 ;;; Generated autoloads from org-faces.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-faces" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-git-link" "org-git-link.el" (0 0 0 0))
+;;; Generated autoloads from org-git-link.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-git-link" '("org-git")))
 
 ;;;***
 
@@ -1077,6 +1310,13 @@ Try very hard to provide sensible version strings.
 
 ;;;***
 
+;;;### (autoloads nil "org-index" "org-index.el" (0 0 0 0))
+;;; Generated autoloads from org-index.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-index" '("org-index")))
+
+;;;***
+
 ;;;### (autoloads nil "org-info" "org-info.el" (0 0 0 0))
 ;;; Generated autoloads from org-info.el
 
@@ -1089,6 +1329,120 @@ Try very hard to provide sensible version strings.
 ;;; Generated autoloads from org-inlinetask.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-inlinetask" '("org-inlinetask-")))
+
+;;;***
+
+;;;### (autoloads nil "org-interactive-query" "org-interactive-query.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from org-interactive-query.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-interactive-query" '("org-agenda-query-")))
+
+;;;***
+
+;;;### (autoloads nil "org-invoice" "org-invoice.el" (0 0 0 0))
+;;; Generated autoloads from org-invoice.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-invoice" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-learn" "org-learn.el" (0 0 0 0))
+;;; Generated autoloads from org-learn.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-learn" '("org-" "determine-next-interval" "inter-repetition-interval" "initial-" "calculate-new-optimal-factor" "modify-" "set-optimal-factor" "get-optimal-factor")))
+
+;;;***
+
+;;;### (autoloads nil "org-license" "org-license.el" (0 0 0 0))
+;;; Generated autoloads from org-license.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-license" '("org-license-")))
+
+;;;***
+
+;;;### (autoloads nil "org-link-edit" "org-link-edit.el" (0 0 0 0))
+;;; Generated autoloads from org-link-edit.el
+
+(autoload 'org-link-edit-forward-slurp "org-link-edit" "\
+Slurp N trailing blobs into link's description.
+
+  The [[http://orgmode.org/][Org mode]] site
+
+                        |
+                        v
+
+  The [[http://orgmode.org/][Org mode site]]
+
+A blob is a block of non-whitespace characters.  When slurping
+forward, trailing punctuation characters are not considered part
+of a blob.
+
+After slurping, return the slurped text and move point to the
+beginning of the link.
+
+If N is negative, slurp leading blobs instead of trailing blobs.
+
+\(fn &optional N)" t nil)
+
+(autoload 'org-link-edit-backward-slurp "org-link-edit" "\
+Slurp N leading blobs into link's description.
+
+  The [[http://orgmode.org/][Org mode]] site
+
+                        |
+                        v
+
+  [[http://orgmode.org/][The Org mode]] site
+
+A blob is a block of non-whitespace characters.
+
+After slurping, return the slurped text and move point to the
+beginning of the link.
+
+If N is negative, slurp trailing blobs instead of leading blobs.
+
+\(fn &optional N)" t nil)
+
+(autoload 'org-link-edit-forward-barf "org-link-edit" "\
+Barf N trailing blobs from link's description.
+
+  The [[http://orgmode.org/][Org mode]] site
+
+                        |
+                        v
+
+  The [[http://orgmode.org/][Org]] mode site
+
+A blob is a block of non-whitespace characters.
+
+After barfing, return the barfed text and move point to the
+beginning of the link.
+
+If N is negative, barf leading blobs instead of trailing blobs.
+
+\(fn &optional N)" t nil)
+
+(autoload 'org-link-edit-backward-barf "org-link-edit" "\
+Barf N leading blobs from link's description.
+
+  The [[http://orgmode.org/][Org mode]] site
+
+                        |
+                        v
+
+  The Org [[http://orgmode.org/][mode]] site
+
+A blob is a block of non-whitespace characters.
+
+After barfing, return the barfed text and move point to the
+beginning of the link.
+
+If N is negative, barf trailing blobs instead of leading blobs.
+
+\(fn &optional N)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-link-edit" '("org-link-edit--")))
 
 ;;;***
 
@@ -1117,6 +1471,20 @@ ARG can also be a list of checker names, as symbols, to run.
 
 ;;;***
 
+;;;### (autoloads nil "org-mac-iCal" "org-mac-iCal.el" (0 0 0 0))
+;;; Generated autoloads from org-mac-iCal.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mac-iCal" '("org-mac-iCal" "omi-")))
+
+;;;***
+
+;;;### (autoloads nil "org-mac-link" "org-mac-link.el" (0 0 0 0))
+;;; Generated autoloads from org-mac-link.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mac-link" '("org-" "as-get-s")))
+
+;;;***
+
 ;;;### (autoloads nil "org-macro" "org-macro.el" (0 0 0 0))
 ;;; Generated autoloads from org-macro.el
 
@@ -1136,6 +1504,27 @@ Load FILE with optional arguments NOERROR and MUSTSUFFIX.
 
 ;;;***
 
+;;;### (autoloads nil "org-mairix" "org-mairix.el" (0 0 0 0))
+;;; Generated autoloads from org-mairix.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mairix" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-man" "org-man.el" (0 0 0 0))
+;;; Generated autoloads from org-man.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-man" '("org-man-")))
+
+;;;***
+
+;;;### (autoloads nil "org-mew" "org-mew.el" (0 0 0 0))
+;;; Generated autoloads from org-mew.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mew" '("org-mew-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-mhe" "org-mhe.el" (0 0 0 0))
 ;;; Generated autoloads from org-mhe.el
 
@@ -1143,10 +1532,64 @@ Load FILE with optional arguments NOERROR and MUSTSUFFIX.
 
 ;;;***
 
+;;;### (autoloads nil "org-mime" "org-mime.el" (0 0 0 0))
+;;; Generated autoloads from org-mime.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mime" '("org-mime-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-mouse" "org-mouse.el" (0 0 0 0))
 ;;; Generated autoloads from org-mouse.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-mouse" '("org-mouse-")))
+
+;;;***
+
+;;;### (autoloads nil "org-notify" "org-notify.el" (0 0 0 0))
+;;; Generated autoloads from org-notify.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-notify" '("org-notify-")))
+
+;;;***
+
+;;;### (autoloads nil "org-notmuch" "org-notmuch.el" (0 0 0 0))
+;;; Generated autoloads from org-notmuch.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-notmuch" '("org-notmuch-")))
+
+;;;***
+
+;;;### (autoloads nil "org-panel" "org-panel.el" (0 0 0 0))
+;;; Generated autoloads from org-panel.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-panel" '("orgpan-")))
+
+;;;***
+
+;;;### (autoloads nil "org-passwords" "org-passwords.el" (0 0 0 0))
+;;; Generated autoloads from org-passwords.el
+
+(autoload 'org-passwords-mode "org-passwords" "\
+Mode for storing passwords
+
+\(fn)" t nil)
+
+(autoload 'org-passwords "org-passwords" "\
+Open the password file. Open the password file defined by the
+variable `org-password-file' in read-only mode and kill that
+buffer later according to the value of the variable
+`org-passwords-time-opened'. It also adds the `org-password-file'
+to the auto-mode-alist so that it is opened with its mode being
+`org-passwords-mode'.
+
+With prefix arg ARG, the command does not set up a timer to kill the buffer.
+
+With a double prefix arg \\[universal-argument] \\[universal-argument], open the file for editing.
+
+\(fn &optional ARG)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-passwords" '("org-passwords-")))
 
 ;;;***
 
@@ -1164,6 +1607,45 @@ Load FILE with optional arguments NOERROR and MUSTSUFFIX.
 
 ;;;***
 
+;;;### (autoloads nil "org-registry" "org-registry.el" (0 0 0 0))
+;;; Generated autoloads from org-registry.el
+
+(autoload 'org-registry-show "org-registry" "\
+Show Org files where there are links pointing to the current
+buffer.
+
+\(fn &optional VISIT)" t nil)
+
+(autoload 'org-registry-visit "org-registry" "\
+If an Org file contains a link to the current location, visit
+this file.
+
+\(fn)" t nil)
+
+(autoload 'org-registry-initialize "org-registry" "\
+Initialize `org-registry-alist'.
+If FROM-SCRATCH is non-nil or the registry does not exist yet,
+create a new registry from scratch and eval it. If the registry
+exists, eval `org-registry-file' and make it the new value for
+`org-registry-alist'.
+
+\(fn &optional FROM-SCRATCH)" t nil)
+
+(autoload 'org-registry-insinuate "org-registry" "\
+Call `org-registry-update' after saving in Org-mode.
+Use with caution.  This could slow down things a bit.
+
+\(fn)" t nil)
+
+(autoload 'org-registry-update "org-registry" "\
+Update the registry for the current Org file.
+
+\(fn)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-registry" '("org-registry-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-rmail" "org-rmail.el" (0 0 0 0))
 ;;; Generated autoloads from org-rmail.el
 
@@ -1171,10 +1653,127 @@ Load FILE with optional arguments NOERROR and MUSTSUFFIX.
 
 ;;;***
 
+;;;### (autoloads nil "org-screen" "org-screen.el" (0 0 0 0))
+;;; Generated autoloads from org-screen.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-screen" '("org-screen")))
+
+;;;***
+
+;;;### (autoloads nil "org-screenshot" "org-screenshot.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from org-screenshot.el
+
+(autoload 'org-screenshot-take "org-screenshot" "\
+Take a screenshot and insert link to it at point, if image
+display is already on (see \\[org-toggle-inline-images])
+screenshot will be displayed as an image
+
+Screen area for the screenshot is selected with the mouse, left
+click on a window screenshots that window, while left click and
+drag selects a region. Pressing any key cancels the screen shot
+
+With `C-u' universal argument waits one second after target is
+selected before taking the screenshot. With double `C-u' wait two
+seconds.
+
+With triple `C-u' wait 3 seconds, and also rings the bell when
+screenshot is done, any more `C-u' after that increases delay by
+2 seconds
+
+\(fn &optional DELAY)" t nil)
+
+(autoload 'org-screenshot-rotate-prev "org-screenshot" "\
+Rotate last screenshot with one of the previously taken
+screenshots from the same directory. If DIR is negative, rotate
+in the other direction
+
+\(fn DIR)" t nil)
+
+(autoload 'org-screenshot-rotate-next "org-screenshot" "\
+Rotate last screenshot with one of the previously taken
+screenshots from the same directory. If DIR is negative, rotate
+in the other direction
+
+\(fn DIR)" t nil)
+
+(autoload 'org-screenshot-show-unused "org-screenshot" "\
+Open A Dired buffer with unused screenshots marked
+
+\(fn)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-screenshot" '("org-screenshot-")))
+
+;;;***
+
+;;;### (autoloads nil "org-secretary" "org-secretary.el" (0 0 0 0))
+;;; Generated autoloads from org-secretary.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-secretary" '("org-sec-" "join")))
+
+;;;***
+
 ;;;### (autoloads nil "org-src" "org-src.el" (0 0 0 0))
 ;;; Generated autoloads from org-src.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-src" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-static-mathjax" "org-static-mathjax.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from org-static-mathjax.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-static-mathjax" '("org-static-mathjax-")))
+
+;;;***
+
+;;;### (autoloads nil "org-sudoku" "org-sudoku.el" (0 0 0 0))
+;;; Generated autoloads from org-sudoku.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-sudoku" '("org-sudoku-")))
+
+;;;***
+
+;;;### (autoloads nil "org-toc" "org-toc.el" (0 0 0 0))
+;;; Generated autoloads from org-toc.el
+
+(autoload 'org-toc-show "org-toc" "\
+Show the table of contents of the current Org-mode buffer.
+
+\(fn &optional DEPTH POSITION)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-toc" '("org-")))
+
+;;;***
+
+;;;### (autoloads nil "org-track" "org-track.el" (0 0 0 0))
+;;; Generated autoloads from org-track.el
+
+(autoload 'org-track-fetch-package "org-track" "\
+Fetch Org package depending on `org-track-fetch-package-extension'.
+If DIRECTORY is defined, unpack the package there, i.e. add the
+subdirectory org-mode/ to DIRECTORY.
+
+\(fn &optional DIRECTORY)" t nil)
+
+(autoload 'org-track-compile-org "org-track" "\
+Compile all *.el files that come with org-mode.
+Generate the autoloads file `org-loaddefs.el'.
+
+DIRECTORY is where the directory org-mode/ lives (i.e. the
+          parent directory of your local repo.
+
+\(fn &optional DIRECTORY)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-track" '("org-track-")))
+
+;;;***
+
+;;;### (autoloads nil "org-velocity" "org-velocity.el" (0 0 0 0))
+;;; Generated autoloads from org-velocity.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-velocity" '("org-velocity")))
 
 ;;;***
 
@@ -1198,10 +1797,31 @@ The location of ODT styles.")
 
 ;;;***
 
+;;;### (autoloads nil "org-vm" "org-vm.el" (0 0 0 0))
+;;; Generated autoloads from org-vm.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-vm" '("org-vm-")))
+
+;;;***
+
 ;;;### (autoloads nil "org-w3m" "org-w3m.el" (0 0 0 0))
 ;;; Generated autoloads from org-w3m.el
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-w3m" '("org-w3m-")))
+
+;;;***
+
+;;;### (autoloads nil "org-wikinodes" "org-wikinodes.el" (0 0 0 0))
+;;; Generated autoloads from org-wikinodes.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-wikinodes" '("org-wikinodes-")))
+
+;;;***
+
+;;;### (autoloads nil "org-wl" "org-wl.el" (0 0 0 0))
+;;; Generated autoloads from org-wl.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-wl" '("org-wl-")))
 
 ;;;***
 
@@ -1213,6 +1833,181 @@ The location of ODT styles.")
 
 ;;;***
 
+;;;### (autoloads nil "ox-bibtex" "ox-bibtex.el" (0 0 0 0))
+;;; Generated autoloads from ox-bibtex.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-bibtex" '("org-bibtex-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-confluence" "ox-confluence.el" (0 0 0 0))
+;;; Generated autoloads from ox-confluence.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-confluence" '("org-confluence-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-deck" "ox-deck.el" (0 0 0 0))
+;;; Generated autoloads from ox-deck.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-deck" '("org-deck-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-extra" "ox-extra.el" (0 0 0 0))
+;;; Generated autoloads from ox-extra.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-extra" '("org-" "ox-extras")))
+
+;;;***
+
+;;;### (autoloads nil "ox-freemind" "ox-freemind.el" (0 0 0 0))
+;;; Generated autoloads from ox-freemind.el
+
+(autoload 'org-freemind-export-to-freemind "ox-freemind" "\
+Export current buffer to a Freemind Mindmap file.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting file should be accessible through
+the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"<body>\" and \"</body>\" tags.
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Return output file's name.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-freemind" '("org-freemind-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-groff" "ox-groff.el" (0 0 0 0))
+;;; Generated autoloads from ox-groff.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-groff" '("org-groff-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-koma-letter" "ox-koma-letter.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from ox-koma-letter.el
+
+(autoload 'org-koma-letter-export-as-latex "ox-koma-letter" "\
+Export current buffer as a KOMA Scrlttr2 letter.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting buffer should be accessible
+through the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"\\begin{letter}\" and \"\\end{letter}\".
+
+EXT-PLIST, when provided, is a proeprty list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Export is done in a buffer named \"*Org KOMA-LETTER Export*\".  It
+will be displayed if `org-export-show-temporary-export-buffer' is
+non-nil.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)" t nil)
+
+(autoload 'org-koma-letter-export-to-latex "ox-koma-letter" "\
+Export current buffer as a KOMA Scrlttr2 letter (tex).
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting file should be accessible through
+the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"\\begin{letter}\" and \"\\end{letter}\".
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+When optional argument PUB-DIR is set, use it as the publishing
+directory.
+
+Return output file's name.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)" t nil)
+
+(autoload 'org-koma-letter-export-to-pdf "ox-koma-letter" "\
+Export current buffer as a KOMA Scrlttr2 letter (pdf).
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting file should be accessible through
+the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"\\begin{letter}\" and \"\\end{letter}\".
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Return PDF file's name.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY BODY-ONLY EXT-PLIST)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-koma-letter" '("org-koma-letter-")))
+
+;;;***
+
 ;;;### (autoloads "actual autoloads are elsewhere" "ox-man" "ox-man.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from ox-man.el
@@ -1221,15 +2016,178 @@ The location of ODT styles.")
 
 ;;;***
 
+;;;### (autoloads nil "ox-rss" "ox-rss.el" (0 0 0 0))
+;;; Generated autoloads from ox-rss.el
+
+(autoload 'org-rss-export-as-rss "ox-rss" "\
+Export current buffer to a RSS buffer.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting buffer should be accessible
+through the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+Export is done in a buffer named \"*Org RSS Export*\", which will
+be displayed when `org-export-show-temporary-export-buffer' is
+non-nil.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY)" t nil)
+
+(autoload 'org-rss-export-to-rss "ox-rss" "\
+Export current buffer to a RSS file.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting file should be accessible through
+the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+Return output file's name.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY)" t nil)
+
+(autoload 'org-rss-publish-to-rss "ox-rss" "\
+Publish an org file to RSS.
+
+FILENAME is the filename of the Org file to be published.  PLIST
+is the property list for the given project.  PUB-DIR is the
+publishing directory.
+
+Return output file name.
+
+\(fn PLIST FILENAME PUB-DIR)" nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-rss" '("org-rss-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-s5" "ox-s5.el" (0 0 0 0))
+;;; Generated autoloads from ox-s5.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-s5" '("org-s5-")))
+
+;;;***
+
+;;;### (autoloads nil "ox-taskjuggler" "ox-taskjuggler.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from ox-taskjuggler.el
+
+(autoload 'org-taskjuggler-export "ox-taskjuggler" "\
+Export current buffer to a TaskJuggler file.
+
+The exporter looks for a tree with tag that matches
+`org-taskjuggler-project-tag' and takes this as the tasks for
+this project.  The first node of this tree defines the project
+properties such as project name and project period.
+
+If there is a tree with tag that matches
+`org-taskjuggler-resource-tag' this tree is taken as resources
+for the project.  If no resources are specified, a default
+resource is created and allocated to the project.
+
+Also the TaskJuggler project will be created with default reports
+as defined in `org-taskjuggler-default-reports'.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting file should be accessible through
+the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+Return output file's name.
+
+\(fn &optional ASYNC SUBTREEP VISIBLE-ONLY)" t nil)
+
+(autoload 'org-taskjuggler-export-and-process "ox-taskjuggler" "\
+Export current buffer to a TaskJuggler file and process it.
+
+The exporter looks for a tree with tag that matches
+`org-taskjuggler-project-tag' and takes this as the tasks for
+this project.  The first node of this tree defines the project
+properties such as project name and project period.
+
+If there is a tree with tag that matches
+`org-taskjuggler-resource-tag' this tree is taken as resources
+for the project.  If no resources are specified, a default
+resource is created and allocated to the project.
+
+Also the TaskJuggler project will be created with default reports
+as defined in `org-taskjuggler-default-reports'.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+Return a list of reports.
+
+\(fn &optional SUBTREEP VISIBLE-ONLY)" t nil)
+
+(autoload 'org-taskjuggler-export-process-and-open "ox-taskjuggler" "\
+Export current buffer to a TaskJuggler file, process and open it.
+
+Export and process the file using
+`org-taskjuggler-export-and-process' and open the generated
+reports with a browser.
+
+If you are targeting TaskJuggler 2.4 (see
+`org-taskjuggler-target-version') the processing and display of
+the reports is done using the TaskJuggler GUI.
+
+\(fn &optional SUBTREEP VISIBLE-ONLY)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ox-taskjuggler" '("org-taskjuggler-")))
+
+;;;***
+
 ;;;### (autoloads nil nil ("ob-core.el" "ob-keys.el" "ob-lob.el"
 ;;;;;;  "ob-matlab.el" "ob-tangle.el" "ob.el" "org-archive.el" "org-attach.el"
-;;;;;;  "org-bbdb.el" "org-clock.el" "org-datetree.el" "org-element.el"
-;;;;;;  "org-feed.el" "org-footnote.el" "org-id.el" "org-indent.el"
-;;;;;;  "org-install.el" "org-irc.el" "org-loaddefs.el" "org-mobile.el"
-;;;;;;  "org-pkg.el" "org-plot.el" "org-table.el" "org-timer.el"
-;;;;;;  "ox-ascii.el" "ox-beamer.el" "ox-html.el" "ox-icalendar.el"
-;;;;;;  "ox-latex.el" "ox-man.el" "ox-md.el" "ox-odt.el" "ox-org.el"
-;;;;;;  "ox-publish.el" "ox-texinfo.el" "ox.el") (0 0 0 0))
+;;;;;;  "org-bbdb.el" "org-clock.el" "org-contribdir.el" "org-datetree.el"
+;;;;;;  "org-element.el" "org-feed.el" "org-footnote.el" "org-id.el"
+;;;;;;  "org-indent.el" "org-install.el" "org-irc.el" "org-loaddefs.el"
+;;;;;;  "org-mobile.el" "org-plot.el" "org-plus-contrib-pkg.el" "org-table.el"
+;;;;;;  "org-timer.el" "ox-ascii.el" "ox-beamer.el" "ox-html.el"
+;;;;;;  "ox-icalendar.el" "ox-latex.el" "ox-man.el" "ox-md.el" "ox-odt.el"
+;;;;;;  "ox-org.el" "ox-publish.el" "ox-texinfo.el" "ox.el") (0 0
+;;;;;;  0 0))
 
 ;;;***
 
@@ -1238,4 +2196,4 @@ The location of ODT styles.")
 ;; no-byte-compile: t
 ;; no-update-autoloads: t
 ;; End:
-;;; org-autoloads.el ends here
+;;; org-plus-contrib-autoloads.el ends here
