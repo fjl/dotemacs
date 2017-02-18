@@ -39,9 +39,14 @@ They are orded by the time when the command was started (most recent first).")
                                                 (buffer-local-value 'default-directory b)))))
     (let* ((buf (car fjl/free-eshells))
            (win (get-buffer-window buf)))
-      (cond (win          (select-window win))
-            (other-window (switch-to-buffer-other-window buf))
-            (t            (switch-to-buffer buf))))))
+      (if (buffer-live-p buf)
+          ;; Display the buffer.
+          (cond (win          (select-window win))
+                (other-window (switch-to-buffer-other-window buf))
+                (t            (switch-to-buffer buf)))
+        ;; The buffer is dead, remove it and try again.
+        (setq fjl/free-eshells (delete buf fjl/free-eshells))
+        (switch-to-eshell close-to-dir other-window)))))
 
 ;;;###autoload
 (defun switch-to-eshell-other-window (&optional close-to-dir)
