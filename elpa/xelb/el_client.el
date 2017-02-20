@@ -1,6 +1,6 @@
 ;;; el_client.el --- XELB Code Generator  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -198,7 +198,7 @@ an `xelb-auto-padding' attribute."
       (princ (format "\
 ;;; xcb-%s.el --- X11 %s  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -263,17 +263,17 @@ an `xelb-auto-padding' attribute."
       (when xelb-error-alist
         (pp
          `(defconst ,(intern (concat xelb-prefix "error-number-class-alist"))
-            ',xelb-error-alist "(error-number . error-class) alist"))
+            ',xelb-error-alist "(error-number . error-class) alist."))
         (princ "\n"))
       (when xelb-event-alist
         (pp
          `(defconst ,(intern (concat xelb-prefix "event-number-class-alist"))
-            ',xelb-event-alist "(event-number . event-class) alist"))
+            ',xelb-event-alist "(event-number . event-class) alist."))
         (princ "\n"))
       (when xelb-xge-alist
         (pp
          `(defconst ,(intern (concat xelb-prefix "xge-number-class-alist"))
-            ',xelb-xge-alist "(xge-number . event-class) alist"))
+            ',xelb-xge-alist "(xge-number . event-class) alist."))
         (princ "\n"))
       ;; Print footer
       (princ (format "\

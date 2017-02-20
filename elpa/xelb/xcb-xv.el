@@ -1,6 +1,6 @@
 ;;; xcb-xv.el --- X11 Xv extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -512,12 +512,12 @@
   '((0 . xcb:xv:BadPort)
     (1 . xcb:xv:BadEncoding)
     (2 . xcb:xv:BadControl))
-  "(error-number . error-class) alist")
+  "(error-number . error-class) alist.")
 
 (defconst xcb:xv:event-number-class-alist
   '((0 . xcb:xv:VideoNotify)
     (1 . xcb:xv:PortNotify))
-  "(event-number . event-class) alist")
+  "(event-number . event-class) alist.")
 
 
 

@@ -1,6 +1,6 @@
 ;;; exwm-core.el --- Core definitions  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -80,7 +80,7 @@
     (logior xcb:EventMask:StructureNotify xcb:EventMask:PropertyChange))
   "Event mask set on all managed windows.")
 
-(defvar exwm-input--during-key-sequence)
+(defvar exwm-input--line-mode-passthrough)
 (defvar exwm-input--global-prefix-keys)
 (defvar exwm-input-prefix-keys)
 (defvar exwm-input--simulation-prefix-keys)
@@ -154,7 +154,7 @@
       (lambda ()
         (interactive)
         (cond
-         ((or exwm-input--during-key-sequence
+         ((or exwm-input--line-mode-passthrough
               ;; Do not test `exwm-input--during-command'.
               (active-minibuffer-window)
               (memq last-input-event exwm-input--global-prefix-keys)
@@ -180,6 +180,7 @@
     ["Toggle floating" exwm-floating-toggle-floating]
     ["Toggle fullscreen mode" exwm-layout-toggle-fullscreen]
     ["Hide window" exwm-floating-hide exwm--floating-frame]
+    ["Close window" (kill-buffer (current-buffer))]
 
     "---"
     "*Resizing*"

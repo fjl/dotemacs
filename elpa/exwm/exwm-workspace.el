@@ -1,6 +1,6 @@
 ;;; exwm-workspace.el --- Workspace Module for EXWM  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -116,7 +116,7 @@ NIL if FRAME is not a workspace"
 (defvar exwm-workspace--prompt-add-allowed nil
   "Non-nil to allow adding workspace from the prompt.")
 (defvar exwm-workspace--prompt-delete-allowed nil
-  "Non-nil to allow deleting workspace from the prompt")
+  "Non-nil to allow deleting workspace from the prompt.")
 (defvar exwm-workspace--create-silently nil
   "When non-nil workspaces are created in the background (not switched to).
 

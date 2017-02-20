@@ -1,6 +1,6 @@
 ;;; xcb-xprint.el --- X11 XPrint extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -400,12 +400,12 @@
 (defconst xcb:xprint:error-number-class-alist
   '((0 . xcb:xprint:BadContext)
     (1 . xcb:xprint:BadSequence))
-  "(error-number . error-class) alist")
+  "(error-number . error-class) alist.")
 
 (defconst xcb:xprint:event-number-class-alist
   '((0 . xcb:xprint:Notify)
     (1 . xcb:xprint:AttributNotify))
-  "(event-number . event-class) alist")
+  "(event-number . event-class) alist.")
 
 
 

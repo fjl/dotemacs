@@ -1,6 +1,6 @@
 ;;; xcb-dri2.el --- X11 DRI2 extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -315,7 +315,7 @@
 (defconst xcb:dri2:event-number-class-alist
   '((0 . xcb:dri2:BufferSwapComplete)
     (1 . xcb:dri2:InvalidateBuffers))
-  "(event-number . event-class) alist")
+  "(event-number . event-class) alist.")
 
 
 

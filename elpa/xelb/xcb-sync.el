@@ -1,6 +1,6 @@
 ;;; xcb-sync.el --- X11 Sync extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -326,12 +326,12 @@
 (defconst xcb:sync:error-number-class-alist
   '((0 . xcb:sync:Counter)
     (1 . xcb:sync:Alarm))
-  "(error-number . error-class) alist")
+  "(error-number . error-class) alist.")
 
 (defconst xcb:sync:event-number-class-alist
   '((0 . xcb:sync:CounterNotify)
     (1 . xcb:sync:AlarmNotify))
-  "(event-number . event-class) alist")
+  "(event-number . event-class) alist.")
 
 
 

@@ -1,7 +1,7 @@
 ;;; xcb-keysyms.el --- Conversion between  -*- lexical-binding: t -*-
 ;;;                    X keysyms, X keycodes and Emacs key event.
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -532,7 +532,7 @@ Return 0 if conversion fails."
         XF86TouchpadOn XF86TouchpadOff XF86AudioMicMute ,@(make-list 13 nil)
                                         ;everything rest
         ,@(make-list 64 nil)]
-  "Emacs event representations of XF86keysym (#x1008ff00 - #x1008ffff)")
+  "Emacs event representations of XF86keysym (#x1008ff00 - #x1008ffff).")
 
 (cl-defmethod xcb:keysyms:event->keysym ((obj xcb:connection) event)
   "Translate Emacs key event EVENT to (keysym . mod-mask).

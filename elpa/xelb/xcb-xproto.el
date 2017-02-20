@@ -1,6 +1,6 @@
 ;;; xcb-xproto.el --- X11 core protocol  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -195,7 +195,8 @@
    (authorization-protocol-data~ :initform
 				 '(name authorization-protocol-data type xcb:char size
 					(xcb:-fieldref 'authorization-protocol-data-len))
-				 :type xcb:-list)))
+				 :type xcb:-list)
+   (pad~3 :initform 4 :type xcb:-pad-align)))
 
 (defclass xcb:SetupFailed
   (xcb:-struct)
@@ -2969,7 +2970,7 @@
     (15 . xcb:Name)
     (16 . xcb:Length)
     (17 . xcb:Implementation))
-  "(error-number . error-class) alist")
+  "(error-number . error-class) alist.")
 
 (defconst xcb:event-number-class-alist
   '((2 . xcb:KeyPress)
@@ -3006,7 +3007,7 @@
     (33 . xcb:ClientMessage)
     (34 . xcb:MappingNotify)
     (35 . xcb:GeGeneric))
-  "(event-number . event-class) alist")
+  "(event-number . event-class) alist.")
 
 
 

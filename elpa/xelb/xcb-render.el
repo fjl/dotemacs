@@ -1,6 +1,6 @@
 ;;; xcb-render.el --- X11 Render extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -762,7 +762,7 @@
     (2 . xcb:render:PictOp)
     (3 . xcb:render:GlyphSet)
     (4 . xcb:render:Glyph))
-  "(error-number . error-class) alist")
+  "(error-number . error-class) alist.")
 
 
 

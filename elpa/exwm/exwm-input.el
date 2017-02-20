@@ -1,6 +1,6 @@
 ;;; exwm-input.el --- Input Module for EXWM  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -30,8 +30,8 @@
 ;; + Pointer simulation mode (e.g. 'C-c 1'/'C-c 2' for single/double click,
 ;;   move with arrow keys).
 ;; + Simulation keys to mimic Emacs key bindings for text edit (redo, select,
-;;   cancel, clear, etc). Some of them are not present on common keyboard
-;;   (keycode = 0). May need to use XKB extension.
+;;   cancel, clear, etc).  Some of them are not present on common keyboard
+;;   (keycode = 0).  May need to use XKB extension.
 
 ;;; Code:
 

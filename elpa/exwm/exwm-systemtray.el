@@ -1,7 +1,7 @@
 ;;; exwm-systemtray.el --- System Tray Module for  -*- lexical-binding: t -*-
 ;;;                        EXWM
 
-;; Copyright (C) 2016 Free Software Foundation, Inc.
+;; Copyright (C) 2016-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -485,4 +485,4 @@ You shall use the default value if using auto-hide minibuffer.")
 
 (provide 'exwm-systemtray)
 
-;; exwm-systemtray.el ends here
+;;; exwm-systemtray.el ends here

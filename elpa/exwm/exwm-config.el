@@ -1,6 +1,6 @@
 ;;; exwm-config.el --- Predefined configurations  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; Author: Chris Feng <chris.w.feng@gmail.com>
 
@@ -119,4 +119,4 @@ You can find the original one at `exwm-config-ido-buffer-window-other-frame'."
 
 (provide 'exwm-config)
 
-;; exwm-config.el ends here
+;;; exwm-config.el ends here

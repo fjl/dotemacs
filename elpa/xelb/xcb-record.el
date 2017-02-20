@@ -1,6 +1,6 @@
 ;;; xcb-record.el --- X11 Record extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2017 Free Software Foundation, Inc.
 
 ;; This file is part of GNU Emacs.
 
@@ -206,7 +206,7 @@
 
 (defconst xcb:record:error-number-class-alist
   '((0 . xcb:record:BadContext))
-  "(error-number . error-class) alist")
+  "(error-number . error-class) alist.")
 
 
 
