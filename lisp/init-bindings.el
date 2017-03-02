@@ -47,6 +47,7 @@
 (global-set-key (kbd "C-c SPC") 'avy-goto-char)
 (global-set-key (kbd "M-o") 'switch-window)
 (global-set-key (kbd "C-M-s") 'swiper)
+(global-set-key (kbd "M-s r") 'isearch-forward-regexp) ;; swiper takes up the usual binding
 (global-set-key (kbd "s-r") 'counsel-imenu)
 (global-set-key (kbd "C-x M-RET") 'ivy-resume)
 (global-set-key (kbd "C-c c") 'org-capture)
