@@ -46,19 +46,31 @@
   "Install go tools in `gotools-dir' and set up various variables to
 refer to the installed tools."
   (interactive)
+  (apply #'gotools-run-command "go" "get" "-v" "-u" (mapcar #'cadr gotools-list)))
+
+;;;###autoload
+(defun gotools-rebuild ()
+  "Rebuild existing go tools in `gotools-dir' and set up various variables to
+refer to the installed tools."
+  (interactive)
+  (apply #'gotools-run-command "go" "install" "-v" (mapcar #'cadr gotools-list)))
+
+(defun gotools-run-command (command &rest args)
   (switch-to-buffer "*gotools-update*")
   (erase-buffer)
   (let* ((gopath (fjl/file-name-localname (expand-file-name (gotools-dir))))
          (gobin  (fjl/file-name-localname (expand-file-name (gotools-gobin))))
          (packages (s-join " " (mapcar #'cadr gotools-list)))
-         (command (format "GOPATH='%s' GOBIN='%s' go get -v -u %s" gopath gobin packages))
          (proc nil))
     (insert
      (propertize
       (format "Installing Go tools to %s\nGOPATH=%s\n\n" (gotools-dir) gopath)
       'face 'bold))
     (make-directory (concat (file-name-as-directory (gotools-dir)) "src") t)
-    (setq proc (start-file-process-shell-command "go get" (current-buffer) command))
+    (let ((process-environment (cl-list* (concat "GOPATH=" gopath)
+                                         (concat "GOBIN=" gobin)
+                                         process-environment)))
+      (setq proc (apply #'start-file-process command (current-buffer) command args)))
     (set-process-sentinel proc (lambda (proc event)
                                  (when (buffer-live-p (process-buffer proc))
                                    (with-current-buffer (process-buffer proc)
@@ -111,7 +123,7 @@ Returns the new value of GOPATH."
             (setq new (concat new path-separator (fjl/file-name-localname (cadr gp))))))))
     (unless (or (string-equal new old) (fjl/in-goroot-p dir) (fjl/in-godeps-p dir))
       (message (concat "GOPATH = " new))
-      (setenv "GOBIN" (concat dir "/bin"))
+      (setenv "GOBIN" (concat dir "bin"))
       (setenv "GOPATH" new))))
 
 ;;;###autoload
