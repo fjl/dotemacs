@@ -247,6 +247,8 @@ Value nil means to use the default position which is fixed at bottom, while
                     (append exwm-workspace--struts (list struts*))))))))))
 
 (defvar exwm-workspace--workareas nil "Workareas (struts excluded).")
+(defvar exwm-workspace--update-workareas-hook nil
+  "Normal hook run when workareas get updated.")
 
 (defun exwm-workspace--update-workareas ()
   "Update `exwm-workspace--workareas'."
@@ -309,7 +311,8 @@ Value nil means to use the default position which is fixed at bottom, while
              (cl-incf (aref w 3) delta))))))
     ;; Save the result.
     (setq exwm-workspace--workareas workareas)
-    (xcb:flush exwm--connection)))
+    (xcb:flush exwm--connection))
+  (run-hooks 'exwm-workspace--update-workareas-hook))
 
 (defvar exwm-workspace--fullscreen-frame-count 0
   "Count the fullscreen workspace frames.")
@@ -448,6 +451,7 @@ The optional FORCE option is for internal use only."
             (exwm-workspace--prompt-delete-allowed t))
         (exwm-workspace--prompt-for-workspace "Switch to [+/-]: ")))))
   (let* ((frame (exwm-workspace--workspace-from-frame-or-index frame-or-index))
+         (old-frame exwm-workspace--current)
          (index (exwm-workspace--position frame))
          (workspace (frame-parameter frame 'exwm-workspace))
          (window (frame-parameter frame 'exwm-selected-window)))
@@ -507,6 +511,10 @@ The optional FORCE option is for internal use only."
           (make-instance 'xcb:ewmh:set-_NET_CURRENT_DESKTOP
                          :window exwm--root :data index))
       (xcb:flush exwm--connection))
+    (when (frame-live-p old-frame)
+      (with-selected-frame old-frame
+        (run-hooks 'focus-out-hook)))
+    (run-hooks 'focus-in-hook)
     (run-hooks 'exwm-workspace-switch-hook)))
 
 (defvar exwm-workspace-switch-create-limit 10
@@ -1345,6 +1353,14 @@ applied to all subsequently created X frames."
     (setf (cdr x-parameters)
           (append new-x-parameters (cdr x-parameters)))))
 
+(defun exwm-workspace--handle-focus-in (_orig-func _event)
+  "Replacement for `handle-focus-in'."
+  (interactive "e"))
+
+(defun exwm-workspace--handle-focus-out (_orig-func _event)
+  "Replacement for `handle-focus-out'."
+  (interactive "e"))
+
 (defun exwm-workspace--init ()
   "Initialize workspace module."
   ;; Prevent unexpected exit
@@ -1460,6 +1476,10 @@ applied to all subsequently created X frames."
   (xcb:flush exwm--connection)
   ;; We have to advice `x-create-frame' or every call to it would hang EXWM
   (advice-add 'x-create-frame :around #'exwm-workspace--x-create-frame)
+  ;; We have to manually handle focus-in and focus-out events for Emacs
+  ;; frames.
+  (advice-add 'handle-focus-in :around #'exwm-workspace--handle-focus-in)
+  (advice-add 'handle-focus-out :around #'exwm-workspace--handle-focus-out)
   ;; Make new frames create new workspaces.
   (add-hook 'after-make-frame-functions
             #'exwm-workspace--add-frame-as-workspace)
@@ -1491,6 +1511,8 @@ applied to all subsequently created X frames."
         (cl-delete '(exwm-workspace--display-buffer) display-buffer-alist
                    :test #'equal))
   (advice-remove 'x-create-frame #'exwm-workspace--x-create-frame)
+  (advice-remove 'handle-focus-in #'exwm-workspace--handle-focus-in)
+  (advice-remove 'handle-focus-out #'exwm-workspace--handle-focus-out)
   (remove-hook 'after-make-frame-functions
                #'exwm-workspace--add-frame-as-workspace)
   (remove-hook 'delete-frame-functions
