@@ -59,6 +59,9 @@
  '(compilation-search-path (quote (nil ".")))
  '(compilation-window-height 20)
  '(completion-styles (quote (partial-completion emacs22)))
+ '(counsel-linux-apps-directories
+   (quote
+    ("/usr/share/applications/" "~/.local/share/applications")))
  '(custom-safe-themes t)
  '(darkroom-text-scale-increase 0)
  '(dired-async-mode t)
