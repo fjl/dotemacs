@@ -317,7 +317,6 @@
  '(weechat-text-column 26)
  '(which-func-modes (quote (python-mode)))
  '(window-combination-resize t)
- '(window-min-width 90)
  '(window-sides-slots (quote (1 nil 3 nil)))
  '(winner-mode t))
 (custom-set-faces
