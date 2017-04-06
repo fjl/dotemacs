@@ -13,6 +13,8 @@
  '(async-bytecomp-package-mode t)
  '(auth-sources nil)
  '(avy-background t)
+ '(aw-background nil)
+ '(aw-dispatch-always t)
  '(aw-scope (quote frame))
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backup/"))))
  '(battery-load-low 15)
@@ -169,7 +171,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (toml-mode org-plus-contrib avy switch-window markdown-mode projectile geiser slime web-mode yaml-mode fuel magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode org-mac-iCal cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper darkroom ag company-go counsel dtrt-indent ember-mode eshell-z expand-region fish-mode gist go-eldoc go-scratch nginx-mode qml-mode restclient smex speed-type wgrep)))
+    (ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode fuel magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode org-mac-iCal cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper darkroom ag company-go counsel dtrt-indent ember-mode eshell-z expand-region fish-mode gist go-eldoc go-scratch nginx-mode qml-mode restclient smex speed-type wgrep)))
  '(projectile-completion-system (quote ivy))
  '(projectile-ignored-project-function (quote file-remote-p))
  '(projectile-mode t nil (projectile))
@@ -294,7 +296,7 @@
  '(temp-buffer-resize-mode t)
  '(term-input-ignoredups t)
  '(tls-checktrust t)
- '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))))
+ '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))) nil (tramp))
  '(tramp-connection-timeout 10 nil (tramp))
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
@@ -324,4 +326,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(aw-mode-line-face ((t (:inherit default :background "gray26" :height 0.9))))
  '(weechat-highlight-face ((t (:background "gray30" :foreground "Cyan1")))))
