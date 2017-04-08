@@ -5,7 +5,7 @@
 
 (eval-when-compile
   (require 'term)
-  (require 'switch-window)
+  (require 'ace-window)
   (require 'company)
   (require 'expand-region)
   (require 'projectile)
