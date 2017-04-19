@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'go-mode)
 (require 'company)
 (require 'company-go)
@@ -9,13 +11,14 @@
 (defun gotools-dir ()
   "Returns the directory that Go tools should be installed in."
   (let ((remote (file-remote-p default-directory)))
-    (if remote
-        (concat remote user-emacs-directory "gotools")
-      (concat user-emacs-directory "gotools"))))
+    (file-name-as-directory
+     (if remote
+         (concat remote user-emacs-directory "gotools")
+       (concat user-emacs-directory "gotools")))))
 
 (defun gotools-gobin ()
   "Returns the directory that Go tools binaries are installed in."
-  (concat (file-name-as-directory (gotools-dir)) "bin"))
+  (file-name-as-directory (concat (gotools-dir) "bin")))
 
 (defvar gotools-list
   '(("benchstat"   "rsc.io/benchstat")
@@ -53,6 +56,8 @@ refer to the installed tools."
   "Rebuild existing go tools in `gotools-dir' and set up various variables to
 refer to the installed tools."
   (interactive)
+  (dolist (cmd gotools-list)
+    (delete-file (concat (gotools-gobin) (car cmd)) t))
   (apply #'gotools-run-command "go" "install" "-v" (mapcar #'cadr gotools-list)))
 
 (defun gotools-run-command (command &rest args)
@@ -60,7 +65,6 @@ refer to the installed tools."
   (erase-buffer)
   (let* ((gopath (fjl/file-name-localname (expand-file-name (gotools-dir))))
          (gobin  (fjl/file-name-localname (expand-file-name (gotools-gobin))))
-         (packages (s-join " " (mapcar #'cadr gotools-list)))
          (proc nil))
     (insert
      (propertize
@@ -75,7 +79,7 @@ refer to the installed tools."
                                  (when (buffer-live-p (process-buffer proc))
                                    (with-current-buffer (process-buffer proc)
                                      (newline)
-                                     (insert (process-name proc) " " (propertize event 'face 'bold))
+                                     (insert command " " (car args) " " (propertize event 'face 'bold))
                                      (gotools-setup)))))
     (set-process-query-on-exit-flag proc t)))
 
