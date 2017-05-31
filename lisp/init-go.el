@@ -57,11 +57,13 @@ refer to the installed tools."
 refer to the installed tools."
   (interactive)
   (dolist (cmd gotools-list)
-    (delete-file (concat (gotools-gobin) (car cmd)) t))
+    (let ((file (concat (gotools-gobin) (car cmd))))
+      (when (file-exists-p file)
+        (delete-file file t))))
   (apply #'gotools-run-command "go" "install" "-v" (mapcar #'cadr gotools-list)))
 
 (defun gotools-run-command (command &rest args)
-  (switch-to-buffer "*gotools-update*")
+  (pop-to-buffer-same-window "*gotools-update*")
   (erase-buffer)
   (let* ((gopath (fjl/file-name-localname (expand-file-name (gotools-dir))))
          (gobin  (fjl/file-name-localname (expand-file-name (gotools-gobin))))
