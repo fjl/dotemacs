@@ -171,7 +171,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode fuel magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper darkroom ag company-go counsel dtrt-indent ember-mode eshell-z expand-region fish-mode gist go-eldoc go-scratch nginx-mode qml-mode restclient smex speed-type wgrep)))
+    (org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper ag company-go counsel dtrt-indent eshell-z expand-region fish-mode gist go-eldoc go-scratch restclient smex speed-type wgrep)))
  '(projectile-completion-system (quote ivy))
  '(projectile-ignored-project-function (quote file-remote-p))
  '(projectile-mode t nil (projectile))
