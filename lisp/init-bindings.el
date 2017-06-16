@@ -20,7 +20,6 @@
 (global-set-key (kbd "C-x 9") 'recompile)
 (global-set-key (kbd "C-x M-9") 'compile)
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
-(global-set-key (kbd "M-o") 'select-mru-window)
 (global-set-key (kbd "C-x C-j") 'fjl/join-next-line) ;; overwrites jabber commands
 (global-set-key (kbd "s-1") 'launcher)
 (global-set-key (kbd "C-x \\") 'toggle-truncate-lines)
@@ -41,6 +40,8 @@
 ;; they overwrite dabbrev-expand, which is included in hippie-expand.
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-M-/") 'hippie-expand)
+
+(global-set-key (kbd "C-x M-o") 'ff-find-other-file)
 
 ;; package commands
 (global-set-key (kbd "<f12>") 'projectile-find-file)
