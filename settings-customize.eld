@@ -65,7 +65,6 @@
    (quote
     ("/usr/share/applications/" "~/.local/share/applications")))
  '(custom-safe-themes t)
- '(darkroom-text-scale-increase 0)
  '(dired-async-mode t)
  '(display-battery-mode t)
  '(display-buffer-alist
