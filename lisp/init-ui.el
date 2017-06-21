@@ -106,9 +106,7 @@ which isn't very useful."
     (fjl/setup-mac-path)
     ;; Save/restore frame configuration.
     (desktop-save-mode 1)
-    (setq desktop-save 'if-exists)
-    ;; Add exit confirmation because I hit C-x C-c by accident all the time.
-    (setq confirm-kill-emacs 'y-or-n-p)))
+    (setq desktop-save 'if-exists)))
 
 ;; GTK Display
 
