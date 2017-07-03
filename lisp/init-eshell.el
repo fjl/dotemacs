@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'init-bootstrap)
 (require 'eshell)
 (require 'em-prompt)
@@ -276,11 +278,13 @@ adapting to terminal width not wrap."
     (when (string= (car el) "COLUMNS")
       (rplacd el '((lambda (indices) (- (window-width) 1)) t)))))
 
+(defvar fjl/eshell-history-timer nil)
+
 ;;;###autoload
 (defun fjl/eshell-mode-hook ()
   (fjl/eshell-fixup-COLUMNS)
   (setq truncate-lines nil)
-  ;; this overrides eshell-show-output, which is also bound to C-c C-r.
+  ;; This overrides eshell-show-output, which is also bound to C-c C-r.
   (define-key eshell-mode-map (kbd "C-c C-q") (lambda () (interactive) (quit-process)))
   (define-key eshell-mode-map (kbd "C-M-l") 'fjl/eshell-clear)
   (define-key eshell-mode-map (kbd "C-M-p") 'fjl/eshell-ido-history)
@@ -288,7 +292,13 @@ adapting to terminal width not wrap."
   (define-key eshell-mode-map (kbd "C-c C-p")
     (lambda (n) (interactive "p") (fjl/previous-prompt eshell-prompt-regexp n)))
   (define-key eshell-mode-map (kbd "C-c C-n")
-    (lambda (n) (interactive "p") (fjl/next-prompt eshell-prompt-regexp n))))
+    (lambda (n) (interactive "p") (fjl/next-prompt eshell-prompt-regexp n)))
+  ;; Set up history saving. In the default configuration, history is saved
+  ;; only when emacs exits. This is inconvenient because my emacs sessions
+  ;; usually end in a crash after a few days of use.
+  (unless fjl/eshell-history-timer
+    (setq fjl/eshell-history-timer
+          (run-with-idle-timer 300 t 'eshell-save-some-history))))
 
 ;;;###autoload
 (add-hook 'eshell-mode-hook 'fjl/eshell-mode-hook)
