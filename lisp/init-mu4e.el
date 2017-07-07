@@ -97,6 +97,7 @@
       mu4e-completing-read-function 'ivy-completing-read
       mu4e-compose-context-policy 'ask-if-none
       mu4e-compose-format-flowed t
+      mu4e-split-view 'single-window
       mu4e-compose-signature nil
       mu4e-compose-signature-auto-include nil
       mu4e-context-policy 'pick-first
