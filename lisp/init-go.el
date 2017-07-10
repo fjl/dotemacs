@@ -239,6 +239,7 @@ found."
   (gopath)
   (gotools-setup)
   (add-hook 'before-save-hook 'gofmt-before-save)
+  (prettify-symbols-mode)
   (unless (and (buffer-file-name) (file-remote-p (buffer-file-name)))
     (go-eldoc-setup)
     (setq-local company-backends '(company-go))

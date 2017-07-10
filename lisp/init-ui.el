@@ -38,6 +38,43 @@
 (defvar fjl/setting-up-first-frame t
   "This variable is set to nil after setting up the first frame.")
 
+(defun fjl/prettify-symbols-compose-p (start end _match)
+  "Return true iff the symbol MATCH should be composed. This
+function is just like `prettify-symbols-default-compose-p', but
+also enables prettification in comments."
+  (let* ((syntaxes-beg (if (memq (char-syntax (char-after start)) '(?w ?_))
+                           '(?w ?_) '(?. ?\\)))
+         (syntaxes-end (if (memq (char-syntax (char-before end)) '(?w ?_))
+                           '(?w ?_) '(?. ?\\))))
+    (not (or (memq (char-syntax (or (char-before start) ?\s)) syntaxes-beg)
+             (memq (char-syntax (or (char-after end) ?\s)) syntaxes-end)))))
+
+(defun fjl/setup-pragmata-ligatures ()
+  (when (string-prefix-p "Pragmata" (fpfont))
+    (setq-default prettify-symbols-alist
+                  '(("<-" . ?🡐)
+                    ("!=" . "	")
+                    ("*=" . "	")
+                    ("+=" . "	")
+                    ("==" . "	")
+                    (":=" . "	")
+                    ("|=" . "	")
+                    ("&=" . "	")
+                    ("^=" . "	")
+                    ("//" . "	")
+                    ("/*" . "	")
+                    ("*/" . "	")
+                    ("<=" . "	")
+                    (">=" . "	")
+                    ("&&" . "	")
+                    ("||" . "	")
+                    ("TODO"  . "	    ")
+                    ("BUG"   . "	   ")
+                    ("NOTE"  . "	    ")
+                    ("FIXME" . "	     ")))
+    (setq-default prettify-symbols-compose-predicate
+                  'fjl/prettify-symbols-compose-p)))
+
 ;; Mac/NS Display
 
 ;; (quieten the byte compiler)
@@ -58,16 +95,13 @@
   (setq ns-command-modifier 'super)
   (setq ns-alternate-modifier 'meta)
   (setq ns-auto-hide-menu-bar nil)
+  (fjl/setup-pragmata-ligatures)
   (when (eq window-system 'mac)
     (setq mac-command-modifier 'super)
     (setq mac-option-modifier 'meta)
     (setq mac-mouse-wheel-mode t)
     (setq mac-mouse-wheel-smooth-scroll nil)
-    (setq mac-drawing-use-gcd nil)
-    ;; enable ligatures
-    (when (functionp 'mac-auto-operator-composition-mode)
-      (setq mac-auto-operator-composition-characters "!\"#$%&'()+,-/:;<=>?@[]^_`{|}~")
-      (mac-auto-operator-composition-mode))))
+    (setq mac-drawing-use-gcd nil)))
 
 (defun fjl/mac-path-helper-path ()
   (with-temp-buffer
@@ -112,7 +146,8 @@ which isn't very useful."
 
 (defun fjl/setup-gtk (&optional frame)
   "Applies GTK gui settings."
-  (set-fontset-font t 'unicode "Symbola" frame 'prepend))
+  (set-fontset-font t 'unicode "Symbola" frame 'prepend)
+  (fjl/setup-pragmata-ligatures))
 
 ;; TTY Display
 
@@ -166,7 +201,7 @@ and to setup the inital frame."
           ((eq type t)                        (fjl/setup-tty)))
     (setq fjl/setting-up-first-frame nil)))
 
-(defun fjl/setup-all-frames (&rest args)
+(defun fjl/setup-all-frames (&rest _)
   (dolist (frame (frame-list))
     (fjl/setup-frame frame)))
 
