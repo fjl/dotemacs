@@ -84,6 +84,10 @@ also enables prettification in comments."
 (defvar mac-mouse-wheel-smooth-scroll)
 (defvar mac-drawing-use-gcd)
 (defvar mac-auto-operator-composition-characters)
+(defvar ns-use-native-fullscreen)
+(defvar ns-alternate-modifier)
+(defvar ns-command-modifier)
+(defvar ns-auto-hide-menu-bar)
 
 (defun fjl/setup-mac-gui (&optional frame)
   "Applies macOS gui settings."
@@ -197,7 +201,7 @@ and to setup the inital frame."
       (dolist (p (cdr special))
         (set-frame-parameter frame (car p) (cdr p))))
     (cond ((or (eq type 'ns) (eq type 'mac))  (fjl/setup-mac frame))
-          ((eq type 'gtk)                     (fjl/setup-gtk frame))
+          ((eq type 'x)                       (fjl/setup-gtk frame))
           ((eq type t)                        (fjl/setup-tty)))
     (setq fjl/setting-up-first-frame nil)))
 
