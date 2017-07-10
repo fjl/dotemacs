@@ -68,10 +68,10 @@ also enables prettification in comments."
                     (">=" . "	")
                     ("&&" . "	")
                     ("||" . "	")
-                    ("TODO"  . "	    ")
-                    ("BUG"   . "	   ")
-                    ("NOTE"  . "	    ")
-                    ("FIXME" . "	     ")))
+                    ("TODO"  . "	 ")
+                    ("BUG"   . "	")
+                    ("NOTE"  . "	")
+                    ("FIXME" . "	")))
     (setq-default prettify-symbols-compose-predicate
                   'fjl/prettify-symbols-compose-p)))
 
