@@ -4,6 +4,7 @@
 
 ;;;###autoload
 (defun fjl/c++-mode-hook ()
+  (prettify-symbols-mode)
   (c-add-style "ethereum"
                '("bsd"
                  (indent-tabs-mode . t)
