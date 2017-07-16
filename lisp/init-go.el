@@ -21,7 +21,7 @@
   (file-name-as-directory (concat (gotools-dir) "bin")))
 
 (defvar gotools-list
-  '(("benchstat"    "rsc.io/benchstat")
+  '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
     ("gocode"       "github.com/nsf/gocode")
     ("godef"        "github.com/rogpeppe/godef")
