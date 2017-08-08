@@ -170,7 +170,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (erlang org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper ag company-go counsel dtrt-indent eshell-z expand-region fish-mode gist go-eldoc go-scratch restclient smex speed-type wgrep)))
+    (magit-gh-pulls erlang org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper ag company-go counsel dtrt-indent eshell-z expand-region fish-mode gist go-eldoc go-scratch restclient smex speed-type wgrep)))
  '(projectile-completion-system (quote ivy))
  '(projectile-ignored-project-function (quote file-remote-p))
  '(projectile-mode t nil (projectile))
