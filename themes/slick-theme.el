@@ -148,7 +148,10 @@
    `(mu4e-cited-3-face ((,class (:foreground "gray50"))))
    `(mu4e-cited-4-face ((,class (:foreground "gray40"))))
    `(mu4e-cited-5-face ((,class (:foreground "gray30"))))
-  ))
+
+   ;; Weechat
+   `(weechat-highlight-face ((,class (:background "gray30" :foreground "Cyan1"))))
+))
 
 (provide-theme 'slick)
 
