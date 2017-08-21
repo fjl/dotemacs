@@ -99,7 +99,7 @@
    `(org-document-info    ((,class (:foreground "light blue"))))
    `(org-block            ((,class (:inherit fixed-pitch :foreground "gray75"))))
    `(org-table            ((,class (:inherit fixed-pitch :foreground "LightSkyBlue"))))
-   `(org-meta-line        ((,class (:foreground "gray45"))))
+   `(org-meta-line        ((,class (:foreground "gray45" :height 0.7))))
    `(org-block-begin-line ((,class (:foreground "gray45" :height 0.7))))
    `(org-block-end-line   ((,class (:foreground "gray45" :height 0.7))))
    `(outline-1            ((,class (:weight bold :foreground ,slick-text-color))))
