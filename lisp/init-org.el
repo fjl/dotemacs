@@ -3,7 +3,7 @@
 
 (setq org-agenda-custom-commands
       '(("D" "Desktop Agenda"
-         ((todo "NOW"                                         
+         ((todo "NOW"
                  ((org-agenda-prefix-format "%-10c:")
                   (org-deadline-warning-days 30)
                   (org-agenda-sorting-strategy '(tag-up priority-down))
@@ -18,5 +18,19 @@
           (org-agenda-compact-blocks nil)
           (org-agenda-block-separator ""))
          ("~/.desktop-agenda.txt"))))
+
+(defun fjl/org-table-check ()
+  "Insert a checkmark and realign the current table."
+  (interactive)
+  (insert-char ?✓)
+  (org-table-align))
+
+;;;###autoload
+(defun fjl/org-mode-hook ()
+  (local-set-key (kbd "C-c x") 'fjl/org-table-check)
+  (local-set-key (kbd "C-c r") 'org-table-insert-row))
+
+;;;###autoload
+(add-hook 'org-mode-hook 'fjl/org-mode-hook)
 
 (provide 'init-org)
