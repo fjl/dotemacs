@@ -15,22 +15,18 @@
 ;; Don't warn if .emacs.d is not writable.
 (setq user-emacs-directory-warning nil)
 
-;; Load the bootstrap file. This sets up all load paths and activates all packages.
 (let* ((init-dir (file-name-directory (file-truename (or load-file-name buffer-file-name))))
-       (init-lisp-dir (concat init-dir "lisp/")))
-  (add-to-list 'load-path init-lisp-dir)
-  (require 'init-bootstrap))
-
-;; Apply UI customizations first so the display doesn't jump so much.
-(require 'init-ui)
-
-;; Load init files.
-(load custom-file nil t)
-(require 'init-commands)
-(require 'init-bindings)
-
-;; Enable some built-in packages.
-(require 'uniquify)
+       (file-name-handler-alist nil))
+  ;; Load the bootstrap file. This sets up all load paths and activates all packages.
+  (load (concat init-dir "lisp/init-bootstrap"))
+  ;; Apply UI customizations first so the display doesn't jump so much.
+  (require 'init-ui)
+  ;; Load init files.
+  (load custom-file nil t)
+  (require 'init-commands)
+  (require 'init-bindings)
+  ;; Enable some built-in packages.
+  (require 'uniquify))
 
 ;; Setup an autoload for mu4e because it doesn't have a package.
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
