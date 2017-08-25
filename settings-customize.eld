@@ -66,6 +66,7 @@
     ("/usr/share/applications/" "~/.local/share/applications")))
  '(custom-safe-themes t)
  '(dired-async-mode t)
+ '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..+$")
  '(display-battery-mode t)
  '(display-buffer-alist
    (quote
