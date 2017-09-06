@@ -65,7 +65,7 @@
     (setq common-lisp-hyperspec-root "file:///usr/local/share/doc/HyperSpec/"))
   (global-set-key (kbd "C-c C-s") 'slime-selector)
   (global-set-key (kbd "C-c s") 'slime-selector)
-  (define-key lisp-mode-map (kbd "<tab>") 'slime-indent-and-complete-symbol)
+  (setq-local tab-always-indent 'complete)
   (setq-default slime-autodoc-use-multiline-p    nil
                 slime-complete-symbol*-fancy     t
                 slime-complete-symbol-function   'slime-complete-symbol*
