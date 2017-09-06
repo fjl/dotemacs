@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'slime)
 (require 'slime-cl-indent) ;; for define-common-lisp-style
 (require 'tramp)
@@ -35,28 +37,25 @@
 
 (defun slime-tramp-local-filename (f)
   (if (file-remote-p f)
-      (tramp-file-name-localname
-       (tramp-dissect-file-name f))
+      (tramp-file-name-localname (tramp-dissect-file-name f))
     f))
 
 (defun slime-tramp-remote-filename (f)
   (if (file-remote-p default-directory)
-      (tramp-make-tramp-file-name
-       (tramp-file-name-method
-        (tramp-dissect-file-name default-directory))
-       (tramp-file-name-user
-        (tramp-dissect-file-name default-directory))
-       (tramp-file-name-host
-        (tramp-dissect-file-name default-directory))
-       f)
+      (let ((tf (tramp-dissect-file-name default-directory)))
+        (tramp-make-tramp-file-name
+         (tramp-file-name-method tf)
+         (tramp-file-name-user tf)
+         (tramp-file-name-domain tf)
+         (tramp-file-name-host tf)
+         (tramp-file-name-port tf)
+         f))
     f))
 
 ;;;###autoload
 (defun fjl/slime-connected-hook ()
-  (setq slime-from-lisp-filename-function
-        'slime-tramp-remote-filename)
-  (setq slime-to-lisp-filename-function
-        'slime-tramp-local-filename))
+  (setq slime-from-lisp-filename-function 'slime-tramp-remote-filename)
+  (setq slime-to-lisp-filename-function 'slime-tramp-local-filename))
 
 ;;;###autoload
 (defun fjl/slime-mode-hook ()
@@ -65,14 +64,12 @@
     (setq common-lisp-hyperspec-root "file:///usr/local/share/doc/HyperSpec/"))
   (global-set-key (kbd "C-c C-s") 'slime-selector)
   (global-set-key (kbd "C-c s") 'slime-selector)
-  (setq-local tab-always-indent 'complete)
-  (setq-default slime-autodoc-use-multiline-p    nil
-                slime-complete-symbol*-fancy     t
-                slime-complete-symbol-function   'slime-complete-symbol*
-                slime-enable-evaluate-in-emacs   t
-                slime-header-line-p              t
-                slime-startup-animation          nil
-                slime-threads-update-interval    0.1))
+  (setq tab-always-indent 'complete
+        slime-autodoc-use-multiline-p    nil
+        slime-enable-evaluate-in-emacs   t
+        slime-header-line-p              t
+        slime-startup-animation          t
+        slime-threads-update-interval    0.3))
 
 ;;;###autoload
 (defun fjl/common-lisp-mode-hook ()
@@ -84,3 +81,5 @@
 (add-hook 'slime-mode-hook 'fjl/slime-mode-hook)
 ;;;###autoload
 (add-hook 'common-lisp-mode-hook 'fjl/common-lisp-mode-hook)
+
+(provide 'init-slime)
