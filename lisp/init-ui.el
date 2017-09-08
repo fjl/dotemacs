@@ -99,6 +99,7 @@ also enables prettification in comments."
   "Applies macOS gui settings."
   (setq-default line-spacing 0.1)
   (setq ns-use-native-fullscreen nil)
+  (setq frame-resize-pixelwise t)
   ;; enable emoji font as fallback
   (set-fontset-font t 'unicode "Symbola" frame 'prepend)
   ;; keyboard settings
