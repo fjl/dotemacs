@@ -266,14 +266,15 @@ context of the corresponding buffer.")
     ;; FIXME: Strangely, the Emacs frame can move itself at this point
     ;;        when there are left/top struts set.  Force resetting its
     ;;        position seems working, but it'd better to figure out why.
-    (when exwm-workspace--struts
-      (xcb:+request exwm--connection
-          (make-instance 'xcb:ConfigureWindow
-                         :window outer-id
-                         :value-mask (logior xcb:ConfigWindow:X
-                                             xcb:ConfigWindow:Y)
-                         :x 0 :y 0))
-      (xcb:flush exwm--connection)))
+    ;; FIXME: This also happens in another case (#220) where the cause is
+    ;;        still unclear.
+    (xcb:+request exwm--connection
+        (make-instance 'xcb:ConfigureWindow
+                       :window outer-id
+                       :value-mask (logior xcb:ConfigWindow:X
+                                           xcb:ConfigWindow:Y)
+                       :x 0 :y 0))
+    (xcb:flush exwm--connection))
   (with-current-buffer (exwm--id->buffer id)
     (run-hooks 'exwm-floating-setup-hook))
   ;; Redraw the frame.
@@ -339,11 +340,7 @@ context of the corresponding buffer.")
             exwm--frame exwm-workspace--current))
     ;; Only show X windows in normal state.
     (unless (exwm-layout--iconic-state-p)
-      ;; Show it in the selected Emacs window but skip the mini-window.
-      (let ((window (or (minibuffer-selected-window)
-                        (frame-selected-window exwm-workspace--current))))
-        (set-window-buffer window buffer)
-        (select-window window))))
+      (pop-to-buffer-same-window buffer)))
   (with-current-buffer (exwm--id->buffer id)
     (run-hooks 'exwm-floating-exit-hook)))
 

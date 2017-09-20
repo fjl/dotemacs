@@ -35,6 +35,10 @@
 (defvar exwm-workspace--list nil "List of all workspaces (Emacs frames).")
 (defvar exwm-workspace--current nil "Current active workspace.")
 (defvar exwm-workspace-current-index 0 "Index of current active workspace.")
+(defvar exwm-workspace-index-map #'number-to-string
+  "Function for mapping a workspace index to a string for display.
+
+By default `number-to-string' is applied which yields 0 1 2 ... .")
 
 (defsubst exwm-workspace--position (frame)
   "Retrieve index of given FRAME in workspace list.
@@ -168,7 +172,7 @@ Please manually run the hook `exwm-workspace-list-change-hook' afterwards.")
                 (lambda (j)
                   (format (if (= i j) "[%s]" " %s ")
                           (propertize
-                           (int-to-string j)
+                           (apply exwm-workspace-index-map (list j))
                            'face
                            (cond ((frame-parameter (elt exwm-workspace--list j)
                                                    'exwm-urgency)
@@ -779,6 +783,8 @@ INDEX must not exceed the current number of workspaces."
         (xcb:flush exwm--connection)))
     (setq exwm-workspace--switch-history-outdated t)))
 
+(defvar exwm-layout-show-all-buffers)
+
 ;;;###autoload
 (defun exwm-workspace-switch-to-buffer (buffer-or-name)
   "Make the current Emacs window display another buffer."
@@ -818,8 +824,16 @@ INDEX must not exceed the current number of workspaces."
                 (select-frame-set-input-focus exwm--floating-frame)
                 (select-window (frame-root-window exwm--floating-frame)))
             ;; On another workspace.
-            (exwm-workspace-move-window exwm-workspace--current
-                                        exwm--id))
+            (if exwm-layout-show-all-buffers
+                (exwm-workspace-move-window exwm-workspace--current
+                                            exwm--id)
+              (let ((window (get-buffer-window buffer-or-name exwm--frame)))
+                (if window
+                    (set-frame-parameter exwm--frame
+                                         'exwm-selected-window window)
+                  (set-window-buffer (frame-selected-window exwm--frame)
+                                     buffer-or-name)))
+              (exwm-workspace-switch exwm--frame)))
         ;; Ordinary buffer.
         (switch-to-buffer buffer-or-name)))))
 
@@ -1164,8 +1178,11 @@ Please check `exwm-workspace--minibuffer-own-frame-p' first."
     (exwm--log "Frame `%s' is already a workspace" frame))
    ((not (display-graphic-p frame))
     (exwm--log "Frame `%s' is not graphical" frame))
-   ((not (string-equal (slot-value exwm--connection 'display)
-                       (frame-parameter frame 'display)))
+   ((not (string-equal
+          (replace-regexp-in-string "\\.0$" ""
+                                    (slot-value exwm--connection 'display))
+          (replace-regexp-in-string "\\.0$" ""
+                                    (frame-parameter frame 'display))))
     (exwm--log "Frame `%s' is on a different DISPLAY (%S instead of %S)"
                frame
                (frame-parameter frame 'display)
