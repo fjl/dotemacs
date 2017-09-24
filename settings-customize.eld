@@ -171,7 +171,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (magit-gh-pulls erlang org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper ag company-go counsel dtrt-indent eshell-z expand-region fish-mode gist go-eldoc go-scratch restclient smex speed-type wgrep)))
+    (ob-go magit-gh-pulls erlang org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode projectile geiser slime web-mode yaml-mode magit go-guru htmlize solidity-mode ivy-hydra weechat graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm virtualenvwrapper ag company-go counsel dtrt-indent eshell-z expand-region fish-mode gist go-eldoc go-scratch restclient smex speed-type wgrep)))
  '(projectile-completion-system (quote ivy))
  '(projectile-ignored-project-function (quote file-remote-p))
  '(projectile-mode t nil (projectile))
@@ -302,6 +302,7 @@
  '(tls-checktrust t)
  '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/tramp-backup"))) nil (tramp))
  '(tramp-connection-timeout 10 nil (tramp))
+ '(tramp-syntax (quote default) nil (tramp))
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(use-file-dialog nil)
