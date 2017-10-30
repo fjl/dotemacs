@@ -167,6 +167,7 @@
  '(org-export-allow-bind-keywords t)
  '(org-html-htmlize-output-type (quote css))
  '(org-indent-mode-turns-on-hiding-stars nil)
+ '(org-latex-compiler "xelatex")
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
