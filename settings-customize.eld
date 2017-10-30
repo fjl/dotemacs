@@ -86,7 +86,7 @@
  '(eshell-modify-global-environment t)
  '(eshell-modules-list
    (quote
-    (eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
+    (eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-rebind eshell-script eshell-term eshell-tramp eshell-unix)))
  '(eshell-prompt-function (quote fjl/eshell-prompt))
  '(eshell-prompt-regexp "^[^>
 ]+ >> ")
