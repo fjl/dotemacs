@@ -55,7 +55,7 @@ deletes the comment start characters on the following line."
 
 (defun rename-buffer-and-file (newname)
   "Rename the current buffer and its visited file."
-  (interactive "FNew name:")
+  (interactive "FNew name: ")
   (let ((path (buffer-file-name)))
     (if (null path)
       (message "Buffer does not visit a file.")
