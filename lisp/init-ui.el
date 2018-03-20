@@ -207,9 +207,9 @@ and to setup the inital frame."
     (when special
       (dolist (p (cdr special))
         (set-frame-parameter frame (car p) (cdr p))))
-    (cond ((or (eq type 'ns) (eq type 'mac))  (fjl/setup-mac frame))
-          ((eq type 'x)                       (fjl/setup-gtk frame))
-          ((eq type t)                        (fjl/setup-tty)))
+    (cond ((or (eq type 'ns) (eq type 'mac))      (fjl/setup-mac frame))
+          ((eq type 'x)                           (fjl/setup-gtk frame))
+          ((and (eq type t) (not noninteractive)) (fjl/setup-tty)))
     (setq fjl/setting-up-first-frame nil)))
 
 (defun fjl/setup-all-frames (&rest _)
