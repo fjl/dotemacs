@@ -11,7 +11,7 @@
  '(ag-reuse-window nil)
  '(ansi-color-for-comint-mode t)
  '(async-bytecomp-package-mode t)
- '(auth-sources nil)
+ '(auth-sources '(macos-keychain-internet))
  '(avy-background t)
  '(aw-background nil)
  '(aw-dispatch-always t)
@@ -81,8 +81,7 @@
  '(eshell-modules-list
    '(eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix))
  '(eshell-prompt-function 'fjl/eshell-prompt)
- '(eshell-prompt-regexp "^[^>
-]+ >> ")
+ '(eshell-prompt-regexp "^[^>\n]+ >> ")
  '(eshell-visual-subcommands '(("vagrant" "ssh") ("brew" "log") ("geth" "attach")))
  '(expand-region-preferred-python-mode 'fgallina-python)
  '(fill-column 90)
