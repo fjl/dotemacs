@@ -252,6 +252,9 @@ and to setup the inital frame."
 ;; if it was opened for the edit.
 (add-hook 'server-done-hook 'quit-window)
 
+;; Enable winner mode.
+(winner-mode 1)
+
 ;; Mode Line Setup.
 
 (defun fjl/mode-line-align-right (face format)
