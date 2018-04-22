@@ -61,6 +61,7 @@
  '(counsel-linux-apps-directories '("/usr/share/applications/" "~/.local/share/applications"))
  '(custom-safe-themes t)
  '(dired-async-mode t)
+ '(dired-dwim-target t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..+$")
  '(display-battery-mode t)
  '(display-buffer-alist
