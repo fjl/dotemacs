@@ -105,6 +105,10 @@
   (define-key term-raw-map (kbd "C-y") 'term-paste))
 (add-hook 'term-mode-hook 'fjl/bind-term-keys)
 
+(defun fjl/bind-dired-keys ()
+  (define-key dired-mode-map (kbd "]") 'dired-afplay))
+(add-hook 'dired-mode-hook 'fjl/bind-dired-keys)
+
 (when (memq window-system '(ns mac))
   ;; disable print-buffer on OS X
   (global-unset-key (kbd "s-p"))

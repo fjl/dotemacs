@@ -243,4 +243,18 @@ Optional INITIAL-INPUT is the initial input in the minibuffer."
           (push file result))))
     (delete-dups (sort result 'string-lessp))))
 
+;; dired
+
+(defvar fjl/dired-afplay-process nil)
+
+;;;###autoload
+(defun dired-afplay ()
+  "Plays back the audio file under cursor using afplay."
+  (interactive)
+  (let ((files (dired-get-marked-files t)))
+    (when (and fjl/dired-afplay-process (process-live-p fjl/dired-afplay-process))
+      (kill-process fjl/dired-afplay-process))
+    (setq fjl/dired-afplay-process
+          (start-process "*dired afplay*" nil "afplay" (car files)))))
+
 (provide 'init-commands)
