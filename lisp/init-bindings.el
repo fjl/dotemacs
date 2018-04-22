@@ -106,7 +106,8 @@
 (add-hook 'term-mode-hook 'fjl/bind-term-keys)
 
 (defun fjl/bind-dired-keys ()
-  (define-key dired-mode-map (kbd "s-]") 'dired-afplay))
+  (define-key dired-mode-map (kbd "s-]") 'dired-afplay)
+  (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode))
 (add-hook 'dired-mode-hook 'fjl/bind-dired-keys)
 
 (when (memq window-system '(ns mac))
