@@ -155,7 +155,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(slime solidity-mode virtualenvwrapper projectile logview ob-go magit-gh-pulls erlang org-present go-dlv ace-window toml-mode org-plus-contrib avy markdown-mode geiser magit go-guru htmlize ivy-hydra graphviz-dot-mode cl-generic cm-mode levenshtein ox-gfm ag company-go counsel dtrt-indent eshell-z expand-region fish-mode gist go-eldoc go-scratch restclient smex wgrep))
+   '(ace-window ag avy cm-mode company-go counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-eldoc go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-plus-contrib org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-ignored-project-function 'file-remote-p)
  '(projectile-mode-line
