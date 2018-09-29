@@ -175,6 +175,7 @@
    '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
  '(recentf-max-saved-items 60)
  '(recentf-save-file "~/.emacs-recentf")
+ '(ring-bell-function (quote ignore))
  '(safe-local-variable-values
    '((c-file-style "ethereum")
      (Package . CL-WHO)
