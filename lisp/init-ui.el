@@ -181,21 +181,6 @@ which isn't very useful."
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;; Frame parameters for all frames, regardless of window-system.
-(setq default-frame-alist
-      '((tool-bar-lines 0)
-        (left-fringe . nil)
-        (right-fringe . 0)
-        (menu-bar-lines . 0)
-        (vertical-scroll-bars . nil)))
-
-;; Per window-system overrides and additions to default-frame-alist.
-(setq window-system-default-frame-alist
-      `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 93) (ns-appearance . dark) (ns-transparent-titlebar . t)))
-        (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 93)))
-        (w32 . ((font . ,(fpfont 12))))
-        (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
-
 (defun fjl/setup-frame (frame)
   "Reapplies frame parameters from `default-frame-alist' and
 `window-system-default-frame-alist'. This is useful while tweaking
@@ -221,8 +206,23 @@ and to setup the inital frame."
 ;; showing up on a frame.
 (add-to-list 'after-make-frame-functions 'fjl/setup-all-frames)
 
-;; Apply the parameters for all initial frames.
-(fjl/setup-all-frames)
+
+(progn
+  ;; Frame parameters for all frames, regardless of window-system.
+  (setq default-frame-alist
+        '((tool-bar-lines 0)
+          (left-fringe . nil)
+          (right-fringe . 0)
+          (menu-bar-lines . 0)
+          (vertical-scroll-bars . nil)))
+  ;; Per window-system overrides and additions to default-frame-alist.
+  (setq window-system-default-frame-alist
+        `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 93)))
+          (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 97)))
+          (w32 . ((font . ,(fpfont 12))))
+          (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
+  ;; Apply the parameters for all initial frames.
+  (fjl/setup-all-frames))
 
 ;; Display margin content on the inside of the fringe.
 ;; It looks nicer.
