@@ -90,7 +90,7 @@
    `(markdown-pre-face ((,class (:inherit fixed-pitch :foreground "gray75"))))
    `(markdown-inline-code-face ((,class (:inherit fixed-pitch :foreground "gray75"))))
    `(markdown-header-face-1 ((,class (:inherit markdown-header-face :height 1.2))))
-   `(markdown-header-face-2 ((,class (:inherit markdown-header-face :height 1.2))))
+   `(markdown-header-face-2 ((,class (:inherit markdown-header-face :height 1.1))))
    `(markdown-header-face-3 ((,class (:inherit markdown-header-face :height 1.0))))
    `(markdown-language-keyword-face ((,class (:inherit default :height 0.7))))
 
