@@ -206,7 +206,6 @@ and to setup the inital frame."
 ;; showing up on a frame.
 (add-to-list 'after-make-frame-functions 'fjl/setup-all-frames)
 
-
 (progn
   ;; Frame parameters for all frames, regardless of window-system.
   (setq default-frame-alist
@@ -217,7 +216,7 @@ and to setup the inital frame."
           (vertical-scroll-bars . nil)))
   ;; Per window-system overrides and additions to default-frame-alist.
   (setq window-system-default-frame-alist
-        `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 93)))
+        `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 95)))
           (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 97)))
           (w32 . ((font . ,(fpfont 12))))
           (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
