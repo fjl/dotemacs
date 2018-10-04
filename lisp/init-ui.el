@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'cl-lib)
+(require 'ansi-color)
 (eval-when-compile
   (require 'cl) ;; for lexical-let*
   (require 'desktop))
@@ -246,6 +247,14 @@ and to setup the inital frame."
   (setq-local scroll-step 1))
 
 (add-hook 'compilation-mode-hook 'fjl/compilation-mode-hook)
+
+(defun fjl/colorize-compilation ()
+  "Colorize from `compilation-filter-start' to `point'."
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region
+     compilation-filter-start (point))))
+
+(add-hook 'compilation-filter-hook #'fjl/colorize-compilation)
 
 ;; When quitting server edits, kill the window with them
 ;; if it was opened for the edit.
