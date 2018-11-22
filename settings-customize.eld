@@ -161,6 +161,7 @@
    '(olivetti lua-mode yaml-mode ace-window ag avy cm-mode company-go counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-eldoc go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-plus-contrib org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-ignored-project-function 'file-remote-p)
+ '(projectile-mode t nil (projectile))
  '(projectile-mode-line
    '(:eval
      (if
