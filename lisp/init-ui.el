@@ -86,34 +86,34 @@ also enables prettification in comments."
 
 ;; (quieten the byte compiler)
 (defvar mac-command-modifier)
+(defvar mac-right-command-modifier)
 (defvar mac-option-modifier)
 (defvar mac-mouse-wheel-mode)
 (defvar mac-mouse-wheel-smooth-scroll)
-(defvar mac-drawing-use-gcd)
-(defvar mac-auto-operator-composition-characters)
 (defvar ns-use-native-fullscreen)
 (defvar ns-alternate-modifier)
 (defvar ns-command-modifier)
-(defvar ns-auto-hide-menu-bar)
+(defvar ns-right-command-modifier)
 
 (defun fjl/setup-mac-gui (&optional frame)
   "Applies macOS gui settings."
-  (setq-default line-spacing 0.1)
   (setq ns-use-native-fullscreen nil)
   (setq ns-pop-up-frames nil)
   (setq frame-resize-pixelwise t)
-  ;; enable emoji font as fallback
+  ;; enable emoji font as fallback and other font settings
   (set-fontset-font t 'unicode "Symbola" frame 'prepend)
-  ;; keyboard settings
-  (setq ns-command-modifier 'super)
-  (setq ns-alternate-modifier 'meta)
+  (setq-default line-spacing 0)
   (fjl/setup-pragmata-ligatures)
-  (when (eq window-system 'mac)
-    (setq mac-command-modifier 'super)
-    (setq mac-option-modifier 'meta)
-    (setq mac-mouse-wheel-mode t)
-    (setq mac-mouse-wheel-smooth-scroll nil)
-    (setq mac-drawing-use-gcd nil)))
+  ;; keyboard settings
+  (if (eq window-system 'mac)
+    (setq mac-command-modifier 'super
+          mac-right-command-modifier 'meta
+          mac-option-modifier 'meta
+          mac-mouse-wheel-mode t
+          mac-mouse-wheel-smooth-scroll nil)
+    (setq ns-command-modifier 'super
+          ns-right-command-modifier 'meta
+          ns-alternate-modifier 'meta)))
 
 (defun fjl/mac-path-helper-path ()
   (with-temp-buffer
@@ -217,7 +217,7 @@ and to setup the inital frame."
           (vertical-scroll-bars . nil)))
   ;; Per window-system overrides and additions to default-frame-alist.
   (setq window-system-default-frame-alist
-        `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 95)))
+        `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 95)))b
           (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 97)))
           (w32 . ((font . ,(fpfont 12))))
           (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
@@ -227,18 +227,6 @@ and to setup the inital frame."
 ;; Display margin content on the inside of the fringe.
 ;; It looks nicer.
 (setq-default fringes-outside-margins t)
-
-;; Make linum look nicer in combination with the above
-;; setting. This mostly adds some space after the number.
-(progn
-  (defvar fjl/linum-fmt-width 0)
-  (defun fjl/linum-numbering-hook ()
-    (setq fjl/linum-fmt-width (length (number-to-string (count-lines (point-min) (point-max))))))
-  (defun fjl/linum-format (n)
-    (propertize (format (concat "%" (number-to-string fjl/linum-fmt-width) "d ") n)
-                'face 'linum))
-  (add-hook 'linum-before-numbering-hook 'fjl/linum-numbering-hook)
-  (setq-default linum-format #'fjl/linum-format))
 
 ;; For the compilation buffer, these auto scroll settings make it so point isn't centered
 ;; in the window when output reaches the bottom.
