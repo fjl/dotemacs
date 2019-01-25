@@ -63,6 +63,7 @@
  '(dired-async-mode t)
  '(dired-dwim-target t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..+$")
+ '(dired-use-ls-dired nil)
  '(display-battery-mode t)
  '(display-buffer-alist
    '(("\\*shell.*"
@@ -172,10 +173,10 @@
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el") t)
  '(recentf-max-saved-items 60)
  '(recentf-save-file "~/.emacs-recentf")
- '(ring-bell-function (quote ignore))
+ '(ring-bell-function 'ignore)
  '(safe-local-variable-values
    '((c-file-style "ethereum")
      (Package . CL-WHO)
