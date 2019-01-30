@@ -48,6 +48,8 @@
  '(comment-fill-column 70)
  '(company-auto-complete ''company-explicit-action-p)
  '(company-auto-complete-chars '(41))
+ '(company-frontends
+   '(company-echo-metadata-frontend company-preview-common-frontend))
  '(company-go-insert-arguments nil)
  '(company-idle-delay 0.2)
  '(compilation-always-kill t)
@@ -174,7 +176,7 @@
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el") t)
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
  '(recentf-max-saved-items 60)
  '(recentf-save-file "~/.emacs-recentf")
  '(ring-bell-function 'ignore)
