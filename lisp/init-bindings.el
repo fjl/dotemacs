@@ -105,7 +105,10 @@
   (define-key term-raw-map (kbd "M-o") 'ace-window)
   (define-key term-raw-map (kbd "M-x") 'counsel-M-x)
   (define-key term-raw-map (kbd "M-w") 'kill-ring-save)
-  (define-key term-raw-map (kbd "C-y") 'term-paste))
+  (define-key term-raw-map (kbd "C-y") 'term-paste)
+  ;; Free up C-c and make C-c C-c interrupt.
+  (define-key term-raw-map (kbd "C-c") nil)
+  (define-key term-raw-map (kbd "C-c C-c") 'term-interrupt-subjob))
 (add-hook 'term-mode-hook 'fjl/bind-term-keys)
 
 (defun fjl/bind-dired-keys ()
