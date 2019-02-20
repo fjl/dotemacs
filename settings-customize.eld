@@ -47,7 +47,7 @@
  '(comment-empty-lines 'eol)
  '(comment-fill-column 70)
  '(company-auto-complete ''company-explicit-action-p)
- '(company-auto-complete-chars '(41))
+ '(company-auto-complete-chars nil)
  '(company-frontends
    '(company-echo-metadata-frontend company-preview-common-frontend))
  '(company-go-insert-arguments nil)
