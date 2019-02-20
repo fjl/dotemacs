@@ -52,3 +52,4 @@
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'timer-list 'disabled nil)
+(put 'list-timers 'disabled nil)
