@@ -2,8 +2,6 @@
 
 (require 'go-mode)
 (require 'company)
-(require 'company-go)
-(require 'go-eldoc)
 (require 'cl-lib)
 (require 's)
 (require 'tramp)
@@ -22,9 +20,8 @@
 
 (defvar gotools-list
   '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
+    ("bingo"        "github.com/saibing/bingo")
     ("eg"           "golang.org/x/tools/cmd/eg")
-    ("gocode"       "github.com/nsf/gocode")
-    ("godef"        "github.com/rogpeppe/godef")
     ("godep"        "github.com/tools/godep")
     ("godoc"        "golang.org/x/tools/cmd/godoc")
     ("gogetdoc"     "github.com/zmb3/gogetdoc")
@@ -226,10 +223,8 @@ found."
 
 ;; Keys
 (define-key go-mode-map (kbd "C-c i") 'go-toggle-initializer)
-(define-key go-mode-map (kbd "C-c C-d") 'godef-describe)
 (define-key go-mode-map (kbd "C-c d") 'godoc)
-(define-key go-mode-map (kbd "M-.") 'godef-jump)
-(define-key go-mode-map (kbd "C-x 4 M-.") 'godef-jump-other-window)
+(define-key go-mode-map (kbd "M-.") 'lsp-find-definition)
 (define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
 (define-key go-mode-map (kbd "C-c C-i") 'go-goto-imports)
 (define-key go-mode-map (kbd "C-c c") 'fjl/go-coverage-c.out)
@@ -238,12 +233,9 @@ found."
 (defun fjl/go-mode-hook ()
   (gopath)
   (gotools-setup)
-  (add-hook 'before-save-hook 'gofmt-before-save)
   (prettify-symbols-mode)
-  (unless (and (buffer-file-name) (file-remote-p (buffer-file-name)))
-    (go-eldoc-setup)
-    (setq-local company-backends '(company-go))
-    (company-mode)))
+  (lsp)
+  (add-hook 'before-save-hook 'lsp-format-buffer))
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)

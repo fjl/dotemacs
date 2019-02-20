@@ -52,6 +52,8 @@
    '(company-echo-metadata-frontend company-preview-common-frontend))
  '(company-go-insert-arguments nil)
  '(company-idle-delay 0.2)
+ '(company-lsp-enable-recompletion nil)
+ '(company-lsp-enable-snippet nil)
  '(compilation-always-kill t)
  '(compilation-error-regexp-alist
    '(absoft ada aix ant bash borland python-tracebacks-and-caml comma cucumber msft edg-1 edg-2 epc ftnchek iar ibm irix jikes-file maven jikes-line gcc-include ruby-Test::Unit lcc makepp mips-1 mips-2 msft omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint go-test gnu java))
@@ -124,6 +126,10 @@
  '(ivy-use-virtual-buffers t)
  '(ivy-virtual-abbreviate 'full)
  '(ivy-wrap t)
+ '(lsp-auto-guess-root t)
+ '(lsp-clients-go-server-args '("-cache-style" "on-demand"))
+ '(lsp-enable-snippet nil)
+ '(lsp-prefer-flymake :none)
  '(magit-auto-revert-immediately nil)
  '(magit-buffer-name-format "*%M%v: %t*")
  '(magit-completing-read-function 'ivy-completing-read)
@@ -160,7 +166,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(olivetti lua-mode yaml-mode ace-window ag avy cm-mode company-go counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-eldoc go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-plus-contrib org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
+   '(company-lsp lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-plus-contrib org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-ignored-project-function 'file-remote-p)
  '(projectile-mode t nil (projectile))
