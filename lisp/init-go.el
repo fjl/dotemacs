@@ -230,7 +230,6 @@ found."
 (define-key go-mode-map (kbd "M-.") 'lsp-find-definition)
 (define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
 
-
 ;;;###autoload
 (defun fjl/go-mode-hook ()
   (gopath)
