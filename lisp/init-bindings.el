@@ -72,10 +72,7 @@
 (after-package company
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "C-e") 'company-complete-selection)
-  ;; Swap the meaning of return and tab because return is more convenient to access.
-  (define-key company-active-map [return] 'company-complete-common)
-  (define-key company-active-map [tab] 'company-complete-selection))
+  (define-key company-active-map (kbd "C-e") 'company-complete-selection))
 
 ;; Make paragraph keys easier to type, especially on small keyboards.
 ;; They used to be bound to M-[ M-] here, but M-[ is indistinguishable
