@@ -277,6 +277,7 @@ and to setup the inital frame."
     (eldoc-mode . "")
     (paredit-mode . "")
     (abbrev-mode . "")
+    (auto-revert-mode . "")
     (ivy-mode . "")
     (magit-auto-revert-mode . "")
     (buffer-face-mode . "")
