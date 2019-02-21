@@ -176,6 +176,7 @@
          " P"
        (format " P<%s>"
                (projectile-project-name)))))
+ '(projectile-mode-line-prefix " P")
  '(projectile-switch-project-action (lambda nil (dired ".")))
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
