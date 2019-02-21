@@ -224,10 +224,12 @@ found."
 ;; Keys
 (define-key go-mode-map (kbd "C-c i") 'go-toggle-initializer)
 (define-key go-mode-map (kbd "C-c d") 'godoc)
-(define-key go-mode-map (kbd "M-.") 'lsp-find-definition)
-(define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
 (define-key go-mode-map (kbd "C-c C-i") 'go-goto-imports)
 (define-key go-mode-map (kbd "C-c c") 'fjl/go-coverage-c.out)
+(define-key go-mode-map (kbd "C-c r") 'lsp-rename)
+(define-key go-mode-map (kbd "M-.") 'lsp-find-definition)
+(define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
+
 
 ;;;###autoload
 (defun fjl/go-mode-hook ()
