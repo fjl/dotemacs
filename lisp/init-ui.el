@@ -90,6 +90,8 @@ also enables prettification in comments."
 (defvar mac-option-modifier)
 (defvar mac-mouse-wheel-mode)
 (defvar mac-mouse-wheel-smooth-scroll)
+(defvar mac-pass-control-to-system)
+(defvar mac-ignore-accessibility)
 (defvar ns-use-native-fullscreen)
 (defvar ns-alternate-modifier)
 (defvar ns-command-modifier)
@@ -110,7 +112,9 @@ also enables prettification in comments."
           mac-right-command-modifier 'meta
           mac-option-modifier 'meta
           mac-mouse-wheel-mode t
-          mac-mouse-wheel-smooth-scroll nil)
+          mac-mouse-wheel-smooth-scroll nil
+          mac-pass-control-to-system nil
+          mac-ignore-accessibility t)
     (setq ns-command-modifier 'super
           ns-right-command-modifier 'meta
           ns-alternate-modifier 'meta)))
