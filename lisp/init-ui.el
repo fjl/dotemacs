@@ -255,6 +255,9 @@ and to setup the inital frame."
 ;; Enable winner mode.
 (winner-mode 1)
 
+;; Colorize buffer names in ivy buffer switcher.
+(add-to-list 'ivy-switch-buffer-faces-alist '(markdown-mode . ivy-org))
+
 ;; Mode Line Setup.
 
 (defun fjl/mode-line-align-right (face format)
