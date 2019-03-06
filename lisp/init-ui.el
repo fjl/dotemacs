@@ -4,6 +4,7 @@
 (require 'ansi-color)
 (eval-when-compile
   (require 'cl) ;; for lexical-let*
+  (require 'ivy)
   (require 'desktop))
 
 ;; Theme
@@ -256,7 +257,8 @@ and to setup the inital frame."
 (winner-mode 1)
 
 ;; Colorize buffer names in ivy buffer switcher.
-(add-to-list 'ivy-switch-buffer-faces-alist '(markdown-mode . ivy-org))
+(after-package ivy
+  (add-to-list 'ivy-switch-buffer-faces-alist '(markdown-mode . ivy-org)))
 
 ;; Mode Line Setup.
 
