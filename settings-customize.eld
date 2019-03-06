@@ -252,6 +252,7 @@
            t)))
  '(save-interprogram-paste-before-kill t)
  '(savehist-file "~/.emacs-history")
+ '(savehist-mode t)
  '(send-mail-function 'smtpmail-send-it)
  '(sentence-end-double-space nil)
  '(server-window 'pop-to-buffer)
