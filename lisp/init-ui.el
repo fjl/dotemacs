@@ -5,6 +5,7 @@
 (eval-when-compile
   (require 'cl) ;; for lexical-let*
   (require 'ivy)
+  (require 'projectile)
   (require 'desktop))
 
 ;; Theme
@@ -93,6 +94,7 @@ also enables prettification in comments."
 (defvar mac-mouse-wheel-smooth-scroll)
 (defvar mac-pass-control-to-system)
 (defvar mac-ignore-accessibility)
+(defvar ns-pop-up-frames)
 (defvar ns-use-native-fullscreen)
 (defvar ns-alternate-modifier)
 (defvar ns-command-modifier)
@@ -260,14 +262,7 @@ and to setup the inital frame."
 (after-package ivy
   (add-to-list 'ivy-switch-buffer-faces-alist '(markdown-mode . ivy-org)))
 
-;; Mode Line Setup.
-
-(defun fjl/mode-line-align-right (face format)
-  (let* ((fmt     (format-mode-line format face))
-         (reserve (string-width fmt)))
-    (list (propertize " " 'display `((space :align-to (- (+ right right-margin right-fringe) ,reserve))))
-          fmt)))
-
+;; Set up the mode line.
 (setq-default mode-line-format
               '(("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
                  mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
@@ -275,44 +270,61 @@ and to setup the inital frame."
                  "  " mode-line-modes
                  (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
+(defun fjl/mode-line-align-right (face format)
+  (let* ((fmt     (format-mode-line format face))
+         (reserve (string-width fmt)))
+    (list (propertize " " 'display `((space :align-to (- (+ right right-margin right-fringe) ,reserve))))
+          fmt)))
+
+;; Shorten projectile mode-line display.
+(after-package projectile
+  (defun fjl/projectile-mode-line ()
+    (if (file-remote-p default-directory)
+        " P"
+      (format " P[%s]" (projectile-project-name))))
+  (setq projectile-mode-line-function 'fjl/projectile-mode-line))
+
 ;; Rename and hide certain modes in the mode-line to reduce display clutter.
-(defvar fjl/mode-line-cleaner-alist
-  `(;; Minor modes that should be hidden.
-    (company-mode . "")
-    (eldoc-mode . "")
-    (paredit-mode . "")
-    (abbrev-mode . "")
-    (auto-revert-mode . "")
-    (ivy-mode . "")
-    (magit-auto-revert-mode . "")
-    (buffer-face-mode . "")
-
-    ;; Major modes.
-    (markdown-mode . "Md")
-    (lisp-interaction-mode . "λ")
-    (hi-lock-mode . "")
-    (python-mode . "Py")
-    (emacs-lisp-mode . "El")
-    (common-lisp-mode . "Cl")
-    (js-mode . "Js")
-    (nxhtml-mode . "Nx"))
-  "Alist for `clean-mode-line'.
-
-When you add a new element to the alist, keep in mind that you
-must pass the correct minor/major mode symbol and a string you
-want to use in the modeline *in lieu of* the original.")
+(defvar fjl/mode-line-cleaners
+  (let ((table (make-hash-table :test 'eq)))
+    (prog1 table
+      (mapc (lambda (kv) (setf (gethash (car kv) table) (cdr kv)))
+            ;; Minor modes that should be hidden.
+            '((abbrev-mode "")
+              (auto-revert-mode "")
+              (buffer-face-mode "")
+              (company-mode "")
+              (eldoc-mode "")
+              (ivy-mode "")
+              (magit-auto-revert-mode "")
+              (paredit-mode "")
+              ;; Major modes.
+              (common-lisp-mode "Cl")
+              (emacs-lisp-mode "El")
+              (hi-lock-mode "")
+              (js-mode "Js")
+              (lisp-interaction-mode "λ")
+              (markdown-mode "Md")
+              (nxhtml-mode "Nx")
+              (python-mode "Py"))))))
 
 (defun fjl/clean-mode-line ()
   (interactive)
-  (cl-loop
-   for cleaner in fjl/mode-line-cleaner-alist
-   do (let* ((mode (car cleaner))
-             (mode-str (cdr cleaner))
-             (old-mode-str (cdr (assq mode minor-mode-alist))))
-        (when old-mode-str
-          (setcar old-mode-str mode-str))
-        (when (eq mode major-mode)
-          (setq mode-name mode-str)))))
+  ;; Replace minor mode strings.
+  (dolist (mm minor-mode-alist)
+    (let* ((mode (car mm))
+           (mode-desc (cadr mm))
+           (replacement (gethash mode fjl/mode-line-cleaners)))
+      (cond ((and (eq mode 'projectile-mode) (not (and (consp mode-desc) (eq (car mode-desc) :eval))))
+             ;; Hack: remove "Projectile" in utility buffers.
+             (setcdr mm `((:eval (unless (string= (format-mode-line ,mode-desc) " Projectile")
+                                   ,mode-desc)))))
+            ((car replacement)
+             ;; Use the replacement string.
+             (setcdr mm replacement)))))
+  ;; Replace major mode string.
+  (let ((r (gethash major-mode fjl/mode-line-cleaners)))
+    (when r (setq mode-name (car r)))))
 
 (add-hook 'after-change-major-mode-hook 'fjl/clean-mode-line)
 

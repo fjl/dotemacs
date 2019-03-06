@@ -169,14 +169,6 @@
  '(projectile-completion-system 'ivy)
  '(projectile-ignored-project-function 'file-remote-p)
  '(projectile-mode t nil (projectile))
- '(projectile-mode-line
-   '(:eval
-     (if
-         (file-remote-p default-directory)
-         " P"
-       (format " P<%s>"
-               (projectile-project-name)))))
- '(projectile-mode-line-prefix " P")
  '(projectile-switch-project-action (lambda nil (dired ".")))
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
