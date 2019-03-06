@@ -294,6 +294,7 @@ and to setup the inital frame."
               (auto-revert-mode "")
               (buffer-face-mode "")
               (company-mode "")
+              (dired-async-mode "")
               (eldoc-mode "")
               (ivy-mode "")
               (magit-auto-revert-mode "")
