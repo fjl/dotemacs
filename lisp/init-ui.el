@@ -303,18 +303,20 @@ bottom right corner of its frame."
               (company-mode "")
               (dired-async-mode "")
               (eldoc-mode "")
+              (hi-lock-mode "")
               (ivy-mode "")
               (magit-auto-revert-mode "")
               (paredit-mode "")
+              (with-editor-mode "")
               ;; Major modes.
               (common-lisp-mode "Cl")
               (emacs-lisp-mode "El")
-              (hi-lock-mode "")
               (js-mode "Js")
               (lisp-interaction-mode "λ")
               (markdown-mode "Md")
               (nxhtml-mode "Nx")
-              (python-mode "Py"))))))
+              (python-mode "Py")
+              (scheme-mode "Scm"))))))
 
 (defun fjl/clean-mode-line ()
   (interactive)
@@ -327,7 +329,7 @@ bottom right corner of its frame."
              ;; Hack: remove "Projectile" in utility buffers.
              (setcdr mm `((:eval (unless (string= (format-mode-line ,mode-desc) " Projectile")
                                    ,mode-desc)))))
-            ((car replacement)
+            (replacement
              ;; Use the replacement string.
              (setcdr mm replacement)))))
   ;; Replace major mode string.
