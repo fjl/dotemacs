@@ -200,7 +200,6 @@
  '(slime-compilation-finished-hook
    '(slime-create-compilation-log slime-maybe-list-compiler-notes))
  '(smex-completion-method 'ivy)
- '(speedbar-ignored-modes '(fundamental-mode mu4e-compose-mode))
  '(speedbar-show-unknown-files t)
  '(split-height-threshold 30)
  '(split-width-threshold 140)

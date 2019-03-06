@@ -28,16 +28,6 @@
   ;; Enable some built-in packages.
   (require 'uniquify))
 
-;; Setup an autoload for mu4e because it doesn't have a package.
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
-(when (cl-some (lambda (d)
-                 (file-exists-p (concat (file-name-as-directory d) "mu4e.el")))
-               load-path)
-  (autoload 'mu4e "mu4e" "If mu4e is not running yet, start it." t)
-  (autoload 'mu4e-user-agent "mu4e" nil nil)
-  (eval-after-load 'mu4e '(require 'init-mu4e))
-  (setq mail-user-agent 'mu4e-user-agent))
-
 ;; Set EDITOR for all subprocesses.
 (setenv "EDITOR" "emacsclient")
 
