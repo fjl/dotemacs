@@ -92,6 +92,8 @@
    `(markdown-header-face-1 ((,class (:inherit markdown-header-face :height 1.2))))
    `(markdown-header-face-2 ((,class (:inherit markdown-header-face :height 1.1))))
    `(markdown-header-face-3 ((,class (:inherit markdown-header-face :height 1.0))))
+   `(markdown-header-face-4 ((,class (:inherit markdown-header-face :height 1.0))))
+   `(markdown-header-face-5 ((,class (:inherit markdown-header-face :height 1.0))))
    `(markdown-language-keyword-face ((,class (:inherit default :height 0.7))))
 
    ;; Org
