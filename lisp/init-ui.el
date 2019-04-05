@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'cl-lib)
-(require 'ansi-color)
 (eval-when-compile
   (require 'cl) ;; for lexical-let*
+  (require 'ansi-color)
   (require 'ivy)
   (require 'projectile)
   (require 'desktop))
@@ -56,6 +56,7 @@ also enables prettification in comments."
   (when (string-prefix-p "Pragmata" (fpfont))
     (setq-default prettify-symbols-alist
                   '(("<-"     . ?🡐)
+                    ("->"     . ?🡒)
                     ("!="     . "	")
                     ("*="     . "	")
                     ("+="     . "	")
@@ -70,7 +71,6 @@ also enables prettification in comments."
                     ("<="     . "	")
                     (">="     . "	")
                     ("&&"     . "	")
-                    ("||"     . "	")
                     ("::"     . "	")
                     ("///"    . "	")
                     ("TODO:"  . "	 ")
