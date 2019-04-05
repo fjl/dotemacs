@@ -233,6 +233,8 @@ found."
   (gopath)
   (gotools-setup)
   (prettify-symbols-mode)
+  (setq lsp-clients-go-server (concat (gotools-gobin) "bingo"))
+  (setq lsp-clients-go-server-args '("-cache-style" "on-demand"))
   (lsp)
   (add-hook 'before-save-hook 'lsp-format-buffer))
 

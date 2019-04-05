@@ -126,7 +126,6 @@
  '(ivy-virtual-abbreviate 'full)
  '(ivy-wrap t)
  '(lsp-auto-guess-root t)
- '(lsp-clients-go-server-args '("-cache-style" "on-demand"))
  '(lsp-enable-snippet nil)
  '(lsp-prefer-flymake :none)
  '(magit-auto-revert-immediately nil)
