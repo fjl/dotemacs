@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "go-dlv" "20190413.1623" "Go Delve - Debug Go programs interactively with the GUD." '((go-mode "1.3.1")) :commit "df03ade331d8fb46acc57ef358e696bc36129e04" :keywords '("go" "debug" "debugger" "delve" "interactive" "gud") :authors '(("Marko Bencun" . "mbencun@gmail.com")) :maintainer '("Marko Bencun" . "mbencun@gmail.com") :url "https://github.com/benma/go-dlv.el/")
