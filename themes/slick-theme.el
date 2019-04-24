@@ -1,6 +1,9 @@
 (deftheme slick
   "A theme based the wheatgrass theme that comes with emacs.")
 
+(defconst slick-background-color "gray15")
+(defconst slick-faint-highlight-color "gray25")
+(defconst slick-highlight-color "gray40")
 (defconst slick-search-color "saddle brown")
 (defconst slick-text-color "gray90")
 
@@ -10,7 +13,7 @@
    'slick
 
    ;; Basic faces
-   `(default ((,graphic (:foreground ,slick-text-color :background "gray15"))
+   `(default ((,graphic (:foreground ,slick-text-color :background ,slick-background-color))
               (,class   (:foreground ,slick-text-color))))
    `(cursor ((,class (:background "red"))))
    `(error ((,class (:foreground "red"))))
@@ -33,9 +36,9 @@
    `(region ((,class (:foreground "white" :background "dark green"))))
    `(secondary-selection ((,class (:background "dark slate gray"))))
    `(isearch ((,class (:foreground "white" :background ,slick-search-color))))
-   `(lazy-highlight ((,class (:background "gray25" :foreground "gray90" :underline t :weight bold))))
+   `(lazy-highlight ((,class (:background ,slick-faint-highlight-color :foreground "gray90" :underline t :weight bold))))
    `(hl-line ((,class (:background "gray20"))))
-   `(linum ((,class (:foreground "gray40" :inherit default))))
+   `(linum ((,class (:foreground ,slick-highlight-color :inherit default))))
    `(show-paren-match ((,class (:background "gray50"))))
 
    ;; Font lock faces
@@ -97,7 +100,7 @@
    `(markdown-language-keyword-face ((,class (:inherit default :height 0.7))))
 
    ;; Org
-   `(org-hide             ((,graphic (:foreground "gray15")) (t (:foreground "black"))))
+   `(org-hide             ((,graphic (:foreground ,slick-background-color)) (t (:foreground "black"))))
    `(org-document-title   ((,class (:foreground "light blue"))))
    `(org-document-info    ((,class (:foreground "light blue"))))
    `(org-block            ((,class (:inherit fixed-pitch :foreground "gray75"))))
@@ -117,9 +120,9 @@
    ;; Magit
    `(smerge-refined-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
    `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
-   `(magit-item-highlight ((,class (:background "gray20"))))
+   `(magit-item-highlight ((,class (:background ,slick-faint-highlight-color))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
-   `(magit-section-highlight ((,class (:background "gray25"))))
+   `(magit-section-highlight ((,class (:background ,slick-faint-highlight-color))))
    `(magit-diff-added ((,class (:background "#225522" :foreground "#88ff88"))))
    `(magit-diff-added-highlight ((,class (:background "#307730" :foreground "#ccffcc"))))
    `(magit-diff-removed ((,class (:background "#552222" :foreground "#ff8888"))))
@@ -142,6 +145,9 @@
    `(swiper-match-face-1 ((,class (:background "gray30" :foreground "gray90"))))
    `(swiper-match-face-2 ((,class (:background "gray30" :foreground "gray90" :weight bold :underline t))))
 
+   ;; LSP
+   `(lsp-face-highlight-textual ((,class (:background ,slick-faint-highlight-color))))
+
    ;; mu4e
    `(mu4e-header-highlight-face ((,class (:inherit region :underline nil :weight medium))))
    `(mu4e-modeline-face ((,class (:inherit nil :background nil :foreground ,slick-text-color))))
@@ -153,7 +159,7 @@
    `(mu4e-cited-5-face ((,class (:foreground "gray30"))))
 
    ;; Weechat
-   `(weechat-highlight-face ((,class (:background "gray30" :foreground "Cyan1"))))
+   `(weechat-highlight-face ((,class (:background ,slick-faint-highlight-color :foreground "Cyan1"))))
 ))
 
 (provide-theme 'slick)
