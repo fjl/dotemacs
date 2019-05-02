@@ -130,6 +130,12 @@
    `(magit-diff-context ((,class (:inherit default))))
    `(magit-diff-context-highlight ((,class (:background "gray30"))))
 
+   ;; Ediff
+   `(ediff-odd-diff-A ((,class (:background ,slick-faint-highlight-color))))
+   `(ediff-odd-diff-B ((,class (:background ,slick-faint-highlight-color))))
+   `(ediff-even-diff-A ((,class (:background ,slick-faint-highlight-color))))
+   `(ediff-even-diff-B ((,class (:background ,slick-faint-highlight-color))))
+
    ;; avy/ivy/swiper
    `(avy-lead-face-0 ((,class (:foreground "black" :background "tan"))))
    `(avy-lead-face-1 ((,class (:foreground "black" :background "white"))))

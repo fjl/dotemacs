@@ -76,6 +76,7 @@
  '(display-time-format " %-I:%M%p")
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
+ '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(electric-indent-mode t)
  '(ember-completion-system 'default)
  '(eshell-banner-message "")
