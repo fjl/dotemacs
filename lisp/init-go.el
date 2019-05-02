@@ -21,12 +21,12 @@
 (defvar gotools-list
   '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
+    ("bingo"        "github.com/saibing/bingo")
     ("godep"        "github.com/tools/godep")
     ("godoc"        "golang.org/x/tools/cmd/godoc")
     ("gogetdoc"     "github.com/zmb3/gogetdoc")
     ("goimports"    "golang.org/x/tools/cmd/goimports")
     ("gomvpkg"      "golang.org/x/tools/cmd/gomvpkg")
-    ("gopls"        "golang.org/x/tools/cmd/gopls")
     ("gorename"     "golang.org/x/tools/cmd/gorename")
     ("gosimple"     "honnef.co/go/tools/cmd/gosimple")
     ("govendor"     "github.com/kardianos/govendor")
@@ -233,7 +233,8 @@ found."
   (gopath)
   (gotools-setup)
   (prettify-symbols-mode)
-  (setq lsp-clients-go-server (concat (gotools-gobin) "gopls"))
+  (setq lsp-clients-go-server (concat (gotools-gobin) "bingo"))
+  (setq lsp-clients-go-server-args '("-cache-style" "ondemand"))
   (lsp)
   (add-hook 'before-save-hook 'lsp-format-buffer))
 
