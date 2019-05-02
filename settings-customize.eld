@@ -128,6 +128,7 @@
  '(ivy-wrap t)
  '(lsp-auto-guess-root t)
  '(lsp-enable-snippet nil)
+ '(lsp-enable-symbol-highlighting nil)
  '(lsp-prefer-flymake :none)
  '(magit-auto-revert-immediately nil)
  '(magit-buffer-name-format "*%M%v: %t*")
