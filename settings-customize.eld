@@ -180,7 +180,8 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(ring-bell-function 'ignore)
  '(safe-local-variable-values
-   '((c-file-style "ethereum")
+   '((flycheck-disabled-checkers emacs-lisp-checkdoc)
+     (c-file-style "ethereum")
      (Package . CL-WHO)
      (Base . 10)
      (Package . CL-PPCRE)
