@@ -6,7 +6,8 @@
   "Recompile initialization files."
   (interactive)
   (make-init-autoloads nil)
-  (byte-recompile-directory +fjl-init+ 0))
+  (byte-recompile-directory +fjl-init-lisp+ 0)
+  (byte-recompile-directory package-user-dir 0))
 
 (defun reinit ()
   "Recompile and reload initialization files."
