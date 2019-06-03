@@ -21,21 +21,18 @@
 (defvar gotools-list
   '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
-    ("bingo"        "github.com/saibing/bingo")
     ("godep"        "github.com/tools/godep")
     ("godoc"        "golang.org/x/tools/cmd/godoc")
     ("gogetdoc"     "github.com/zmb3/gogetdoc")
     ("goimports"    "golang.org/x/tools/cmd/goimports")
     ("gomvpkg"      "golang.org/x/tools/cmd/gomvpkg")
     ("gorename"     "golang.org/x/tools/cmd/gorename")
-    ("gosimple"     "honnef.co/go/tools/cmd/gosimple")
     ("govendor"     "github.com/kardianos/govendor")
     ("guru"         "golang.org/x/tools/cmd/guru")
     ("ineffassign"  "github.com/gordonklaus/ineffassign")
-    ("megacheck"    "honnef.co/go/tools/cmd/megacheck")
     ("staticcheck"  "honnef.co/go/tools/cmd/staticcheck")
     ("stress"       "golang.org/x/tools/cmd/stress"))
-    ("structlayout" "honnef.co/go/tools/cmd/staticcheck"))
+    ("structlayout" "honnef.co/go/tools/cmd/structlayout"))
 
 (defun fjl/file-name-localname (file)
   (if (tramp-tramp-file-p file)
@@ -48,7 +45,22 @@
   "Install go tools in `gotools-dir' and set up various variables to
 refer to the installed tools."
   (interactive)
-  (apply #'gotools-run-command "go" "get" "-v" "-u" (mapcar #'cadr gotools-list)))
+  (gotools-init-buffer)
+  (gotools-run-commands
+   (cl-list* (gotools-dir) "go" "get" "-u" (mapcar #'cadr gotools-list))))
+
+(defun gotools-install-patched-gopls ()
+  (interactive)
+  (gotools-init-buffer)
+  (let* ((gopls-dir (file-name-as-directory (expand-file-name (concat (gotools-dir) "patched-gopls"))))
+         (gopls-git (concat gopls-dir ".git"))
+         (default-directory gopls-dir))
+    (message gopls-git)
+    (gotools-run-commands
+      (if (file-exists-p gopls-git)
+          `(,gopls-dir "git" "pull")
+          `(,(gotools-dir) "git" "clone" "-q" "-b" "bingo" "https://github.com/saibing/tools" ,(fjl/file-name-localname gopls-dir)))
+      `(,gopls-dir "go" "install" "./cmd/gopls"))))
 
 ;;;###autoload
 (defun gotools-rebuild ()
@@ -59,30 +71,44 @@ refer to the installed tools."
     (let ((file (concat (gotools-gobin) (car cmd))))
       (when (file-exists-p file)
         (delete-file file t))))
-  (apply #'gotools-run-command "go" "install" "-v" (mapcar #'cadr gotools-list)))
+  (gotools-init-buffer)
+  (gotools-run-commands
+   (cl-list* (gotools-dir) "go" "install" "-v" (mapcar #'cadr gotools-list))))
 
-(defun gotools-run-command (command &rest args)
+(defun gotools-init-buffer ()
   (pop-to-buffer-same-window "*gotools-update*")
-  (erase-buffer)
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (insert
+     (propertize (format "Installing Go tools to %s\n\n" (gotools-dir)) 'face 'bold)))
+  (setq buffer-read-only t)
+  (view-mode 1))
+
+(defun gotools-run-commands (&rest commands)
   (let* ((gopath (fjl/file-name-localname (expand-file-name (gotools-dir))))
          (gobin  (fjl/file-name-localname (expand-file-name (gotools-gobin))))
+         (command (car commands))
+         (default-directory (car command))
+         (exe (cadr command))
+         (args (cddr command))
          (proc nil))
-    (insert
-     (propertize
-      (format "Installing Go tools to %s\nGOPATH=%s\n\n" (gotools-dir) gopath)
-      'face 'bold))
-    (make-directory (concat (file-name-as-directory (gotools-dir)) "src") t)
-    (let ((process-environment (cl-list* (concat "GOPATH=" gopath)
-                                         (concat "GOBIN=" gobin)
-                                         process-environment)))
-      (setq proc (apply #'start-file-process command (current-buffer) command args)))
-    (set-process-sentinel proc (lambda (proc event)
-                                 (when (buffer-live-p (process-buffer proc))
-                                   (with-current-buffer (process-buffer proc)
-                                     (newline)
-                                     (insert command " " (car args) " " (propertize event 'face 'bold))
-                                     (gotools-setup)))))
-    (set-process-query-on-exit-flag proc t)))
+    (let ((process-environment (cl-list* "GO111MODULE=on"
+                                         "TERM=dumb"
+                                         (concat "GOPATH=" gopath)
+                                         (concat "GOBIN=" gobin) process-environment)))
+      (setq proc (apply #'start-file-process exe (current-buffer) exe args))
+      (set-process-sentinel proc (lambda (proc event)
+                                   (when (buffer-live-p (process-buffer proc))
+                                     (with-current-buffer (process-buffer proc)
+                                       (let ((inhibit-read-only t))
+                                         (newline)
+                                         (insert exe " " (car args) " " (propertize event 'face 'bold))
+                                         (newline))
+                                       ;; Start next command.
+                                       (if (and (cdr commands) (equal event "finished\n"))
+                                           (apply #'gotools-run-commands (cdr commands))
+                                         (gotools-setup))))))
+      (set-process-query-on-exit-flag proc t))))
 
 ;;;###autoload
 (defun gotools-setup ()
@@ -233,8 +259,8 @@ found."
   (gopath)
   (gotools-setup)
   (prettify-symbols-mode)
-  (setq lsp-clients-go-server (concat (gotools-gobin) "bingo"))
   (setq lsp-clients-go-server-args '("-cache-style" "ondemand"))
+  (setq lsp-gopls-server-args '("-v"))
   (lsp)
   (add-hook 'before-save-hook 'lsp-format-buffer))
 
