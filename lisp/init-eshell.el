@@ -6,6 +6,7 @@
 (require 'em-hist)
 (require 'ring)
 (require 'levenshtein)
+(require 'with-editor)
 
 ;; Load 'z' extension. This tracks frequently-used directories and
 ;; enables jumping into them using the 'z' command.
@@ -298,7 +299,9 @@ adapting to terminal width not wrap."
   ;; usually end in a crash after a few days of use.
   (unless fjl/eshell-history-timer
     (setq fjl/eshell-history-timer
-          (run-with-idle-timer 300 t 'eshell-save-some-history))))
+          (run-with-idle-timer 300 t 'eshell-save-some-history)))
+  ;; Set EDITOR to this emacs server.
+  (with-editor-export-editor))
 
 ;;;###autoload
 (add-hook 'eshell-mode-hook 'fjl/eshell-mode-hook)
