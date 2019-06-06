@@ -260,9 +260,9 @@ found."
   (gotools-setup)
   (prettify-symbols-mode)
   (setq lsp-clients-go-server-args '("-cache-style" "ondemand"))
-  (setq lsp-gopls-server-args '("-v"))
   (lsp)
-  (add-hook 'before-save-hook 'lsp-format-buffer))
+  (add-hook 'before-save-hook 'lsp-format-buffer)
+  (add-hook 'before-save-hook 'lsp-organize-imports))
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)
