@@ -201,6 +201,8 @@
  '(shr-color-visible-luminance-min 60)
  '(slime-compilation-finished-hook
    '(slime-create-compilation-log slime-maybe-list-compiler-notes))
+ '(slime-load-failed-fasl 'never)
+ '(slime-threads-update-interval 1.0)
  '(smex-completion-method 'ivy)
  '(speedbar-show-unknown-files t)
  '(split-height-threshold 30)

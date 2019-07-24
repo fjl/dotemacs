@@ -1,27 +1,31 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'slime)
-(require 'slime-cl-indent) ;; for define-common-lisp-style
 (require 'tramp)
+(eval-when-compile
+  (require 'slime-indentation)
+  (require 'slime-asdf)
+  (require 'slime-fancy)
+  (require 'slime-autodoc)
+  (require 'slime-banner))
 
-(setq slime-default-lisp 'sbcl)
-(setq slime-lisp-implementations
-      '((ccl   ("~/bin/ccl64"))
-        (sbcl  ("/usr/bin/env" "LC_ALL=UTF-8" "/usr/local/bin/sbcl")
-               :coding-system utf-8-unix)
-        (clisp ("clisp"))
-        (abcl  ("~/bin/abcl"))
-        (ecl   ("ecl"))))
+(setq
+ slime-default-lisp 'sbcl
+ slime-lisp-implementations
+ '((sbcl  ("/usr/bin/env" "LC_ALL=UTF-8" "/usr/local/bin/sbcl")
+          :coding-system utf-8-unix)
+   (ccl   ("~/bin/ccl64"))
+   (clisp ("clisp"))
+   (ecl   ("ecl"))))
 
-(slime-setup '(slime-indentation
-               ;; slime-tramp
-               slime-fancy
-               slime-asdf
-               slime-editing-commands
-               slime-package-fu
-               slime-autodoc
-               slime-fuzzy
-               slime-fancy-inspector))
+(slime-setup
+ '(slime-indentation
+   slime-fancy slime-asdf
+   slime-editing-commands
+   slime-package-fu
+   slime-autodoc
+   slime-fuzzy
+   slime-fancy-inspector))
 
 (define-common-lisp-style "fjl-indentation"
   "My personal indentation style. cond gets indented similar to case."
@@ -72,16 +76,11 @@
 
 ;;;###autoload
 (defun fjl/slime-mode-hook ()
-  (setq-local browse-url-browser-function 'eww-browse-url)
   (global-set-key (kbd "C-c C-s") 'slime-selector)
   (global-set-key (kbd "C-c s") 'slime-selector)
+  (setq-local browse-url-browser-function 'eww-browse-url)
   (define-key slime-mode-map (kbd "C-x 9") 'slime-test-current-system)
-  (setq tab-always-indent                'complete
-        slime-autodoc-use-multiline-p    nil
-        slime-enable-evaluate-in-emacs   t
-        slime-header-line-p              t
-        slime-startup-animation          t
-        slime-threads-update-interval    0.3))
+  (setq tab-always-indent 'complete))
 
 ;;;###autoload
 (defun fjl/common-lisp-mode-hook ()
