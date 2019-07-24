@@ -52,6 +52,19 @@
          f))
     f))
 
+(defun fjl/directory-asdf-system (directory)
+  (let ((files (directory-files directory nil "\.asd$")))
+    (when files
+      (file-name-sans-extension (car files)))))
+
+(defun slime-test-current-system ()
+  (interactive)
+  (let* ((directory (or default-directory (file-name-directory (buffer-file-name))))
+         (system (fjl/directory-asdf-system directory)))
+    (if system
+        (slime-oos system 'test-op)
+      (message "Can't determine ASDF system."))))
+
 ;;;###autoload
 (defun fjl/slime-connected-hook ()
   (setq slime-from-lisp-filename-function 'slime-tramp-remote-filename)
@@ -60,11 +73,10 @@
 ;;;###autoload
 (defun fjl/slime-mode-hook ()
   (setq-local browse-url-browser-function 'eww-browse-url)
-  (when (file-directory-p "/usr/local/share/doc/HyperSpec/")
-    (setq common-lisp-hyperspec-root "file:///usr/local/share/doc/HyperSpec/"))
   (global-set-key (kbd "C-c C-s") 'slime-selector)
   (global-set-key (kbd "C-c s") 'slime-selector)
-  (setq tab-always-indent 'complete
+  (define-key slime-mode-map (kbd "C-x 9") 'slime-test-current-system)
+  (setq tab-always-indent                'complete
         slime-autodoc-use-multiline-p    nil
         slime-enable-evaluate-in-emacs   t
         slime-header-line-p              t
