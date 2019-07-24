@@ -4,10 +4,7 @@
 (require 'tramp)
 (eval-when-compile
   (require 'slime-indentation)
-  (require 'slime-asdf)
-  (require 'slime-fancy)
-  (require 'slime-autodoc)
-  (require 'slime-banner))
+  (require 'slime-asdf))
 
 (setq
  slime-default-lisp 'sbcl
