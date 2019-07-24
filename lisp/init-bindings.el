@@ -130,6 +130,6 @@
 )
 
 ;; set up file-name > mode associations
-(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG" . global-git-commit-mode))
 
 (provide 'init-bindings)
