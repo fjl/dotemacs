@@ -139,6 +139,7 @@
  '(magit-revert-buffers -2 t)
  '(magit-revision-show-gravatars nil)
  '(magit-show-refs-arguments '("--sort=-committerdate"))
+ '(markdown-asymmetric-header t)
  '(markdown-header-scaling t)
  '(message-cite-style 'message-cite-style-thunderbird)
  '(message-kill-buffer-on-exit t)
