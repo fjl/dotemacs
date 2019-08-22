@@ -85,13 +85,6 @@ When invoked with a prefix argument, prompt for a visible buffer name."
                 (select-window sel)
               (error "Buffer '%s' has no visible window" name))))))))
 
-(defun toggle-fullscreen (&optional frame)
-  "Expand the current frame so it fills the whole screen."
-  (interactive)
-  (set-frame-parameter
-   frame 'fullscreen
-   (when (not (frame-parameter frame 'fullscreen)) 'fullboth)))
-
 (defun toggle-dedicated ()
   "Toggle dedicated flag of current window."
   (interactive)
