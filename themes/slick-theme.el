@@ -45,6 +45,7 @@
    `(font-lock-preprocessor-face ((,class (:foreground "DarkGoldenrod" :weight bold))))
    `(font-lock-comment-face ((,class (:foreground "OliveDrab" :slant italic))))
    `(font-lock-string-face ((,class (:inherit default :foreground "cadet blue"))))
+   `(font-lock-warning-face ((,class (:inherit default :foreground "seashell3"))))
 
    ;; Disable some font lock faces for less color.
    `(font-lock-function-name-face ((,class (:inherit nil :weight bold))))
