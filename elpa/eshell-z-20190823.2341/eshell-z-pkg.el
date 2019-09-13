@@ -1,0 +1,2 @@
+;;; Generated package description from /Users/fjl/.emacs.d/elpa/eshell-z-20190823.2341/eshell-z.el  -*- no-byte-compile: t -*-
+(define-package "eshell-z" "20190823.2341" "cd to frequent directory in eshell" '((cl-lib "0.5")) :commit "ee30761bd368df5f2e55c744ccc44089c7a46b6d" :keywords '("convenience") :authors '(("Chunyang Xu" . "mail@xuchunyang.me")) :maintainer '("Chunyang Xu" . "mail@xuchunyang.me") :url "https://github.com/xuchunyang/eshell-z")
