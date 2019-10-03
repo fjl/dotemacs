@@ -86,6 +86,11 @@
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
    `(which-func          ((,class (:foreground "chartreuse3"))))
+   `(aw-mode-line-face   ((,class (:inherit mode-line-buffer-id
+                                   :weight light
+                                   :height 0.8
+                                   :background ,slick-text-color
+                                   :foreground ,slick-background-color))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
