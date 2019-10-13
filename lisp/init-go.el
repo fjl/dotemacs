@@ -19,7 +19,7 @@
   (file-name-as-directory (concat (gotools-dir) "bin")))
 
 (defvar gotools-list
-  '(;; ("benchstat"    "golang.org/x/perf/cmd/benchstat")
+  '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
     ("gopls"        "golang.org/x/tools/cmd/gopls")
     ("godep"        "github.com/tools/godep")
@@ -49,19 +49,6 @@ refer to the installed tools."
   (gotools-init-buffer)
   (gotools-run-commands
    (cl-list* (gotools-dir) "go" "get" "-u" (mapcar #'cadr gotools-list))))
-
-(defun gotools-install-patched-gopls ()
-  (interactive)
-  (gotools-init-buffer)
-  (let* ((gopls-dir (file-name-as-directory (expand-file-name (concat (gotools-dir) "patched-gopls"))))
-         (gopls-git (concat gopls-dir ".git"))
-         (default-directory gopls-dir))
-    (message gopls-git)
-    (gotools-run-commands
-      (if (file-exists-p gopls-git)
-          `(,gopls-dir "git" "pull")
-          `(,(gotools-dir) "git" "clone" "-q" "-b" "bingo" "https://github.com/saibing/tools" ,(fjl/file-name-localname gopls-dir)))
-      `(,gopls-dir "go" "install" "./cmd/gopls"))))
 
 ;;;###autoload
 (defun gotools-rebuild ()
