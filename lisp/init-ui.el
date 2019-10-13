@@ -2,7 +2,6 @@
 
 (require 'cl-lib)
 (eval-when-compile
-  (require 'cl) ;; for lexical-let*
   (require 'ansi-color)
   (require 'ivy)
   (require 'projectile)
@@ -23,14 +22,14 @@
 ;; Fonts
 
 (defmacro fjl/define-font-class (name &rest alternates)
-  (let ((alts (cl-gensym)) (sel (cl-gensym)))
-    `(lexical-let* ((,alts ',alternates)
-                    (,sel  (or (when (functionp 'x-family-fonts)
-                                 (cl-find-if 'x-family-fonts ,alts))
-                               (car (last ,alts)))))
+  (let ((selection (intern (concat "fjl/selected-" (symbol-name name)))))
+    `(progn
+       (defvar ,selection
+         (or (when (functionp 'x-family-fonts)
+               (cl-find-if 'x-family-fonts ',alternates))
+             (car (last ',alternates))))
        (defun ,name (&optional size)
-         (or (and size (format "%s-%d" ,sel size))
-             ,sel)))))
+         (if (not size) ,selection (format "%s-%d" ,selection size))))))
 
 (fjl/define-font-class fpfont "PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace")
 (fjl/define-font-class vpfont "Avenir" "Noto Sans" "Dejavu Sans" "Sans Serif")
@@ -127,7 +126,7 @@ also enables prettification in comments."
 
 (defun fjl/mac-app-resources-bin ()
   (save-match-data
-    (let ((cmd (first command-line-args)))
+    (let ((cmd (car command-line-args)))
       (when (string-match "\\.app/Contents/\\(MacOS/Emacs\\)$" cmd)
         (replace-match "Resources/bin" t t cmd 1)))))
 
