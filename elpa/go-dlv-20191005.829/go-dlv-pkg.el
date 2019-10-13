@@ -1,0 +1,2 @@
+;;; Generated package description from /Users/fjl/.emacs.d/elpa/go-dlv-20191005.829/go-dlv.el  -*- no-byte-compile: t -*-
+(define-package "go-dlv" "20191005.829" "Go Delve - Debug Go programs interactively with the GUD." '((go-mode "1.3.1")) :commit "d3cca689e76b71e0ef0ab827c7e01cd9042d2095" :keywords '("go" "debug" "debugger" "delve" "interactive" "gud") :authors '(("Marko Bencun" . "mbencun@gmail.com")) :maintainer '("Marko Bencun" . "mbencun@gmail.com") :url "https://github.com/benma/go-dlv.el/")
