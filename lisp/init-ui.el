@@ -215,10 +215,18 @@ and to setup the inital frame."
           (vertical-scroll-bars . nil)))
   ;; Per window-system overrides and additions to default-frame-alist.
   (setq window-system-default-frame-alist
-        `((ns  . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 95)))b
-          (mac . ((menu-bar-lines . 1) (left-fringe . 6) (font . ,(fpfont 14)) (alpha 97)))
+        `((ns  . ((menu-bar-lines . 1)
+                  (left-fringe . 6)
+                  (font . ,(fpfont 14))
+                  (alpha . 95)
+                  (ns-transparent-titlebar . nil)))
+          (mac . ((menu-bar-lines . 1)
+                  (left-fringe . 6)
+                  (font . ,(fpfont 14))
+                  (alpha . 97)))
           (w32 . ((font . ,(fpfont 12))))
-          (x   . ((font . ,(fpfont 12)) (left-fringe . 6)))))
+          (x   . ((font . ,(fpfont 12))
+                  (left-fringe . 6)))))
   ;; Apply the parameters for all initial frames.
   (fjl/setup-all-frames))
 
