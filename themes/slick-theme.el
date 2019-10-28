@@ -6,6 +6,7 @@
 (defconst slick-highlight-color "gray40")
 (defconst slick-search-color "saddle brown")
 (defconst slick-text-color "gray90")
+(defconst slick-cursor-color "#CF1E13")
 
 (let ((class    '((class color)))
       (graphic  '((type x w32 mac ns))))
@@ -15,7 +16,7 @@
    ;; Basic faces
    `(default ((,graphic (:foreground ,slick-text-color :background ,slick-background-color))
               (,class   (:foreground ,slick-text-color))))
-   `(cursor ((,class (:background "red"))))
+   `(cursor ((,class (:background ,slick-cursor-color))))
    `(error ((,class (:foreground "red"))))
    `(warning ((,class (:foreground "orange"))))
    `(success ((,class (:foreground "yellow green"))))
