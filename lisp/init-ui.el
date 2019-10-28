@@ -97,7 +97,7 @@ also enables prettification in comments."
   (setq ns-pop-up-frames nil)
   (setq frame-resize-pixelwise t)
   ;; enable emoji font as fallback and other font settings
-  (set-fontset-font t 'unicode "Symbola" frame 'prepend)
+  (set-fontset-font t 'unicode "Apple Color Emoji" frame 'prepend)
   (setq-default line-spacing 0)
   (fjl/setup-pragmata-ligatures)
   ;; keyboard settings
