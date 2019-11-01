@@ -81,6 +81,7 @@
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(electric-indent-mode t)
  '(ember-completion-system 'default)
+ '(erc-hide-list '("JOIN" "PART"))
  '(eshell-banner-message "")
  '(eshell-cmpl-autolist t)
  '(eshell-hist-ignoredups t)

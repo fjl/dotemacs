@@ -171,8 +171,10 @@
    `(mu4e-cited-4-face ((,class (:foreground "gray40"))))
    `(mu4e-cited-5-face ((,class (:foreground "gray30"))))
 
-   ;; Weechat
-   `(weechat-highlight-face ((,class (:background ,slick-faint-highlight-color :foreground "Cyan1"))))
+   ;; Weechat / ERC
+   `(weechat-highlight-face ((,class (:background ,slick-faint-highlight-color :foreground "PeachPuff2"))))
+   `(erc-notice-face ((,class (:background ,slick-faint-highlight-color :foreground "PeachPuff2" :extend nil))))
+   `(erc-input-face ((,class (:foreground "light blue"))))
 ))
 
 (provide-theme 'slick)
