@@ -17,7 +17,7 @@
  '(aw-background t)
  '(aw-dispatch-always nil)
  '(aw-display-mode-overlay nil)
- '(aw-scope 'frame)
+ '(aw-scope 'visible)
  '(backup-directory-alist '((".*" . "~/.emacs.d/backup/")))
  '(battery-load-low 15)
  '(battery-mode-line-format " Bat: %p")
