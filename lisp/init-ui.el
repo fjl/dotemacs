@@ -33,6 +33,7 @@
 
 (fjl/define-font-class fpfont "PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace")
 (fjl/define-font-class vpfont "Avenir" "Noto Sans" "Dejavu Sans" "Sans Serif")
+(fjl/define-font-class emojifont "Apple Color Emoji" "Symbola")
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
 (set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
@@ -97,7 +98,7 @@ also enables prettification in comments."
   (setq ns-pop-up-frames nil)
   (setq frame-resize-pixelwise t)
   ;; enable emoji font as fallback and other font settings
-  (set-fontset-font t 'unicode "Apple Color Emoji" frame 'prepend)
+  (set-fontset-font t 'unicode (emojifont 11) frame 'prepend)
   (setq-default line-spacing 0)
   (fjl/setup-pragmata-ligatures)
   ;; keyboard settings
