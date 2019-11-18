@@ -77,6 +77,7 @@
   (global-set-key (kbd "C-c s") 'slime-selector)
   (setq-local browse-url-browser-function 'eww-browse-url)
   (define-key slime-mode-map (kbd "C-x 9") 'slime-test-current-system)
+  (define-key slime-mode-map (kbd "C-c M-q") 'slime-reindent-defun)
   (setq tab-always-indent 'complete))
 
 ;;;###autoload
