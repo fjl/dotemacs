@@ -64,6 +64,8 @@
  '(compilation-window-height 20)
  '(completion-styles '(partial-completion emacs22))
  '(counsel-linux-apps-directories '("/usr/share/applications/" "~/.local/share/applications"))
+ '(cursor-in-non-selected-windows 'hollow)
+ '(cursor-type 'bar)
  '(custom-safe-themes t)
  '(dired-async-mode t)
  '(dired-dwim-target t)
