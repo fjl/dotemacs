@@ -247,7 +247,6 @@ found."
   (gopath)
   (gotools-setup)
   (prettify-symbols-mode)
-  (setq lsp-clients-go-server-args '("-cache-style" "ondemand"))
   (lsp-deferred)
   (add-hook 'before-save-hook 'lsp-format-buffer)
   (add-hook 'before-save-hook 'lsp-organize-imports))
