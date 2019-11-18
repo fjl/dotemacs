@@ -6,7 +6,7 @@
 (defconst slick-highlight-color "gray40")
 (defconst slick-search-color "saddle brown")
 (defconst slick-text-color "gray90")
-(defconst slick-cursor-color "#CF1E13")
+(defconst slick-cursor-color "#FF0000")
 
 (let ((class    '((class color)))
       (graphic  '((type x w32 mac ns))))
