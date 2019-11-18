@@ -104,6 +104,7 @@
  '(git-commit-fill-column 72)
  '(git-commit-style-convention-checks '(non-empty-second-line overlong-summary-line))
  '(git-commit-summary-max-length 80)
+ '(global-so-long-mode t)
  '(gnutls-algorithm-priority "PFS")
  '(gnutls-min-prime-bits 1024)
  '(gnutls-trustfiles
@@ -210,6 +211,7 @@
  '(slime-load-failed-fasl 'never)
  '(slime-threads-update-interval 1.0)
  '(smex-completion-method 'ivy)
+ '(so-long-threshold 300)
  '(speedbar-show-unknown-files t)
  '(split-height-threshold 30)
  '(split-width-threshold 140)
