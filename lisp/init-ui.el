@@ -271,12 +271,16 @@ and to setup the inital frame."
                  "  " mode-line-modes
                  (:eval (when (fjl/bottom-right-window-p) (fjl/mode-line-align-right nil mode-line-misc-info))))))
 
-(defun fjl/bottom-right-window-p ()
+(defun fjl/bottom-right-window-p (&optional window)
   "Returns whether the selected window is the one in the
 bottom right corner of its frame."
-  (let ((edges (window-edges)))
-    (and (>= (nth 2 edges) (frame-width))
-         (>= (nth 3 edges) (- (frame-height) (window-height (minibuffer-window)))))))
+  (when (null window)
+    (setq window (selected-window)))
+  (let ((frame (window-frame window))
+        (edges (window-edges window)))
+    (and (>= (nth 2 edges) (frame-width frame))
+         (>= (nth 3 edges) (- (frame-height frame)
+                              (window-height (minibuffer-window frame)))))))
 
 (defun fjl/mode-line-align-right (face format)
   (let* ((fmt     (format-mode-line format face))
