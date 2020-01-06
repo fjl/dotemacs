@@ -133,6 +133,8 @@
  '(ivy-virtual-abbreviate 'full)
  '(ivy-wrap t)
  '(lsp-auto-guess-root t)
+ '(lsp-enable-folding nil)
+ '(lsp-enable-links nil)
  '(lsp-enable-snippet nil)
  '(lsp-enable-symbol-highlighting nil)
  '(lsp-prefer-flymake :none)
