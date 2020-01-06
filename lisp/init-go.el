@@ -46,9 +46,12 @@
   "Install go tools in `gotools-dir' and set up various variables to
 refer to the installed tools."
   (interactive)
-  (gotools-init-buffer)
-  (gotools-run-commands
-   (cl-list* (gotools-dir) "go" "get" "-u" (mapcar #'cadr gotools-list))))
+  (unless (file-exists-p (gotools-dir))
+    (make-directory (gotools-dir)))
+  (let* ((modules  (mapcar (lambda (spec) (concat (cadr spec) "@latest")) gotools-list))
+         (commands (mapcar (lambda (mod) (list (gotools-dir) "go" "get" mod)) modules)))
+    (gotools-init-buffer)
+    (apply #'gotools-run-commands commands)))
 
 ;;;###autoload
 (defun gotools-rebuild ()
@@ -84,12 +87,15 @@ refer to the installed tools."
                                          "TERM=dumb"
                                          (concat "GOPATH=" gopath)
                                          (concat "GOBIN=" gobin) process-environment)))
+      (let ((inhibit-read-only t))
+        (insert (s-join " " (cdr command)))
+        (newline))
       (setq proc (apply #'start-file-process exe (current-buffer) exe args))
       (set-process-sentinel proc (lambda (proc event)
                                    (when (buffer-live-p (process-buffer proc))
                                      (with-current-buffer (process-buffer proc)
                                        (let ((inhibit-read-only t))
-                                         (newline)
+                                         (cl-fresh-line)
                                          (insert exe " " (car args) " " (propertize event 'face 'bold))
                                          (newline))
                                        ;; Start next command.
