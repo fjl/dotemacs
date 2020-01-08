@@ -8,7 +8,7 @@
 
 ;; Author: The go-mode Authors
 ;; Version: 1.5.0
-;; Package-Version: 20191221.9
+;; Package-Version: 20200107.546
 ;; Keywords: languages go
 ;; URL: https://github.com/dominikh/go-mode.el
 ;;
@@ -488,8 +488,8 @@ For mode=set, all covered lines will have this weight."
      ;; Type assertion
      (,(concat "\\.\\s *(" go-type-name-regexp) 1 font-lock-type-face)
 
-     ;; Labels and compound literal fields
-     (,(concat "^[[:space:]]*\\(" go-label-regexp "\\)[[:space:]]*:\\(\\S.\\|$\\)") 1 font-lock-constant-face)
+     ;; Composite literal field names and label definitions.
+     (go--match-ident-colon 1 font-lock-constant-face)
 
      ;; Labels in goto/break/continue
      (,(concat "\\_<\\(?:goto\\|break\\|continue\\)\\_>[[:space:]]*\\(" go-label-regexp "\\)") 1 font-lock-constant-face))))
@@ -685,7 +685,7 @@ case keyword. It returns nil for the case line itself."
       (looking-back "[,:]" (1- (point)))
 
       ;; If we made it to the beginning of line we are either a naked
-      ;; block or a composite literal with implict type name. If we
+      ;; block or a composite literal with implicit type name. If we
       ;; are the latter, we must be contained in another composite
       ;; literal.
       (and (bolp) (go--in-composite-literal-p))))))
@@ -866,7 +866,7 @@ is done."
           (first t)
 
           ;; Whether we start in a block (i.e. our first line is not a
-          ;; continuation line and is in an "if", "for", "func" etc. block).
+          ;; continuation line and is in an "if", "for", etc. block).
           (in-block)
 
           ;; Our desired indent relative to our ending line's indent.
@@ -943,10 +943,7 @@ is done."
             ;; If we aren't a continuation line and we have an enclosing paren
             ;; or brace, jump to opener and increment our indent.
             (when (go-goto-opening-parenthesis)
-              ;; We started in a child block if our opener is a curly brace.
-              (setq in-block (and
-                              (eq (char-after) ?{)
-                              (looking-back "[^[:space:]][[:space:]]" (- (point) 2))))
+              (setq in-block (go--flow-block-p))
               (cl-incf indent tab-width))))
 
         ;; If we started in a child block we must follow dangling lines
@@ -960,7 +957,8 @@ is done."
         ;; There can be an arbitrary number of indents, so we must go back to
         ;; the "if" to determine the indent of "X".
         (when (and in-block (bolp) (go-previous-line-has-dangling-op-p))
-          (goto-char (go-previous-line-has-dangling-op-p))))
+          (goto-char (go-previous-line-has-dangling-op-p)))
+        )
 
       ;; If our ending line is a continuation line but doesn't open
       ;; an extra indent, reduce indent. We tentatively gave indents to all
@@ -1008,6 +1006,32 @@ are loose binding expression separators."
     (|| 1)
     (t 0)))
 
+(defun go--flow-block-p ()
+  "Return whether looking at a { that opens a control flow block.
+
+We check for a { that is preceded by a space and is not a func
+literal opening brace."
+  (save-excursion
+    (when (and
+           (eq (char-after) ?{)
+           (not (zerop (skip-syntax-backward " "))))
+
+      (let ((eol (line-end-position))
+            (level (go-paren-level))
+            (found-func-literal))
+
+        (beginning-of-line)
+
+        ;; See if we find any "func" keywords on this line at the same paren
+        ;; level as the curly.
+        (while (and
+                (not found-func-literal)
+                (re-search-forward "\\_<func\\_>" eol t))
+          (setq found-func-literal (and
+                                    (= level (go-paren-level))
+                                    (not (go-in-string-or-comment-p)))))
+        (not found-func-literal)))))
+
 (defun go--continuation-line-indents-p ()
   "Return non-nil if the current continuation line opens an additional indent.
 
@@ -1038,8 +1062,19 @@ foo ||
       (when (or
              ;; We can only open indent if we have a dangling operator, or
              (go--current-line-has-dangling-op-p)
-             ;; we end in an opening paren/brace or comma.
-             (go--line-suffix-p "[(,]\\|[^[:space:]]{"))
+
+             (save-excursion
+               (go--end-of-line)
+               (backward-char)
+               (or
+                ;; Line ends in a "(" or ",", or
+                (eq (char-after) ?\()
+                (eq (char-after) ?,)
+
+                ;; Line ends in a "{" that isn't a control block.
+                (and
+                 (eq (char-after) ?{)
+                 (not (go--flow-block-p))))))
 
         (let ((prev-precedence (go--operator-precedence prev-op))
               (start-depth (go-paren-level))
@@ -1572,6 +1607,29 @@ We are looking for the right-hand-side of the type alias"
     found-match))
 
 
+(defconst go--label-re (concat "\\(" go-label-regexp "\\):"))
+
+(defun go--match-ident-colon (end)
+  "Search for composite literal field names and label definitions."
+  (let (found-match)
+    (while (and
+            (not found-match)
+            (re-search-forward go--label-re end t))
+
+      (setq found-match (or
+                         ;; Composite literal field names, e.g. "Foo{Bar:". Note
+                         ;; that this gives false positives for literal maps,
+                         ;; arrays, and slices.
+                         (go--in-composite-literal-p)
+
+                         ;; We are a label definition if we are at the beginning
+                         ;; of the line.
+                         (save-excursion
+                           (goto-char (match-beginning 1))
+                           (skip-syntax-backward " ")
+                           (bolp)))))
+    found-match))
+
 (defun go--parameter-list-type (end)
   "Return `present' if the parameter list has names, or `absent' if not.
 Assumes point is at the beginning of a parameter list, just
@@ -1610,6 +1668,23 @@ This is intended to be called from `before-change-functions'."
      (eq (char-before (- (point) 2)) ?s)
      (eq (char-before (- (point) 3)) ?a)
      (eq (char-before (- (point) 4)) ?c)))))
+
+(defun go--comment-region (beg end &optional arg)
+  "Switch to block comment when commenting a partial line."
+  (save-excursion
+    (goto-char beg)
+    (let ((beg-bol (line-beginning-position)))
+      (goto-char end)
+      (if (and
+           ;; beg and end are on the same line
+           (eq (line-beginning-position) beg-bol)
+           ;; end is not at end of line
+           (not (eq end (line-end-position))))
+          (let ((comment-start "/* ")
+                (comment-end " */")
+                (comment-padding ""))
+            (comment-region-default beg end arg))
+        (comment-region-default beg end arg)))))
 
 ;;;###autoload
 (define-derived-mode go-mode prog-mode "Go"
@@ -1670,7 +1745,7 @@ If you're looking for even more integration with Go, namely
 on-the-fly syntax checking, auto-completion and snippets, it is
 recommended that you look at flycheck
 \(see URL `https://github.com/flycheck/flycheck') or flymake in combination
-with goflymake \(see URL `https://github.com/dougm/goflymake'), gocode
+with goflymake (see URL `https://github.com/dougm/goflymake'), gocode
 \(see URL `https://github.com/nsf/gocode'), go-eldoc
 \(see URL `github.com/syohex/emacs-go-eldoc') and yasnippet-go
 \(see URL `https://github.com/dominikh/yasnippet-go')"
@@ -1687,6 +1762,7 @@ with goflymake \(see URL `https://github.com/dougm/goflymake'), gocode
   (set (make-local-variable 'comment-end)   "")
   (set (make-local-variable 'comment-use-syntax) t)
   (set (make-local-variable 'comment-start-skip) "\\(//+\\|/\\*+\\)\\s *")
+  (set (make-local-variable 'comment-region-function) 'go--comment-region)
 
   (set (make-local-variable 'beginning-of-defun-function) #'go-beginning-of-defun)
   (set (make-local-variable 'end-of-defun-function) #'go-end-of-defun)
