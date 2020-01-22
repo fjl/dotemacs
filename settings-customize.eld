@@ -73,11 +73,6 @@
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..+$")
  '(dired-use-ls-dired nil)
  '(display-battery-mode t)
- '(display-buffer-alist
-   '(("\\*shell.*"
-      (display-buffer-reuse-window display-buffer-same-window)
-      (nil))))
- '(display-buffer-reuse-frames nil)
  '(display-time-format " %-I:%M%p")
  '(display-time-mode t)
  '(dtrt-indent-mode t nil (dtrt-indent))
