@@ -21,7 +21,7 @@
 (defvar gotools-list
   '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
-    ("gopls"        "golang.org/x/tools/gopls")
+    ("gopls"        "golang.org/x/tools/gopls@v0.3.0-pre1")
     ("godep"        "github.com/tools/godep")
     ("godoc"        "golang.org/x/tools/cmd/godoc")
     ("gogetdoc"     "github.com/zmb3/gogetdoc")
@@ -48,7 +48,7 @@ refer to the installed tools."
   (interactive)
   (unless (file-exists-p (gotools-dir))
     (make-directory (gotools-dir)))
-  (let* ((modules  (mapcar (lambda (spec) (concat (cadr spec) "@latest")) gotools-list))
+  (let* ((modules  (mapcar #'cadr gotools-list))
          (commands (mapcar (lambda (mod) (list (gotools-dir) "go" "get" mod)) modules)))
     (gotools-init-buffer)
     (apply #'gotools-run-commands commands)))
