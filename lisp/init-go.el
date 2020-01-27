@@ -31,6 +31,7 @@
     ("govendor"     "github.com/kardianos/govendor")
     ("guru"         "golang.org/x/tools/cmd/guru")
     ("ineffassign"  "github.com/gordonklaus/ineffassign")
+    ("pprof"        "github.com/google/pprof")
     ("staticcheck"  "honnef.co/go/tools/cmd/staticcheck")
     ("stress"       "golang.org/x/tools/cmd/stress"))
     ("structlayout" "honnef.co/go/tools/cmd/structlayout"))
