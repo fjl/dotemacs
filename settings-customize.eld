@@ -51,7 +51,9 @@
  '(company-auto-complete nil)
  '(company-auto-complete-chars nil)
  '(company-begin-commands 'nil)
- '(company-frontends '(company-echo-metadata-frontend company-preview-frontend))
+ '(company-continue-commands t)
+ '(company-frontends
+   '(company-echo-metadata-frontend company-pseudo-tooltip-frontend))
  '(company-go-insert-arguments nil)
  '(company-idle-delay 0.2)
  '(company-lsp-enable-snippet nil)

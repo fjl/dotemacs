@@ -25,6 +25,7 @@
 
 (define-key prog-mode-map (kbd "M-RET") 'fjl/comment-enter)
 (define-key prog-mode-map (kbd "RET") 'newline)
+(define-key prog-mode-map (kbd "TAB") 'company-indent-or-complete-common)
 
 (global-set-key (kbd "M-s .") 'isearch-forward-symbol-at-point)
 (global-set-key (kbd "M-s d") 'multi-isearch-glob)
