@@ -216,6 +216,7 @@
  '(slime-threads-update-interval 1.0)
  '(smex-completion-method 'ivy)
  '(so-long-threshold 300)
+ '(speedbar-default-position 'right)
  '(speedbar-show-unknown-files t)
  '(split-height-threshold 30)
  '(split-width-threshold 140)
