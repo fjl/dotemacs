@@ -212,7 +212,6 @@ and to setup the inital frame."
         '((tool-bar-lines 0)
           (left-fringe . nil)
           (right-fringe . 0)
-          (menu-bar-lines . 0)
           (vertical-scroll-bars . nil)))
   ;; Per window-system overrides and additions to default-frame-alist.
   (setq window-system-default-frame-alist
@@ -226,9 +225,12 @@ and to setup the inital frame."
                   (left-fringe . 6)
                   (font . ,(fpfont 14))
                   (alpha . 97)))
-          (w32 . ((font . ,(fpfont 12))))
+          (w32 . ((font . ,(fpfont 12))
+                  (menu-bar-lines . 0)))
           (x   . ((font . ,(fpfont 12))
-                  (left-fringe . 6)))))
+                  (left-fringe . 6)
+                  (menu-bar-lines . 0)))
+          (t   . ((menu-bar-lines . 0)))))
   ;; Apply the parameters for all initial frames.
   (fjl/setup-all-frames))
 
