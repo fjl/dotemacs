@@ -205,7 +205,7 @@
  '(sentence-end-double-space nil)
  '(server-window 'pop-to-buffer)
  '(shell-completion-fignore '("~" "#" "%"))
- '(shell-file-name "bash")
+ '(shell-file-name "/bin/sh")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
  '(show-paren-style 'parenthesis)
  '(show-trailing-whitespace nil)
