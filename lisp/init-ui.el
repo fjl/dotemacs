@@ -346,9 +346,8 @@ bottom right corner of its frame."
 (add-hook 'after-change-major-mode-hook 'fjl/clean-mode-line)
 
 ;; Set up display-buffer behavior.
-(setq display-buffer-alist
-      '(("\\*\\(shell\\|compilation\\).*"
-         (display-buffer-reuse-window display-buffer-same-window)
-         (reusable-frames . visible))))
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window display-buffer-in-previous-window)
+        (reusable-frames . visible)))
 
 (provide 'init-ui)
