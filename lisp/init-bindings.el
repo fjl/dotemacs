@@ -22,6 +22,7 @@
 (global-set-key (kbd "C-x C-j") 'fjl/join-next-line) ;; overwrites jabber commands
 (global-set-key (kbd "s-1") 'launcher)
 (global-set-key (kbd "C-x \\") 'toggle-truncate-lines)
+(global-set-key (kbd "C-x o") 'other-window-visible-frames)
 
 (define-key prog-mode-map (kbd "M-RET") 'fjl/comment-enter)
 (define-key prog-mode-map (kbd "RET") 'newline)

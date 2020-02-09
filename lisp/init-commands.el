@@ -106,6 +106,18 @@ but will try splitting horizontally first."
               (split-window-right)))
        (split-window-sensibly window)))))
 
+(defun other-window-visible-frames (count)
+  "Select another window in cyclic ordering of windows, on all
+visible frames."
+  (interactive "p")
+  (let ((frame (window-frame (selected-window))))
+    (other-window count 'visible)
+    ;; Move input focus to the new frame if we switched. I really think other-window
+    ;; should do that automatically, but it doesn't work on mac with emacs 26.3.
+    (let ((new-frame (window-frame (selected-window))))
+      (unless (eq frame new-frame)
+        (select-frame-set-input-focus new-frame t)))))
+
 ;; editing
 
 (defun fjl/comment-enter (arg)
