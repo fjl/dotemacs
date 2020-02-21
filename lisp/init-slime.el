@@ -17,12 +17,15 @@
 
 (slime-setup
  '(slime-indentation
-   slime-fancy slime-asdf
+   slime-fancy
+   slime-asdf
+   slime-quicklisp
    slime-editing-commands
    slime-package-fu
    slime-autodoc
    slime-fuzzy
-   slime-fancy-inspector))
+   slime-fancy-inspector
+   slime-company))
 
 (define-common-lisp-style "fjl-indentation"
   "My personal indentation style. cond gets indented similar to case."

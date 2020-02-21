@@ -194,7 +194,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(company-lsp lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
+   '(slime-company company-lsp lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-ignored-project-function 'file-remote-p)
  '(projectile-mode t nil (projectile))
@@ -227,6 +227,7 @@
  '(show-paren-style 'parenthesis)
  '(show-trailing-whitespace nil)
  '(shr-color-visible-luminance-min 60)
+ '(slime-company-completion 'fuzzy)
  '(slime-compilation-finished-hook
    '(slime-maybe-show-compilation-log slime-create-compilation-log))
  '(slime-load-failed-fasl 'never)
