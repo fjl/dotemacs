@@ -26,6 +26,7 @@
 (require 'package)
 (setq-default package-user-dir (file-name-as-directory (concat +fjl-init+ "elpa")))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
 
 ;; Prevent loading packages twice. All packages are already activated above. package.el
