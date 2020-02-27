@@ -155,6 +155,7 @@
  '(lsp-enable-links nil)
  '(lsp-enable-snippet nil)
  '(lsp-enable-symbol-highlighting nil)
+ '(lsp-flycheck-live-reporting nil)
  '(lsp-gopls-hover-kind "SingleLine")
  '(lsp-prefer-flymake :none)
  '(magit-auto-revert-immediately nil)
