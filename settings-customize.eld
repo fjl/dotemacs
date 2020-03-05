@@ -149,6 +149,7 @@
  '(ivy-use-virtual-buffers t)
  '(ivy-virtual-abbreviate 'full)
  '(ivy-wrap t)
+ '(lsp-auto-configure nil)
  '(lsp-auto-guess-root t)
  '(lsp-enable-file-watchers nil)
  '(lsp-enable-folding nil)
