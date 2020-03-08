@@ -305,6 +305,7 @@ bottom right corner of its frame."
       (mapc (lambda (kv) (setf (gethash (car kv) table) (cdr kv)))
             ;; Minor modes that should be hidden.
             '((abbrev-mode "")
+              (dtrt-indent-mode " DI")
               (auto-revert-mode "")
               (buffer-face-mode "")
               (company-mode "")
