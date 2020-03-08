@@ -151,6 +151,7 @@
  '(ivy-wrap t)
  '(lsp-auto-configure nil)
  '(lsp-auto-guess-root t)
+ '(lsp-diagnostic-package :none)
  '(lsp-enable-file-watchers nil)
  '(lsp-enable-folding nil)
  '(lsp-enable-links nil)

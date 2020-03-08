@@ -5,6 +5,8 @@
 (require 'cl-lib)
 (require 's)
 (require 'tramp)
+(require 'lsp-mode)
+(require 'lsp-go)
 
 (defun gotools-dir ()
   "Returns the directory that Go tools should be installed in."
@@ -254,6 +256,7 @@ found."
   (gopath)
   (gotools-setup)
   (prettify-symbols-mode)
+  (company-mode 1)
   (lsp-deferred)
   (add-hook 'before-save-hook 'lsp-format-buffer)
   (add-hook 'before-save-hook 'lsp-organize-imports))
