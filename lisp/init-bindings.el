@@ -110,10 +110,12 @@
   (define-key term-raw-map (kbd "C-c C-c") 'term-interrupt-subjob))
 (add-hook 'term-mode-hook 'fjl/bind-term-keys)
 
-(defun fjl/bind-dired-keys ()
+(defun fjl/dired-mode-hook ()
   (define-key dired-mode-map (kbd "s-]") 'dired-afplay)
-  (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode))
-(add-hook 'dired-mode-hook 'fjl/bind-dired-keys)
+  (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
+  (dired-hide-details-mode 1))
+
+(add-hook 'dired-mode-hook 'fjl/dired-mode-hook)
 
 (when (memq window-system '(ns mac))
   ;; disable print-buffer on OS X
