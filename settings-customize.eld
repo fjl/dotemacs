@@ -256,7 +256,6 @@
  '(visible-bell nil)
  '(which-func-modes '(python-mode))
  '(window-combination-resize t)
- '(window-min-width 80)
  '(window-sides-slots '(1 nil 3 nil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
