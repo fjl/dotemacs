@@ -23,6 +23,7 @@
 (defvar gotools-list
   '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
+    ("stringer"     "golang.org/x/tools/cmd/stringer")
     ("gopls"        "golang.org/x/tools/gopls@v0.4.0")
     ("godep"        "github.com/tools/godep")
     ("godoc"        "golang.org/x/tools/cmd/godoc")
