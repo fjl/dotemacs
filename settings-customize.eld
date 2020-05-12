@@ -17,6 +17,8 @@
  '(aw-background t)
  '(aw-dispatch-always nil)
  '(aw-display-mode-overlay nil)
+ '(aw-ignore-on nil)
+ '(aw-ignored-buffers ''(treemacs-mode "*Calc Trail*" " *LV*"))
  '(aw-scope 'visible)
  '(backup-directory-alist '((".*" . "~/.emacs.d/backup/")))
  '(battery-load-low 15)
@@ -197,7 +199,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(org-plus-contrib slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
+   '(lsp-treemacs org-plus-contrib slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-present ox-gfm projectile restclient slime smex solidity-mode toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-enable-caching t)
  '(projectile-ignored-project-function 'file-remote-p)

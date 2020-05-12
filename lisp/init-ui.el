@@ -4,6 +4,7 @@
 (eval-when-compile
   (require 'ansi-color)
   (require 'ivy)
+  (require 'treemacs)
   (require 'projectile)
   (require 'desktop))
 
@@ -265,13 +266,15 @@ and to setup the inital frame."
 (after-package ivy
   (add-to-list 'ivy-switch-buffer-faces-alist '(markdown-mode . ivy-org)))
 
-;; Set up the mode line.
+;; Set up the default mode line.
 (setq-default mode-line-format
               '(("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
                  mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
                  (vc-mode vc-mode)
-                 "  " mode-line-modes
-                 (:eval (when (fjl/bottom-right-window-p) (fjl/mode-line-align-right nil mode-line-misc-info))))))
+                 "  " mode-line-modes)
+                (:eval
+                 (when (fjl/bottom-right-window-p)
+                   (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
 (defun fjl/bottom-right-window-p (&optional window)
   "Returns whether the selected window is the one in the

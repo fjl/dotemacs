@@ -175,6 +175,13 @@
    `(weechat-highlight-face ((,class (:background ,slick-faint-highlight-color :foreground "PeachPuff2"))))
    `(erc-notice-face ((,class (:background ,slick-faint-highlight-color :foreground "PeachPuff2" :extend nil))))
    `(erc-input-face ((,class (:foreground "light blue"))))
+
+   ;; Treemacs
+   `(treemacs-root-face ((,class (:inherit variable-pitch :height 1.2 :weight bold))))
+   `(treemacs-term-node-face ((,class (:foreground ,slick-highlight-color))))
+   `(treemacs-fringe-indicator-face ((,class (:foreground ,slick-cursor-color))))
+   `(treemacs-git-modified-face ((,class (:foreground "PeachPuff"))))
+   `(treemacs-git-added-face ((,class (:inherit treemacs-git-modified-face))))
 ))
 
 (provide-theme 'slick)
