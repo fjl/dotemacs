@@ -14,9 +14,15 @@
         '("" (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
 (defun fjl/treemacs-hook ()
- (treemacs-git-mode 'deferred))
+  ;; Copy ace-window mode line indicator.
+  (let ((fmt (default-value 'mode-line-format)))
+    (when (and (consp (car fmt))
+               (eq (caar fmt) 'ace-window-display-mode))
+        (add-to-list 'mode-line-format (car fmt)))))
 
 ;;;###autoload
-(advice-add 'treemacs :before 'fjl/treemacs-setup)
+(progn
+  (advice-add 'treemacs :before 'fjl/treemacs-setup)
+  (add-hook 'treemacs-mode-hook 'fjl/treemacs-hook))
 
 (provide 'init-treemacs)
