@@ -20,6 +20,8 @@
 (global-set-key (kbd "C-x 9") 'recompile)
 (global-set-key (kbd "C-x M-9") 'compile)
 (global-set-key (kbd "C-x C-j") 'fjl/join-next-line) ;; overwrites jabber commands
+(global-set-key (kbd "C-M-q") 'unfill-paragraph)
+
 (global-set-key (kbd "s-1") 'launcher)
 (global-set-key (kbd "C-x \\") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x o") 'other-window-visible-frames)

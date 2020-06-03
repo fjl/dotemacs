@@ -54,6 +54,12 @@ deletes the comment start characters on the following line."
         (while (looking-at-p (regexp-quote comment-start))
           (delete-char (length comment-start)))))))
 
+(defun unfill-paragraph ()
+  "This is the inverse of fill-paragraph."
+  (interactive)
+  (let ((fill-column most-positive-fixnum))
+    (fill-paragraph)))
+
 (defun rename-buffer-and-file (newname)
   "Rename the current buffer and its visited file."
   (interactive "FNew name: ")
