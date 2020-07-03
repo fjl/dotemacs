@@ -24,7 +24,7 @@
   '(("benchstat"    "golang.org/x/perf/cmd/benchstat")
     ("eg"           "golang.org/x/tools/cmd/eg")
     ("stringer"     "golang.org/x/tools/cmd/stringer")
-    ("gopls"        "golang.org/x/tools/gopls@v0.4.1")
+    ("gopls"        "golang.org/x/tools/gopls@v0.4.2")
     ("godep"        "github.com/tools/godep")
     ("godoc"        "golang.org/x/tools/cmd/godoc")
     ("gogetdoc"     "github.com/zmb3/gogetdoc")
