@@ -172,6 +172,7 @@ Eshell buffers (i.e. those which are not currently executing a command)."
     (goto-char eshell-last-output-end)
     (insert cmd)))
 
+;;;###autoload
 (defun fjl/eshell-prompt ()
   (let* ((remote (or (file-remote-p default-directory) ""))
          (dir    (substring default-directory (length remote))))
