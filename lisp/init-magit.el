@@ -40,6 +40,8 @@ the remote repository name in the cdr."
 
 ;;;###autoload
 (defun fjl/magit-mode-hook ()
+  (when (string= system-type "darwin")
+    (setq magit-git-executable "/usr/local/bin/git"))
   (define-key magit-mode-map (kbd "v") 'magit-visit-pull-request-url))
 
 ;;;###autoload
