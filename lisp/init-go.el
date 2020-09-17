@@ -259,6 +259,7 @@ found."
   (prettify-symbols-mode)
   (company-mode 1)
   (lsp-deferred)
+  (setq completion-at-point-functions '(lsp-completion-at-point))
   (add-hook 'before-save-hook 'lsp-format-buffer)
   (add-hook 'before-save-hook 'lsp-organize-imports))
 
