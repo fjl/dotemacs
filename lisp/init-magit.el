@@ -40,8 +40,13 @@ the remote repository name in the cdr."
 
 ;;;###autoload
 (defun fjl/magit-mode-hook ()
+  ;; On macOS, the default git in path is an XCode-enabled wrapper, making it a lot slower
+  ;; to invoke. Just calling the regular git exectuable makes magit a bit faster.
   (when (string= system-type "darwin")
     (setq magit-git-executable "/usr/local/bin/git"))
+  ;; Configure status buffer.
+  (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header)
+  (remove-hook 'magit-status-sections-hook 'magit-insert-stashes)
   (define-key magit-mode-map (kbd "v") 'magit-visit-pull-request-url))
 
 ;;;###autoload
