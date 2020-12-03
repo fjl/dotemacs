@@ -188,11 +188,8 @@ which isn't very useful."
 and to setup the inital frame."
   (let* ((type (framep-on-display frame))
          (special (assq type window-system-default-frame-alist)))
-    (dolist (p default-frame-alist)
-      (set-frame-parameter frame (car p) (cdr p)))
-    (when special
-      (dolist (p (cdr special))
-        (set-frame-parameter frame (car p) (cdr p))))
+    (modify-frame-parameters frame (append default-frame-alist
+                                           (when special (cdr special))))
     (cond ((or (eq type 'ns) (eq type 'mac))      (fjl/setup-mac frame))
           ((eq type 'x)                           (fjl/setup-gtk frame))
           ((and (eq type t) (not noninteractive)) (fjl/setup-tty)))
