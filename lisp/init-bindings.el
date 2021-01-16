@@ -120,6 +120,8 @@
 (add-hook 'dired-mode-hook 'fjl/dired-mode-hook)
 
 (when (memq window-system '(ns mac))
+  ;; disable tab bar toggle
+  (global-unset-key (kbd "C-<tab>"))
   ;; disable print-buffer on OS X
   (global-unset-key (kbd "s-p"))
   ;; enable CUA paste shortcut to make pasting from LaunchBar work
@@ -128,8 +130,8 @@
   (global-set-key (kbd "M-`") 'other-frame)
   (global-set-key (kbd "s-`") 'other-frame)
   (global-set-key (kbd "s-C-f") 'toggle-frame-fullscreen)
-  ;; Use the OS X binding for iconify frame.
   ;; I hit C-x C-z by accident all the time.
+  ;; Use s-m instead, which is the usual key for this on macOS.
   (global-unset-key (kbd "C-x C-z"))
   (global-unset-key (kbd "C-z"))
   (global-set-key (kbd "s-m") 'iconify-frame)
