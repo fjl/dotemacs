@@ -248,6 +248,7 @@
  '(tab-width 4)
  '(term-input-ignoredups t)
  '(tls-checktrust t)
+ '(tramp-verbose 2)
  '(truncate-lines t)
  '(use-file-dialog nil)
  '(user-mail-address "fjl@twurst.com")
