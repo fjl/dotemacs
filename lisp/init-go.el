@@ -140,9 +140,7 @@ Returns the new value of GOPATH."
         (setq new (fjl/file-name-localname dir))
       (let ((gp (fjl/find-gopath)))
         (if (not gp)
-            (progn
-              (message "Not in any Go workspace.")
-              (setq new old))
+            (setq new old)
           ;; A Go workspace was detected.
           (setq dir (car gp))
           (setq new (fjl/file-name-localname (car gp)))
