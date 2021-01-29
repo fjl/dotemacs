@@ -221,6 +221,7 @@ and to setup the inital frame."
                   (ns-appearance . dark)))
           (mac . ((menu-bar-lines . 1)
                   (left-fringe . 6)
+                  (internal-border-width . 2)
                   (font . ,(fpfont 14))
                   (alpha . 97)))
           (w32 . ((font . ,(fpfont 12))
