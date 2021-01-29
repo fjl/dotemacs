@@ -38,12 +38,19 @@ the remote repository name in the cdr."
       (cons (match-string 1 remote)
             (match-string 2 remote)))))
 
+(defun fjl/mac-git-path ()
+  (if (string-prefix-p "aarch64-" system-configuration)
+      "/opt/homebrew/bin/git"
+      "/usr/local/bin/git"))
+
 ;;;###autoload
 (defun fjl/magit-mode-hook ()
   ;; On macOS, the default git in path is an XCode-enabled wrapper, making it a lot slower
   ;; to invoke. Just calling the regular git exectuable makes magit a bit faster.
-  (when (string= system-type "darwin")
-    (setq magit-git-executable "/usr/local/bin/git"))
+  (when (and (not (file-remote-p default-directory)) (eq system-type 'darwin))
+    (let ((exe (fjl/mac-git-path)))
+      (when (file-exists-p exe)
+        (setq-local magit-git-executable exe))))
   ;; Configure status buffer.
   (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header)
   (remove-hook 'magit-status-sections-hook 'magit-insert-stashes)
