@@ -124,9 +124,10 @@
   (global-unset-key (kbd "s-p"))
   ;; enable CUA paste shortcut to make pasting from LaunchBar work
   (global-set-key (kbd "s-v") 'clipboard-yank)
-  ;; enable fast frame switch on OS X
+  ;; macOS platform bindings
   (global-set-key (kbd "M-`") 'other-frame)
   (global-set-key (kbd "s-`") 'other-frame)
+  (global-set-key (kbd "s-C-f") 'toggle-frame-fullscreen)
   ;; Use the OS X binding for iconify frame.
   ;; I hit C-x C-z by accident all the time.
   (global-unset-key (kbd "C-x C-z"))
