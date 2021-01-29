@@ -163,9 +163,16 @@ which isn't very useful."
 
 ;; TTY Display
 
-(defun xterm-title-update (&optional title)
+(defun xterm-title-update (title)
   (when (eq t (framep-on-display))
-    (send-string-to-terminal (concat "\033]0;" (or title (buffer-name)) "\007"))))
+    (send-string-to-terminal (concat "\033]0;" title "\007"))))
+
+(defun xterm-title-hook-fn (&optional frame-or-window)
+  "This function is called through various hooks during redisplay
+to set the terminal title."
+  (let ((buffer (window-buffer (frame-selected-window frame-or-window))))
+    (unless (minibufferp buffer)
+      (xterm-title-update (buffer-name buffer)))))
 
 (defun xterm-title-clear ()
   (xterm-title-update ""))
@@ -174,9 +181,15 @@ which isn't very useful."
   (xterm-mouse-mode 1)
   (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
   (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1)))
-  (add-hook 'window-configuration-change-hook 'xterm-title-update)
+  (if (not (boundp 'window-buffer-change-functions))
+      ;; Emacs < 27 only has window-configuration-change-hook, which doesn't
+      ;; trigger for buffer changes.
+      (add-hook 'window-configuration-change-hook 'xterm-title-hook-fn)
+    ;; Emacs >= 27 has fine-grained window change functions.
+    (add-hook 'window-selection-change-functions 'xterm-title-hook-fn)
+    (add-hook 'window-buffer-change-functions 'xterm-title-hook-fn))
   (add-hook 'kill-emacs-hook 'xterm-title-clear)
-  (xterm-title-update))
+  (xterm-title-hook-fn nil))
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
