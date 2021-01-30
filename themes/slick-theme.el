@@ -32,6 +32,9 @@
    `(compilation-mode-line-exit ((,class (:foreground "yellow green"))))
    `(compilation-error ((,class (:foreground "tan3" :weight bold :underline t))))
 
+   ;; Completion
+   `(completions-common-part ((,class (:foreground "tan3"))))
+
    ;; Highlighting
    `(highlight ((,class (:foreground "white" :background "dark green"))))
    `(region ((,class (:foreground "white" :background "dark green"))))
