@@ -130,6 +130,7 @@
   (global-set-key (kbd "M-`") 'other-frame)
   (global-set-key (kbd "s-`") 'other-frame)
   (global-set-key (kbd "s-C-f") 'toggle-frame-fullscreen)
+  (global-set-key (kbd "s-<return>") 'toggle-frame-fullscreen)
   ;; I hit C-x C-z by accident all the time.
   ;; Use s-m instead, which is the usual key for this on macOS.
   (global-unset-key (kbd "C-x C-z"))
