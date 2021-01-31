@@ -55,6 +55,7 @@
 (global-set-key (kbd "C-M-s") 'swiper)
 (global-set-key (kbd "M-s r") 'isearch-forward-regexp) ;; swiper takes up the usual binding
 (global-set-key (kbd "s-r") 'counsel-imenu)
+(global-set-key (kbd "M-'") 'counsel-imenu)
 (global-set-key (kbd "C-x M-RET") 'ivy-resume)
 (global-set-key (kbd "C-c c") 'org-capture)
 ;; Redirect common operation through counsel. This enables
