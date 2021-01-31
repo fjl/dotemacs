@@ -50,6 +50,8 @@
  '(comint-process-echoes nil)
  '(comment-empty-lines 'eol)
  '(comment-fill-column 70)
+ '(company-auto-commit nil)
+ '(company-auto-commit-chars nil)
  '(company-auto-complete nil)
  '(company-auto-complete-chars nil)
  '(company-begin-commands 'nil)
