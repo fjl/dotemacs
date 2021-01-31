@@ -74,6 +74,7 @@
  '(cursor-in-non-selected-windows 'hollow)
  '(cursor-type 'bar)
  '(custom-safe-themes t)
+ '(desktop-save-mode nil)
  '(dired-async-mode t)
  '(dired-dwim-target t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..+$")
