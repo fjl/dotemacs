@@ -226,7 +226,6 @@
  '(savehist-mode t)
  '(send-mail-function 'smtpmail-send-it)
  '(sentence-end-double-space nil)
- '(server-window 'pop-to-buffer)
  '(shell-completion-fignore '("~" "#" "%"))
  '(shell-file-name "/bin/sh")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
