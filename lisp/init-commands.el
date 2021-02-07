@@ -126,7 +126,7 @@ visible frames."
 
 ;; editing
 
-(defun fjl/comment-enter (arg)
+(defun comment-newline (arg)
   "Inserts a newline. Also inserts comment start characters if
 point is inside a comment."
   (interactive "p")

@@ -26,7 +26,7 @@
 (global-set-key (kbd "C-x \\") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x o") 'other-window-visible-frames)
 
-(define-key prog-mode-map (kbd "M-RET") 'fjl/comment-enter)
+(define-key prog-mode-map (kbd "M-RET") 'comment-newline)
 (define-key prog-mode-map (kbd "RET") 'newline)
 (define-key prog-mode-map (kbd "TAB") 'company-indent-or-complete-common)
 
