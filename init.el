@@ -26,7 +26,10 @@
   (require 'init-commands)
   (require 'init-bindings)
   ;; Enable some built-in packages.
-  (require 'uniquify))
+  (require 'uniquify)
+  ;; Enable server for GUI emacs.
+  (unless (eq t (framep-on-display))
+    (server-mode 1)))
 
 ;; Set EDITOR for all subprocesses.
 (setenv "EDITOR" "emacsclient")
