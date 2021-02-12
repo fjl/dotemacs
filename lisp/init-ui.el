@@ -121,10 +121,11 @@ also enables prettification in comments."
            (cons "PATH"
                  (cl-remove-if (lambda (s) (string-prefix-p "PATH=" s)) process-environment))))
       (process-file "/usr/libexec/path_helper" nil (current-buffer) nil))
-    (zap-to-char -1 ?\") ;; trim "\nexport PATH; at end
-    (goto-char (point-min))
-    (zap-to-char 1 ?\") ;; trim PATH=" at beginning
-    (buffer-string)))
+    (let (start end)
+      (goto-char (point-min))
+      (setq start (search-forward "\""))
+      (setq end (1- (search-forward "\"")))
+      (buffer-substring start end))))
 
 (defun fjl/mac-app-resources-bin ()
   (save-match-data
