@@ -205,7 +205,7 @@
  '(projectile-enable-caching t)
  '(projectile-ignored-project-function 'file-remote-p)
  '(projectile-mode t nil (projectile))
- '(projectile-switch-project-action (lambda nil (dired ".")))
+ '(projectile-switch-project-action 'projectile-vc)
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
