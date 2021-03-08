@@ -58,7 +58,7 @@
     f))
 
 (setq slime-from-lisp-filename-function 'slime-tramp-remote-filename)
-(setq slime-to-lisp-filename-function 'slime-tramp-local-filename))
+(setq slime-to-lisp-filename-function 'slime-tramp-local-filename)
 
 (defun fjl/directory-asdf-system (directory)
   (let ((files (directory-files directory nil "\.asd$")))
@@ -76,7 +76,7 @@
 ;; Keys
 (define-key slime-mode-map (kbd "C-x 9") 'slime-test-current-system)
 (define-key slime-mode-map (kbd "C-c M-q") 'slime-reindent-defun)
-(define-key slime-repl-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol))
+(define-key slime-repl-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol)
 
 ;;;###autoload
 (defun fjl/slime-mode-hook ()
