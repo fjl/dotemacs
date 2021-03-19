@@ -267,10 +267,6 @@ and to setup the inital frame."
 
 (add-hook 'compilation-filter-hook #'fjl/colorize-compilation)
 
-;; When quitting server edits, kill the window with them
-;; if it was opened for the edit.
-(add-hook 'server-done-hook 'quit-window)
-
 ;; Enable winner mode.
 (winner-mode 1)
 
