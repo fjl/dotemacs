@@ -162,6 +162,13 @@
  '(lsp-enable-snippet nil)
  '(lsp-enable-symbol-highlighting nil)
  '(lsp-flycheck-live-reporting nil)
+ '(lsp-go-codelenses
+   '((generate . t)
+     (regenerate_cgo . t)
+     (tidy . t)
+     (upgrade_dependency . t)
+     (test . t)
+     (vendor . t)))
  '(lsp-prefer-flymake :none)
  '(magit-auto-revert-immediately nil)
  '(magit-buffer-name-format "*%M%v: %t*")
