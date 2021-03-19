@@ -126,6 +126,22 @@ visible frames."
 
 ;; editing
 
+(defun mouse-kill-word (event)
+  "Kills the clicked word. Useful? no! Fun? yes!"
+  (interactive "e")
+  (let* ((p (event-start event))
+         (window (posn-window p))
+         (point (posn-point p)))
+    (select-window window)
+    (save-mark-and-excursion
+      (goto-char point)
+      ;; Check if point is within a word. If so, move to the beginning
+      ;; before killing it.
+      (let* ((bounds (bounds-of-thing-at-point 'word))
+             (beg (or (car bounds) (point)))
+             (end (forward-to-word 1)))
+        (kill-region beg end)))))
+
 (defun comment-newline (arg)
   "Inserts a newline. Also inserts comment start characters if
 point is inside a comment."
