@@ -13,6 +13,7 @@
   (setq treemacs-user-mode-line-format
         '("" (:eval (fjl/mode-line-align-right nil mode-line-misc-info)))))
 
+;;;###autoload
 (defun fjl/treemacs-hook ()
   ;; Copy ace-window mode line indicator.
   (let ((fmt (default-value 'mode-line-format)))
