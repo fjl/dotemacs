@@ -21,6 +21,7 @@
 (global-set-key (kbd "C-x M-9") 'compile)
 (global-set-key (kbd "C-x C-j") 'fjl/join-next-line) ;; overwrites jabber commands
 (global-set-key (kbd "C-M-q") 'unfill-paragraph)
+(global-set-key (kbd "C-x w") 'whitespace-cleanup)
 
 (global-set-key (kbd "s-1") 'launcher)
 (global-set-key (kbd "C-x \\") 'toggle-truncate-lines)
@@ -88,8 +89,9 @@
 (global-set-key (kbd "<s-mouse-1>") 'mouse-kill-word)
 
 ;; compilation
+(defun fjl/quit-buffer-process () (interactive) (quit-process))
 (defun fjl/bind-compilation-keys ()
-  (define-key compilation-mode-map (kbd "C-c C-q") '(lambda () (interactive) (quit-process))))
+  (define-key compilation-mode-map (kbd "C-c C-q") 'fjl/quit-buffer-process))
 (add-hook 'compilation-mode-hook 'fjl/bind-compilation-keys)
 
 ;; ibuffer
@@ -116,13 +118,14 @@
   (define-key term-raw-map (kbd "C-c C-c") 'term-interrupt-subjob))
 (add-hook 'term-mode-hook 'fjl/bind-term-keys)
 
+;; dired
 (defun fjl/dired-mode-hook ()
   (define-key dired-mode-map (kbd "s-]") 'dired-afplay)
   (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
   (dired-hide-details-mode 1))
-
 (add-hook 'dired-mode-hook 'fjl/dired-mode-hook)
 
+;; override keys for macOS
 (when (memq window-system '(ns mac))
   ;; disable tab bar toggle
   (global-unset-key (kbd "C-<tab>"))
