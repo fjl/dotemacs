@@ -34,8 +34,10 @@
     ("ineffassign"  "github.com/gordonklaus/ineffassign@latest")
     ("pprof"        "github.com/google/pprof@latest")
     ("staticcheck"  "honnef.co/go/tools/cmd/staticcheck@latest")
-    ("stress"       "golang.org/x/tools/cmd/stress@latest"))
-    ("structlayout" "honnef.co/go/tools/cmd/structlayout@latest"))
+    ("stress"       "golang.org/x/tools/cmd/stress@latest")
+    ("structlayout" "honnef.co/go/tools/cmd/structlayout@latest")
+    ("structlayout-pretty"   "honnef.co/go/tools/cmd/structlayout-pretty@latest")
+    ("structlayout-optimize" "honnef.co/go/tools/cmd/structlayout-optimize@latest")))
 
 (defun fjl/file-name-localname (file)
   (if (tramp-tramp-file-p file)
