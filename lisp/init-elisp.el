@@ -9,5 +9,3 @@
 
 ;;;###autoload
 (add-hook 'emacs-lisp-mode-hook 'fjl/elisp-mode-hook)
-
- 
