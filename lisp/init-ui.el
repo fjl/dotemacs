@@ -162,10 +162,18 @@ to set the terminal title."
 (defun xterm-title-clear ()
   (xterm-title-update ""))
 
+(defun fjl/mouse-scroll-down-1 ()
+  (interactive)
+  (scroll-down 1))
+
+(defun fjl/mouse-scroll-up-1 ()
+  (interactive)
+  (scroll-up 1))
+
 (defun fjl/setup-tty ()
   (xterm-mouse-mode 1)
-  (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
-  (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1)))
+  (global-set-key [mouse-4] 'fjl/mouse-scroll-down-1)
+  (global-set-key [mouse-5] 'fjl/mouse-scroll-up-1)
   (if (not (boundp 'window-buffer-change-functions))
       ;; Emacs < 27 only has window-configuration-change-hook, which doesn't
       ;; trigger for buffer changes.
