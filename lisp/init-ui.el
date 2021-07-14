@@ -1,9 +1,11 @@
 ;; -*- lexical-binding: t -*-
 
+(require 'init-bootstrap)
 (require 'cl-lib)
+
 (eval-when-compile
-  (require 'ansi-color)
   (require 'ivy)
+  (require 'ansi-color)
   (require 'treemacs)
   (require 'projectile)
   (require 'desktop))

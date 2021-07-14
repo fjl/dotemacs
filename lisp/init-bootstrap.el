@@ -40,7 +40,7 @@
 (defmacro after-package (pkg &rest body)
   "Run `body' when the given package is loaded."
   (declare (indent defun))
-  `(eval-after-load ,(symbol-name pkg) (lambda () ,@body)))
+  `(eval-after-load ',(symbol-name pkg) (lambda () ,@body)))
 
 (defvar generated-autoload-file)
 

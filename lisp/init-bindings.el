@@ -11,7 +11,6 @@
   (require 'projectile)
   (require 'swiper)
   (require 'counsel)
-  (require 'ivy)
   (require 'avy))
 
 ;; my commands
@@ -55,19 +54,21 @@
 (global-set-key (kbd "M-o") 'ace-window)
 (global-set-key (kbd "C-M-s") 'swiper)
 (global-set-key (kbd "M-s r") 'isearch-forward-regexp) ;; swiper takes up the usual binding
-(global-set-key (kbd "s-r") 'counsel-imenu)
-(global-set-key (kbd "M-'") 'counsel-imenu)
-(global-set-key (kbd "C-x M-RET") 'ivy-resume)
 (global-set-key (kbd "C-c c") 'org-capture)
-;; Redirect common operation through counsel. This enables
-;; some of the more interesting features of ivy.
-(global-set-key (kbd "C-M-y") 'counsel-yank-pop)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
-(global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
+
+(after-package counsel
+  ;; Redirect common operation through counsel. This enables
+  ;; some of the more interesting features of ivy.
+  (global-set-key (kbd "s-r") 'counsel-imenu)
+  (global-set-key (kbd "M-'") 'counsel-imenu)
+  (global-set-key (kbd "C-M-y") 'counsel-yank-pop)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
+  (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char))
 
 (after-package ivy
+  (global-set-key (kbd "C-x M-RET") 'ivy-resume)
   ;; In ivy, never exit when pressing TAB too much.
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
   ;; In ivy, swap C-j and RET to retain ido behavior.
