@@ -188,6 +188,7 @@
  '(message-signature-insert-empty-line nil)
  '(mouse-wheel-progressive-speed nil)
  '(multi-isearch-pause nil)
+ '(native-comp-async-report-warnings-errors 'silent)
  '(next-screen-context-lines 8)
  '(olivetti-body-width 80)
  '(olivetti-hide-mode-line t)
