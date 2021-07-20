@@ -8,8 +8,11 @@
 ;; (setq warning-minimum-level :error)
 
 ;; Inhibit GC during initialization.
-(defvar prev-gc-cons-threshold gc-cons-threshold)
-(setq gc-cons-threshold (* 20 1024 1024))
+(setq gc-cons-threshold (* 50 1024 1024))
+
+;; Raise read-process-output-max. This is supposed to improve performance.
+(setq read-process-output-max 1048576)
+
 ;; Load source instead of bytecode if the bytecode is outdated.
 (setq load-prefer-newer t)
 ;; Don't warn if .emacs.d is not writable.
@@ -35,7 +38,7 @@
 (setenv "EDITOR" "emacsclient")
 
 ;; Set GC trigger back to a reasonable value after initializing everything.
-(setq gc-cons-threshold prev-gc-cons-threshold)
+(setq gc-cons-threshold (* 12 1024 1024))
 
 ;; Enable some disabled commands. This goes last because emacs adds
 ;; them to the end of this file when enabling interactively.
