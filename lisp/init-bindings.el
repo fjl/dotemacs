@@ -4,6 +4,7 @@
 (require 'cl-lib)
 
 (eval-when-compile
+  (require 'ivy)
   (require 'term)
   (require 'ace-window)
   (require 'company)
@@ -28,7 +29,6 @@
 
 (define-key prog-mode-map (kbd "M-RET") 'comment-newline)
 (define-key prog-mode-map (kbd "RET") 'newline)
-(define-key prog-mode-map (kbd "TAB") 'company-indent-or-complete-common)
 
 (global-set-key (kbd "M-s .") 'isearch-forward-symbol-at-point)
 (global-set-key (kbd "M-s d") 'multi-isearch-glob)
@@ -55,20 +55,19 @@
 (global-set-key (kbd "C-M-s") 'swiper)
 (global-set-key (kbd "M-s r") 'isearch-forward-regexp) ;; swiper takes up the usual binding
 (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-x M-RET") 'ivy-resume)
 
-(after-package counsel
-  ;; Redirect common operation through counsel. This enables
-  ;; some of the more interesting features of ivy.
-  (global-set-key (kbd "s-r") 'counsel-imenu)
-  (global-set-key (kbd "M-'") 'counsel-imenu)
-  (global-set-key (kbd "C-M-y") 'counsel-yank-pop)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
-  (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char))
+;; Redirect common operation through counsel. This enables
+;; some of the more interesting features of ivy.
+(global-set-key (kbd "s-r") 'counsel-imenu)
+(global-set-key (kbd "M-'") 'counsel-imenu)
+(global-set-key (kbd "C-M-y") 'counsel-yank-pop)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
+(global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
 (after-package ivy
-  (global-set-key (kbd "C-x M-RET") 'ivy-resume)
   ;; In ivy, never exit when pressing TAB too much.
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
   ;; In ivy, swap C-j and RET to retain ido behavior.
@@ -76,6 +75,7 @@
   (define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done))
 
 (after-package company
+  (define-key company-mode-map (kbd "TAB") 'company-indent-or-complete-common)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-e") 'company-complete-selection))
