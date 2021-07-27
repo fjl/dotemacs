@@ -40,6 +40,10 @@
 ;; Set GC trigger back to a reasonable value after initializing everything.
 (setq gc-cons-threshold (* 12 1024 1024))
 
+;; Disable certain local variables.
+(dolist (v '(Package Base Syntax))
+  (add-to-list 'ignored-local-variables v))
+
 ;; Enable some disabled commands. This goes last because emacs adds
 ;; them to the end of this file when enabling interactively.
 (put 'narrow-to-region 'disabled nil)

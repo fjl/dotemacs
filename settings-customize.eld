@@ -227,10 +227,6 @@
  '(safe-local-variable-values
    '((flycheck-disabled-checkers emacs-lisp-checkdoc)
      (c-file-style "ethereum")
-     (Package . CL-WHO)
-     (Base . 10)
-     (Package . CL-PPCRE)
-     (Syntax . COMMON-LISP)
      (dtrt-indent-explicit-offset . t)))
  '(save-interprogram-paste-before-kill t)
  '(savehist-file "~/.emacs-history")
