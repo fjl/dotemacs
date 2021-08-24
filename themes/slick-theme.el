@@ -128,8 +128,6 @@
    `(term-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
 
    ;; Magit
-   `(smerge-refined-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
-   `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
    `(magit-item-highlight ((,class (:background ,slick-faint-highlight-color))))
    `(magit-section-title ((,class (:foreground "tan3" :weight bold))))
    `(magit-section-highlight ((,class (:background ,slick-faint-highlight-color))))
@@ -139,6 +137,15 @@
    `(magit-diff-removed-highlight ((,class (:background "#773333" :foreground "#ffcccc"))))
    `(magit-diff-context ((,class (:inherit default))))
    `(magit-diff-context-highlight ((,class (:inherit default))))
+
+   ;; Diff/Merge
+   `(smerge-markers ((,class (:background ,slick-faint-highlight-color))))
+   `(smerge-lower ((,class (:background "#225522" :foreground "#88ff88"))))
+   `(smerge-upper ((,class (:background "#552222" :foreground "#ff8888"))))
+   `(smerge-refined-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
+   `(smerge-refined-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
+   `(diff-refine-added ((,class (:inherit smerge-refined-change :underline "#22aa22"))))
+   `(diff-refine-removed ((,class (:inherit smerge-refined-change :underline "#aa2222"))))
 
    ;; Ediff
    `(ediff-odd-diff-A ((,class (:background ,slick-faint-highlight-color))))
