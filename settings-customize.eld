@@ -176,6 +176,7 @@
  '(magit-buffer-name-format "*%M%v: %t*")
  '(magit-completing-read-function 'ivy-completing-read)
  '(magit-diff-arguments '("--ignore-all-space" "--no-ext-diff" "--stat"))
+ '(magit-diff-refine-hunk t)
  '(magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
  '(magit-restore-window-configuration nil)
  '(magit-revert-buffers -2 t)
