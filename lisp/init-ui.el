@@ -74,6 +74,7 @@ also enables prettification in comments."
 (defvar mac-pass-control-to-system)
 (defvar mac-ignore-accessibility)
 (defvar ns-pop-up-frames)
+(defvar ns-auto-hide-menu-bar)
 (defvar ns-use-native-fullscreen)
 (defvar ns-alternate-modifier)
 (defvar ns-command-modifier)
@@ -83,7 +84,8 @@ also enables prettification in comments."
   "Applies macOS gui settings."
   (setq ns-use-native-fullscreen nil)
   (setq ns-pop-up-frames nil)
-  (setq frame-resize-pixelwise t)
+  (setq ns-auto-hide-menu-bar nil)
+  (setq frame-resize-pixelwise nil)
   ;; enable emoji font as fallback and other font settings
   (set-fontset-font t 'unicode (emojifont 10) frame 'prepend)
   (setq-default line-spacing 0)
