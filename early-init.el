@@ -5,7 +5,7 @@
 
 ;; Set up library path for libgccjit. This is a workaround for issues
 ;; with native elisp compilation on macOS.
-(when (and (eq system-type 'darwin) (member 'native-compile features))
+(when (and (eq system-type 'darwin) (member 'native-compile features=))
   (defvar native-comp-driver-options nil)
-  (push "-L/opt/homebrew/lib/gcc/11" native-comp-driver-options))
+  (push "-L/opt/homebrew/lib/gcc/11" native-comp-driver-options)
   (setenv "LIBRARY_PATH" "/opt/homebrew/lib/gcc/11/gcc/aarch64-apple-darwin20/11.1.0/"))
