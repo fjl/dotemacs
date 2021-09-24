@@ -98,14 +98,15 @@ refer to the installed tools."
       (set-process-sentinel proc (lambda (proc event)
                                    (when (buffer-live-p (process-buffer proc))
                                      (with-current-buffer (process-buffer proc)
-                                       (let ((inhibit-read-only t))
-                                         (cl-fresh-line)
-                                         (insert exe " " (car args) " " (propertize event 'face 'bold))
-                                         (newline))
-                                       ;; Start next command.
-                                       (if (and (cdr commands) (equal event "finished\n"))
-                                           (apply #'gotools-run-commands (cdr commands))
-                                         (gotools-setup))))))
+                                       (save-excursion
+                                         (let ((inhibit-read-only t))
+                                           (goto-char (point-max))
+                                           (cl-fresh-line)
+                                           (insert exe " " (car args) " " (propertize event 'face 'bold) "\n"))
+                                         ;; Start next command.
+                                         (if (and (cdr commands) (equal event "finished\n"))
+                                             (apply #'gotools-run-commands (cdr commands))
+                                           (gotools-setup)))))))
       (set-process-query-on-exit-flag proc t))))
 
 ;;;###autoload
