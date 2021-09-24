@@ -211,7 +211,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(tramp lsp-treemacs org-plus-contrib slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-present ox-gfm projectile restclient slime smex toml-mode virtualenvwrapper wgrep))
+   '(speed-type tramp lsp-treemacs org-plus-contrib slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode geiser go-dlv go-guru go-scratch graphviz-dot-mode htmlize ivy-hydra levenshtein magit markdown-mode ob-go org-present ox-gfm projectile restclient slime smex toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-enable-caching t)
  '(projectile-ignored-project-function 'file-remote-p)
