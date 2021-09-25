@@ -137,6 +137,7 @@
    `(magit-diff-removed-highlight ((,class (:background "#773333" :foreground "#ffcccc"))))
    `(magit-diff-context ((,class (:inherit default))))
    `(magit-diff-context-highlight ((,class (:inherit default))))
+   `(magit-diff-hunk-region ((,class (:background ,slick-faint-highlight-color))))
 
    ;; Diff/Merge
    `(smerge-markers ((,class (:background ,slick-faint-highlight-color))))
