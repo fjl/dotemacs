@@ -6,6 +6,7 @@
 ;;         Art Taylor
 ;; Keywords: lisp
 ;; Package-Version: 20090830.1040
+;; Package-Commit: 070925197ebf6b704e6e00c4f2d2ec783f3df38c
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
