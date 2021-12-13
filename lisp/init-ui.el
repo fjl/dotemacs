@@ -41,6 +41,10 @@
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
 (set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
 
+;; Make mode line fixed-pitch (default is variable-pitch on emacs >= 29.1).
+(set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+
 (defvar fjl/setting-up-first-frame t
   "This variable is set to nil after setting up the first frame.")
 
