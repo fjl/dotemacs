@@ -28,7 +28,11 @@
 ;;;###autoload
 (defun fjl/org-mode-hook ()
   (local-set-key (kbd "C-c x") 'fjl/org-table-check)
-  (local-set-key (kbd "C-c r") 'org-table-insert-row))
+  (local-set-key (kbd "C-c r") 'org-table-insert-row)
+
+  ;; Improve non-English export.
+  (add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
+  (add-to-list 'org-latex-packages-alist '("AUTO" "polyglossia" t ("xelatex" "lualatex"))))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'fjl/org-mode-hook)
