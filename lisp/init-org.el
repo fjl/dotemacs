@@ -32,7 +32,9 @@
 
   ;; Improve non-English export.
   (add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
-  (add-to-list 'org-latex-packages-alist '("AUTO" "polyglossia" t ("xelatex" "lualatex"))))
+  (add-to-list 'org-latex-packages-alist '("AUTO" "polyglossia" t ("xelatex" "lualatex")))
+
+  (require 'ob-go))
 
 ;;;###autoload
 (add-hook 'org-mode-hook 'fjl/org-mode-hook)
