@@ -86,9 +86,6 @@
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
-;; Mouse bindings.
-(global-set-key (kbd "<s-mouse-1>") 'mouse-kill-word)
-
 ;; compilation
 (defun fjl/quit-buffer-process () (interactive) (quit-process))
 (defun fjl/bind-compilation-keys ()
