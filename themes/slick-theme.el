@@ -1,8 +1,8 @@
-(deftheme slick
-  "A theme based the wheatgrass theme that comes with emacs.")
+(deftheme slick "A theme based the wheatgrass theme that comes with emacs.")
 
 (defconst slick-background-color "gray15")
 (defconst slick-faint-highlight-color "gray25")
+(defconst slick-secondary-select-color "gray35")
 (defconst slick-highlight-color "gray40")
 (defconst slick-search-color "saddle brown")
 (defconst slick-text-color "gray90")
@@ -15,7 +15,7 @@
 
    ;; Basic faces
    `(default ((,graphic (:foreground ,slick-text-color :background ,slick-background-color))
-              (,class   (:foreground ,slick-text-color))))
+              (,class (:foreground ,slick-text-color))))
    `(cursor ((,class (:background ,slick-cursor-color))))
    `(error ((,class (:foreground "red"))))
    `(warning ((,class (:foreground "orange"))))
@@ -23,8 +23,7 @@
    `(fringe ((,class (:background "gray10"))))
    `(vertical-border ((,class (:foreground "gray25"))))
    `(shadow ((,class (:inherit default :background nil :foreground "gray75"))))
-   `(header-line ((,class (:inherit mode-line :background "gray20" :foreground "gray90"
-                           :box (:line-width 2 :color "gray20")))))
+   `(header-line ((,class (:inherit mode-line :background "gray20" :foreground "gray90" :box (:line-width 2 :color "gray20")))))
 
    ;; Compilation
    `(compilation-mode-line-fail ((,class (:foreground "dark green"))))
@@ -36,9 +35,9 @@
    `(completions-common-part ((,class (:foreground "tan3"))))
 
    ;; Highlighting
-   `(highlight ((,class (:foreground "white" :background "dark green"))))
    `(region ((,class (:foreground "white" :background "dark green"))))
-   `(secondary-selection ((,class (:background "dark slate gray"))))
+   `(secondary-selection ((,class (:background ,slick-secondary-select-color))))
+   `(highlight ((,class (:foreground "white" :background "dark green"))))
    `(isearch ((,class (:foreground "white" :background ,slick-search-color))))
    `(lazy-highlight ((,class (:background ,slick-faint-highlight-color :foreground "gray90" :underline t :weight bold))))
    `(hl-line ((,class (:background "gray20"))))
@@ -85,16 +84,12 @@
    `(message-separator ((,class (:foreground "deep sky blue"))))
 
    ;; Mode line style
-   `(mode-line           ((,class (:background "tan4" :foreground "gray90" :box (:line-width 1 :color "tan4" :style released-button)))))
-   `(mode-line-inactive  ((,class (:inherit mode-line :background "black" :foreground "gray40" :weight light :box (:line-width 1 :style released-button)))))
+   `(mode-line ((,class (:background "tan4" :foreground "gray90" :box (:line-width 1 :color "tan4" :style released-button)))))
+   `(mode-line-inactive ((,class (:inherit mode-line :background "black" :foreground "gray40" :weight light :box (:line-width 1 :style released-button)))))
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
-   `(which-func          ((,class (:foreground "chartreuse3"))))
-   `(aw-mode-line-face   ((,class (:inherit mode-line-buffer-id
-                                   :weight light
-                                   :height 0.8
-                                   :background ,slick-text-color
-                                   :foreground ,slick-background-color))))
+   `(which-func ((,class (:foreground "chartreuse3"))))
+   `(aw-mode-line-face ((,class (:inherit mode-line-buffer-id :weight light :height 0.8 :background ,slick-text-color :foreground ,slick-background-color))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
@@ -110,17 +105,18 @@
    `(markdown-language-keyword-face ((,class (:inherit default :height 0.7))))
 
    ;; Org
-   `(org-hide             ((,graphic (:foreground ,slick-background-color)) (t (:foreground "black"))))
-   `(org-document-title   ((,class (:foreground "light blue"))))
-   `(org-document-info    ((,class (:foreground "light blue"))))
-   `(org-block            ((,class (:inherit fixed-pitch :foreground "gray75"))))
-   `(org-table            ((,class (:inherit fixed-pitch :foreground "LightSkyBlue"))))
-   `(org-meta-line        ((,class (:foreground "gray45" :height 0.7))))
+   `(org-hide ((,graphic (:foreground ,slick-background-color))
+               (,class (:foreground "black"))))
+   `(org-document-title ((,class (:foreground "light blue"))))
+   `(org-document-info ((,class (:foreground "light blue"))))
+   `(org-block ((,class (:inherit fixed-pitch :foreground "gray75"))))
+   `(org-table ((,class (:inherit fixed-pitch :foreground "LightSkyBlue"))))
+   `(org-meta-line ((,class (:foreground "gray45" :height 0.7))))
    `(org-block-begin-line ((,class (:foreground "gray45" :height 0.7))))
-   `(org-block-end-line   ((,class (:foreground "gray45" :height 0.7))))
-   `(outline-1            ((,class (:weight bold :foreground ,slick-text-color))))
-   `(outline-2            ((,class (:weight bold :foreground ,slick-text-color))))
-   `(outline-3            ((,class (:weight bold :foreground ,slick-text-color))))
+   `(org-block-end-line ((,class (:foreground "gray45" :height 0.7))))
+   `(outline-1 ((,class (:weight bold :foreground ,slick-text-color))))
+   `(outline-2 ((,class (:weight bold :foreground ,slick-text-color))))
+   `(outline-3 ((,class (:weight bold :foreground ,slick-text-color))))
 
    ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
