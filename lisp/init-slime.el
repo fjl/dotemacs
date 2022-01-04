@@ -61,9 +61,15 @@
 (setq slime-to-lisp-filename-function 'slime-tramp-local-filename)
 
 (defun fjl/directory-asdf-system (directory)
-  (let ((files (directory-files directory nil "\.asd$")))
-    (when files
-      (file-name-sans-extension (car files)))))
+  (let (found-system)
+    (locate-dominating-file
+     directory
+     (lambda (dir)
+       (let ((files (directory-files dir nil "\.asd$")))
+         (when files
+           (setq found-system (file-name-sans-extension (car files)))
+           t))))
+    found-system))
 
 (defun slime-test-current-system ()
   (interactive)
