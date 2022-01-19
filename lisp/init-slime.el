@@ -60,27 +60,36 @@
 (setq slime-from-lisp-filename-function 'slime-tramp-remote-filename)
 (setq slime-to-lisp-filename-function 'slime-tramp-local-filename)
 
-(defun fjl/directory-asdf-system (directory)
-  (let (found-system)
+(defun fjl/directory-asdf-systems (directory)
+  (let (found)
     (locate-dominating-file
      directory
      (lambda (dir)
-       (let ((files (directory-files dir nil "\.asd$")))
-         (when files
-           (setq found-system (file-name-sans-extension (car files)))
-           t))))
-    found-system))
+       (dolist (f (directory-files dir nil "\.asd$"))
+         (cl-pushnew (file-name-sans-extension f) found :test 'equal))
+       found))
+    found))
 
-(defun slime-test-current-system ()
-  (interactive)
-  (let* ((directory (or default-directory (file-name-directory (buffer-file-name))))
-         (system (fjl/directory-asdf-system directory)))
-    (if system
-        (slime-oos system 'test-op)
-      (message "Can't determine ASDF system."))))
+(defun fjl/slime-test-system (system)
+  (interactive
+   (list
+    (let* ((directory (or default-directory (file-name-directory (buffer-file-name))))
+           (systems (fjl/directory-asdf-systems directory)))
+      (cond ((null (cdr systems))
+             ;; Exactly one system, don't prompt.
+             (car systems))
+            (current-prefix-arg
+             (completing-read "Test ASDF system: " systems))
+            ((null systems)
+             (error "Can't find ASDF system in %s." directory))
+            (t
+             ;; No prefix arg, just use the first available system.
+             (car systems)))))
+   slime-mode)
+  (slime-oos system 'test-op))
 
 ;; Keys
-(define-key slime-mode-map (kbd "C-x 9") 'slime-test-current-system)
+(define-key slime-mode-map (kbd "C-x 9") 'fjl/slime-test-system)
 (define-key slime-mode-map (kbd "C-c M-q") 'slime-reindent-defun)
 (define-key slime-repl-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol)
 
