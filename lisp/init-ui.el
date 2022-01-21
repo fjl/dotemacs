@@ -255,17 +255,13 @@ and to setup the inital frame."
 ;; in the window when output reaches the bottom.
 (defun fjl/compilation-mode-hook ()
   (setq-local scroll-conservatively 200)
-  (setq-local scroll-step 1))
+  (setq-local scroll-step 1)
+  (unless (member major-mode '(ag-mode grep-mode))
+    (setq-local compilation-filter-hook
+                (cons 'ansi-color-compilation-filter
+                      compilation-filter-hook))))
 
 (add-hook 'compilation-mode-hook 'fjl/compilation-mode-hook)
-
-(defun fjl/colorize-compilation ()
-  "Colorize from `compilation-filter-start' to `point'."
-  (unless (member major-mode '(ag-mode grep-mode))
-    (let ((inhibit-read-only t))
-      (ansi-color-apply-on-region compilation-filter-start (point)))))
-
-(add-hook 'compilation-filter-hook #'fjl/colorize-compilation)
 
 ;; Enable winner mode.
 (winner-mode 1)
