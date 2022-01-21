@@ -261,9 +261,9 @@ and to setup the inital frame."
 
 (defun fjl/colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
-  (let ((inhibit-read-only t))
-    (ansi-color-apply-on-region
-     compilation-filter-start (point))))
+  (unless (member major-mode '(ag-mode grep-mode))
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region compilation-filter-start (point)))))
 
 (add-hook 'compilation-filter-hook #'fjl/colorize-compilation)
 
