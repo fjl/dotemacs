@@ -120,6 +120,10 @@
 
    ;; Shell, etc.
    `(eshell-prompt ((,class (:foreground "deep pink" :weight bold))))
+   `(eshell-ls-directory ((,class (:foreground "maroon" :weight regular))))
+   `(eshell-ls-executable ((,class (:foreground "ForestGreen" :weight regular))))
+   `(eshell-ls-symlink ((,class (:foreground "cyan" :weight regular))))
+   `(eshell-ls-special ((,class (:foreground "magenta" :weight regular))))
    `(term-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
    `(term-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
 
