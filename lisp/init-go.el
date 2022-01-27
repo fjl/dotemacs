@@ -57,19 +57,6 @@ refer to the installed tools."
     (gotools-init-buffer)
     (apply #'gotools-run-commands commands)))
 
-;;;###autoload
-(defun gotools-rebuild ()
-  "Rebuild existing go tools in `gotools-dir' and set up various variables to
-refer to the installed tools."
-  (interactive)
-  (dolist (cmd gotools-list)
-    (let ((file (concat (gotools-gobin) (car cmd))))
-      (when (file-exists-p file)
-        (delete-file file t))))
-  (gotools-init-buffer)
-  (gotools-run-commands
-   (cl-list* (gotools-dir) "go" "install" "-v" (mapcar #'cadr gotools-list))))
-
 (defun gotools-init-buffer ()
   (pop-to-buffer-same-window "*gotools-update*")
   (let ((inhibit-read-only t))
