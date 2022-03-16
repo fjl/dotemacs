@@ -20,10 +20,13 @@
    `(error ((,class (:foreground "red"))))
    `(warning ((,class (:foreground "orange"))))
    `(success ((,class (:foreground "yellow green"))))
-   `(fringe ((,class (:background "gray10"))))
-   `(vertical-border ((,class (:foreground "gray25"))))
    `(shadow ((,class (:inherit default :background nil :foreground "gray75"))))
+
+   ;; Frame/Window
+   `(fringe ((,class (:background "gray10"))))
    `(header-line ((,class (:inherit mode-line :background "gray20" :foreground "gray90" :box (:line-width 2 :color "gray20")))))
+   `(vertical-border ((,class (:foreground "gray25"))))
+   `(child-frame-border ((,class (:background "PeachPuff2"))))
 
    ;; Compilation
    `(compilation-mode-line-fail ((,class (:foreground "dark green"))))
