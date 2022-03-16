@@ -1,7 +1,7 @@
 (require 'treemacs)
 
 ;;;###autoload
-(defun fjl/treemacs-setup ()
+(defun fjl/treemacs-setup (&rest args)
   (setq treemacs-collapse-dirs 3
         treemacs-display-in-side-window t
         treemacs-filewatch-mode t
