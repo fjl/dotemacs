@@ -234,6 +234,7 @@
  '(shell-completion-fignore '("~" "#" "%"))
  '(shell-file-name "/bin/sh")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
+ '(show-paren-context-when-offscreen 'child-frame)
  '(show-paren-style 'parenthesis)
  '(show-trailing-whitespace nil)
  '(shr-color-visible-luminance-min 60)
