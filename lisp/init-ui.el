@@ -226,7 +226,8 @@ and to setup the inital frame."
         '((tool-bar-lines 0)
           (left-fringe . nil)
           (right-fringe . 0)
-          (vertical-scroll-bars . nil)))
+          (vertical-scroll-bars . nil)
+          (child-frame-border-width . 20)))
   ;; Per window-system overrides and additions to default-frame-alist.
   (setq window-system-default-frame-alist
         `((ns  . ((menu-bar-lines . 1)
