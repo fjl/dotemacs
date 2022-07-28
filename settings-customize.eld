@@ -204,7 +204,7 @@
  '(org-export-allow-bind-keywords t)
  '(org-html-htmlize-output-type 'css)
  '(org-indent-mode-turns-on-hiding-stars nil)
- '(org-latex-compiler "pdflatex")
+ '(org-latex-compiler "lualatex")
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
