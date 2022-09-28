@@ -88,7 +88,7 @@ also enables prettification in comments."
 
 (defun fjl/setup-mac-gui (&optional frame)
   "Applies macOS gui settings."
-  (setq ns-use-native-fullscreen nil)
+  ;; (setq ns-use-native-fullscreen nil)
   (setq ns-pop-up-frames nil)
   (setq ns-auto-hide-menu-bar nil)
   (setq frame-resize-pixelwise t)
