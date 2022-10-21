@@ -60,6 +60,8 @@
    '(company-echo-metadata-frontend company-pseudo-tooltip-frontend))
  '(company-go-insert-arguments nil)
  '(company-idle-delay 0.2)
+ '(company-insertion-on-trigger nil)
+ '(company-insertion-triggers nil)
  '(company-lsp-enable-snippet nil)
  '(company-selection-wrap-around t)
  '(compilation-always-kill t)
@@ -210,7 +212,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(ein forge htmlize org-present org-contrib levenshtein speed-type lsp-treemacs slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm projectile restclient slime toml-mode virtualenvwrapper wgrep))
+   '(ein forge htmlize org-present org-contrib levenshtein speed-type slime-company company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm projectile restclient slime toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-enable-caching t)
  '(projectile-ignored-project-function 'file-remote-p)
