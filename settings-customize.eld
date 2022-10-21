@@ -87,6 +87,8 @@
  '(dtrt-indent-global-mode t)
  '(dtrt-indent-mode nil nil (dtrt-indent))
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(ein:jupyter-server-command "~/Library/Python/3.9/bin/jupyter")
+ '(ein:output-area-inlined-images t)
  '(electric-indent-mode t)
  '(erc-autojoin-mode t)
  '(erc-button-mode t)
@@ -208,7 +210,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(forge htmlize org-present org-contrib levenshtein speed-type lsp-treemacs slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm projectile restclient slime toml-mode virtualenvwrapper wgrep))
+   '(ein forge htmlize org-present org-contrib levenshtein speed-type lsp-treemacs slime-company lsp-mode company olivetti lua-mode yaml-mode ace-window ag avy cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm projectile restclient slime toml-mode virtualenvwrapper wgrep))
  '(projectile-completion-system 'ivy)
  '(projectile-enable-caching t)
  '(projectile-ignored-project-function 'file-remote-p)
