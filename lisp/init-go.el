@@ -5,8 +5,7 @@
 (require 'cl-lib)
 (require 's)
 (require 'tramp)
-(require 'lsp-mode)
-(require 'lsp-go)
+(require 'eglot)
 
 (defun gotools-dir ()
   "Returns the directory that Go tools should be installed in."
@@ -236,26 +235,7 @@ found."
 (define-key go-mode-map (kbd "C-c d") 'godoc)
 (define-key go-mode-map (kbd "C-c C-i") 'go-goto-imports)
 (define-key go-mode-map (kbd "C-c c") 'fjl/go-coverage-c.out)
-(define-key go-mode-map (kbd "C-c r") 'lsp-rename)
-
-;; lsp-mode requires registering the client with the :remote? arg in order
-;; to enable it for remote files.
-;; See https://github.com/emacs-lsp/lsp-mode/blob/master/docs/page/remote.md
-(lsp-register-client
- (make-lsp-client :new-connection (lsp-tramp-connection
-                                   (lambda ()
-                                     (cons (fjl/file-name-localname (concat (gotools-gobin) "gopls"))
-                                           lsp-go-gopls-server-args)))
-                  :major-modes '(go-mode go-dot-mod-mode)
-                  :language-id "go"
-                  :priority 0
-                  :remote? t
-                  :server-id 'gopls-remote
-                  :completion-in-comments? t
-                  :library-folders-fn #'lsp-go--library-default-directories
-                  :after-open-fn (lambda ()
-                                   ;; https://github.com/golang/tools/commit/b2d8b0336
-                                   (setq-local lsp-completion-filter-on-incomplete nil))))
+(define-key go-mode-map (kbd "C-c r") 'eglot-rename)
 
 ;;;###autoload
 (defun fjl/go-mode-hook ()
@@ -263,10 +243,9 @@ found."
   (gotools-setup)
   (prettify-symbols-mode)
   (company-mode 1)
-  (lsp-deferred)
-  (setq completion-at-point-functions '(lsp-completion-at-point))
-  (add-hook 'before-save-hook 'lsp-format-buffer)
-  (add-hook 'before-save-hook 'lsp-organize-imports))
+  (eglot-ensure)
+  (add-hook 'before-save-hook 'eglot-format-buffer)
+  (add-hook 'before-save-hook 'eglot-code-action-organize-imports))
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)
