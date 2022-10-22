@@ -237,6 +237,15 @@ found."
 (define-key go-mode-map (kbd "C-c c") 'fjl/go-coverage-c.out)
 (define-key go-mode-map (kbd "C-c r") 'eglot-rename)
 
+(defun fjl/eglot-go-server (&optional arg)
+  "This function finds gopls for use by eglot."
+  (let ((gopls-in-tools (concat (gotools-gobin) "gopls")))
+    (if (file-exists-p gopls-in-tools)
+        (list (fjl/file-name-localname (expand-file-name gopls-in-tools)))
+      (list "gopls"))))
+
+(setf (cdr (assoc 'go-mode eglot-server-programs)) #'fjl/eglot-go-server)
+
 ;;;###autoload
 (defun fjl/go-mode-hook ()
   (gopath)
