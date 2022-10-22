@@ -90,7 +90,7 @@
  '(dtrt-indent-mode nil nil (dtrt-indent))
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(eglot-ignored-server-capabilities
-   '(:documentHighlightProvider :foldingRangeProvider :executeCommandProvider))
+   '(:hoverProvider :documentHighlightProvider :foldingRangeProvider :executeCommandProvider))
  '(eglot-sync-connect 0)
  '(ein:jupyter-server-command "~/Library/Python/3.9/bin/jupyter")
  '(ein:output-area-inlined-images t)
@@ -225,7 +225,7 @@
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el") t)
  '(recentf-max-saved-items 60)
  '(recentf-save-file "~/.emacs-recentf")
  '(ring-bell-function 'ignore)
