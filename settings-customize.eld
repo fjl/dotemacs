@@ -89,6 +89,9 @@
  '(dtrt-indent-global-mode t)
  '(dtrt-indent-mode nil nil (dtrt-indent))
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(eglot-ignored-server-capabilities
+   '(:documentHighlightProvider :foldingRangeProvider :executeCommandProvider))
+ '(eglot-sync-connect 0)
  '(ein:jupyter-server-command "~/Library/Python/3.9/bin/jupyter")
  '(ein:output-area-inlined-images t)
  '(electric-indent-mode t)
