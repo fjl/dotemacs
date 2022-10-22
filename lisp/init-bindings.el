@@ -10,8 +10,7 @@
   (require 'company)
   (require 'expand-region)
   (require 'swiper)
-  (require 'counsel)
-  (require 'avy))
+  (require 'counsel))
 
 ;; my commands
 (global-set-key (kbd "<f10>") 'recompile)
@@ -47,7 +46,6 @@
 
 ;; package commands
 (global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C-c SPC") 'avy-goto-char)
 (global-set-key (kbd "M-o") 'ace-window)
 (global-set-key (kbd "C-M-s") 'swiper)
 (global-set-key (kbd "M-s r") 'isearch-forward-regexp) ;; swiper takes up the usual binding
