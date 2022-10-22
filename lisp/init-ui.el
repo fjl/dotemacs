@@ -6,7 +6,6 @@
 (eval-when-compile
   (require 'ivy)
   (require 'ansi-color)
-  (require 'treemacs)
   (require 'projectile)
   (require 'desktop))
 
