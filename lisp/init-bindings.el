@@ -4,6 +4,7 @@
 (require 'cl-lib)
 
 (eval-when-compile
+  (require 'dired)
   (require 'ivy)
   (require 'term)
   (require 'ace-window)
