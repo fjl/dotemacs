@@ -64,8 +64,14 @@
 (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
 (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
+(defun fjl/use-new-project-binding ()
+  (interactive)
+  (message "Use `C-x p m` to go to magit-status"))
+
 ;; project commands
 (global-set-key (kbd "C-x p m") 'magit-project-status)
+(global-set-key (kbd "C-c C-p v") 'fjl/use-new-project-binding)
+(global-set-key (kbd "C-c p v") 'fjl/use-new-project-binding)
 
 (after-package ivy
   ;; In ivy, never exit when pressing TAB too much.
