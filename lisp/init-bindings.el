@@ -64,6 +64,9 @@
 (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
 (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
+;; project commands
+(global-set-key (kbd "C-x p m") 'magit-project-status)
+
 (after-package ivy
   ;; In ivy, never exit when pressing TAB too much.
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
