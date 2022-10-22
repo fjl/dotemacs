@@ -157,8 +157,8 @@ Returns the new value of GOPATH."
           (or start ".")
           (lambda (dir)
             (and (file-exists-p (concat dir "src"))
-                 (not (member (string-trim-right dir "/")
-                              fjl/definitely-not-gopath)))))))
+                 (let ((name (fjl/file-name-localname (string-trim-right dir "/"))))
+                   (not (member name fjl/definitely-not-gopath))))))))
     (and gopath (expand-file-name gopath))))
 
 (defun fjl/in-goroot-p (dir)
