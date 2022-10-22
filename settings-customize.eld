@@ -89,6 +89,8 @@
  '(dtrt-indent-global-mode t)
  '(dtrt-indent-mode nil nil (dtrt-indent))
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(eglot-autoreconnect 10)
+ '(eglot-autoshutdown t)
  '(eglot-ignored-server-capabilities
    '(:hoverProvider :documentHighlightProvider :foldingRangeProvider :executeCommandProvider))
  '(eglot-sync-connect 0)
