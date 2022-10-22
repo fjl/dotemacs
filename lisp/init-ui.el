@@ -6,7 +6,6 @@
 (eval-when-compile
   (require 'ivy)
   (require 'ansi-color)
-  (require 'projectile)
   (require 'desktop))
 
 ;; Theme
@@ -300,12 +299,12 @@ bottom right corner of its frame."
           fmt)))
 
 ;; Shorten projectile mode-line display.
-(after-package projectile
-  (defun fjl/projectile-mode-line ()
-    (if (file-remote-p default-directory)
-        " P"
-      (format " P[%s]" (projectile-project-name))))
-  (setq projectile-mode-line-function 'fjl/projectile-mode-line))
+;; (after-package projectile
+;;   (defun fjl/projectile-mode-line ()
+;;     (if (file-remote-p default-directory)
+;;         " P"
+;;       (format " P[%s]" (projectile-project-name))))
+;;   (setq projectile-mode-line-function 'fjl/projectile-mode-line))
 
 ;; Rename and hide certain modes in the mode-line to reduce display clutter.
 (defvar fjl/mode-line-cleaners
