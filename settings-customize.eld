@@ -92,7 +92,7 @@
  '(eglot-autoreconnect 10)
  '(eglot-autoshutdown t)
  '(eglot-ignored-server-capabilities
-   '(:hoverProvider :documentHighlightProvider :foldingRangeProvider :executeCommandProvider))
+   '(:hoverProvider :documentHighlightProvider :colorProvider :foldingRangeProvider))
  '(eglot-sync-connect 0)
  '(ein:jupyter-server-command "~/Library/Python/3.9/bin/jupyter")
  '(ein:output-area-inlined-images t)
