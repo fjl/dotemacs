@@ -246,6 +246,10 @@ found."
 
 (setf (cdr (assoc 'go-mode eglot-server-programs)) #'fjl/eglot-go-server)
 
+(defun fjl/eglot-go-before-save ()
+  (eglot-code-action-organize-imports (point-min) (point-max))
+  (eglot-format-buffer))
+
 ;;;###autoload
 (defun fjl/go-mode-hook ()
   (gopath)
@@ -253,8 +257,7 @@ found."
   (prettify-symbols-mode)
   (company-mode 1)
   (eglot-ensure)
-  (add-hook 'before-save-hook 'eglot-format-buffer)
-  (add-hook 'before-save-hook 'eglot-code-action-organize-imports))
+  (add-hook 'before-save-hook 'fjl/eglot-go-before-save))
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)
