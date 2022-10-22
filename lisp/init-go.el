@@ -132,7 +132,7 @@ Returns the new value of GOPATH."
           ;; A Go workspace was detected.
           (setq dir gp)
           (setq new (fjl/file-name-localname gp)))))
-    (unless (or (string-equal new old) (fjl/in-goroot-p dir) (fjl/in-godeps-p dir))
+    (unless (or (string-equal new old) (fjl/in-goroot-p dir))
       (message (concat "GOPATH = " new))
       (setenv "GOBIN" (concat (file-name-as-directory (car (split-string dir "[:;]"))) "bin"))
       (setenv "GOPATH" new))))
