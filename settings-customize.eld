@@ -96,6 +96,7 @@
  '(eglot-sync-connect 0)
  '(ein:jupyter-server-command "~/Library/Python/3.9/bin/jupyter")
  '(ein:output-area-inlined-images t)
+ '(eldoc-echo-area-use-multiline-p nil)
  '(electric-indent-mode t)
  '(erc-autojoin-mode t)
  '(erc-button-mode t)
