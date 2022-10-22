@@ -130,11 +130,8 @@ Returns the new value of GOPATH."
         (if (not gp)
             (setq new old)
           ;; A Go workspace was detected.
-          (setq dir (car gp))
-          (setq new (fjl/file-name-localname (car gp)))
-          ;; Add Godep workspace to path if detected.
-          (when (cadr gp)
-            (setq new (concat new path-separator (fjl/file-name-localname (cadr gp))))))))
+          (setq dir gp)
+          (setq new (fjl/file-name-localname gp)))))
     (unless (or (string-equal new old) (fjl/in-goroot-p dir) (fjl/in-godeps-p dir))
       (message (concat "GOPATH = " new))
       (setenv "GOBIN" (concat (file-name-as-directory (car (split-string dir "[:;]"))) "bin"))
@@ -151,27 +148,21 @@ Returns the new value of GOPATH."
       (message "cd %s" dir)
       (cd dir))))
 
+(defvar fjl/definitely-not-gopath '("/" "/usr" "/usr/local"))
+
 (defun fjl/find-gopath (&optional start)
-  "Auto-detect a Go workspace root, starting at directory START.
-The second return value is the path to the innermost Godep
-workspace above START or nil if no Godep workspace directory was
-found."
-  (let ((godep-workspace nil))
-    (let ((gopath (locate-dominating-file
-                   (or start ".")
-                   (lambda (dir)
-                     (let ((ws (concat dir "Godeps/_workspace/")))
-                       (when (and (not godep-workspace) (file-exists-p ws))
-                         (setq godep-workspace (expand-file-name ws))))
-                     (file-exists-p (concat dir "src"))))))
-      (and gopath (list (expand-file-name gopath) godep-workspace)))))
+  "Auto-detect a Go workspace root, starting at directory START."
+  (let ((gopath
+         (locate-dominating-file
+          (or start ".")
+          (lambda (dir)
+            (and (file-exists-p (concat dir "src"))
+                 (not (member dir fjl/definitely-not-gopath)))))))
+    (and gopath (expand-file-name gopath))))
 
 (defun fjl/in-goroot-p (dir)
   (let ((root (s-chomp (shell-command-to-string "go env GOROOT"))))
     (string-prefix-p root (file-name-as-directory dir))))
-
-(defun fjl/in-godeps-p (dir)
-  (s-contains? "Godeps/_workspace" dir))
 
 (defun fjl/go-coverage-c.out ()
   (interactive)
