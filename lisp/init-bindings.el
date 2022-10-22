@@ -9,7 +9,6 @@
   (require 'ace-window)
   (require 'company)
   (require 'expand-region)
-  (require 'projectile)
   (require 'swiper)
   (require 'counsel)
   (require 'avy))
@@ -47,8 +46,6 @@
 (global-set-key (kbd "C-x M-o") 'ff-find-other-file)
 
 ;; package commands
-(global-set-key (kbd "<f12>") 'projectile-find-file)
-(global-set-key (kbd "C-c p") 'projectile-commander)
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "C-c SPC") 'avy-goto-char)
 (global-set-key (kbd "M-o") 'ace-window)
