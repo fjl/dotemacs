@@ -229,7 +229,7 @@ Returns the new value of GOPATH."
 (define-key go-mode-map (kbd "C-c c") 'fjl/go-coverage-c.out)
 (define-key go-mode-map (kbd "C-c r") 'eglot-rename)
 
-(defun fjl/eglot-go-server (&optional arg)
+(defun fjl/eglot-go-server (&optional _)
   "This function finds gopls for use by eglot."
   (let ((gopls-in-tools (concat (gotools-gobin) "gopls")))
     (if (file-exists-p gopls-in-tools)
@@ -238,18 +238,23 @@ Returns the new value of GOPATH."
 
 (setf (cdr (assoc 'go-mode eglot-server-programs)) #'fjl/eglot-go-server)
 
-(defun fjl/eglot-go-before-save ()
-  (eglot-code-action-organize-imports (point-min) (point-max))
-  (eglot-format-buffer))
+(defun fjl/go-mode-before-save ()
+  (if (eglot-managed-p)
+      (progn
+        (eglot-code-action-organize-imports (point-min) (point-max))
+        (eglot-format-buffer))
+    (let ((goimports (concat (gotools-gobin) "goimports")))
+      (let ((gofmt-command goimports))
+        (gofmt)))))
 
 ;;;###autoload
 (defun fjl/go-mode-hook ()
   (gopath)
   (gotools-setup)
+  (add-hook 'before-save-hook 'fjl/go-mode-before-save)
   (prettify-symbols-mode)
   (company-mode 1)
-  (eglot-ensure)
-  (add-hook 'before-save-hook 'fjl/eglot-go-before-save))
+  (eglot-ensure))
 
 ;;;###autoload
 (add-hook 'go-mode-hook 'fjl/go-mode-hook)
