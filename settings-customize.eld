@@ -130,6 +130,7 @@
  '(eshell-visual-subcommands '(("vagrant" "ssh") ("brew" "log") ("geth" "attach")))
  '(expand-region-preferred-python-mode 'fgallina-python)
  '(fill-column 90)
+ '(flymake-no-changes-timeout 2)
  '(font-lock-maximum-decoration 0)
  '(fuel-debug-confirm-restarts-p nil)
  '(fuel-factor-root-dir "~/src/factor")
