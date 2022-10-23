@@ -240,9 +240,9 @@ Returns the new value of GOPATH."
 
 (defun fjl/go-mode-before-save ()
   (if (eglot-managed-p)
-      (progn
-        (eglot-code-action-organize-imports (point-min) (point-max))
-        (eglot-format-buffer))
+      (if (ignore-errors (progn (eglot-format-buffer) t))
+          (eglot-code-action-organize-imports (point-min) (point-max))
+        (message "LSP gofmt failed"))
     (let ((goimports (concat (gotools-gobin) "goimports")))
       (let ((gofmt-command goimports))
         (gofmt)))))
