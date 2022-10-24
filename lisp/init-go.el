@@ -240,9 +240,11 @@ Returns the new value of GOPATH."
 
 (defun fjl/go-mode-before-save ()
   (if (eglot-managed-p)
-      (if (ignore-errors (progn (eglot-format-buffer) t))
-          (eglot-code-action-organize-imports (point-min) (point-max))
-        (message "LSP gofmt failed"))
+      (progn
+        (with-demoted-errors "gofmt error: %s"
+          (eglot-format-buffer))
+        (ignore-errors
+          (eglot-code-actions (point-min) (point-max) "source.organizeImports" t)))
     (let ((goimports (concat (gotools-gobin) "goimports")))
       (let ((gofmt-command goimports))
         (gofmt)))))
@@ -251,7 +253,9 @@ Returns the new value of GOPATH."
 (defun fjl/go-mode-hook ()
   (gopath)
   (gotools-setup)
-  (add-hook 'before-save-hook 'fjl/go-mode-before-save)
+  ;; The depth of -10 places this before eglot's willSave notification,
+  ;; so that that notification reports the actual contents that will be saved.
+  (add-hook 'before-save-hook 'fjl/go-mode-before-save -10 t)
   (prettify-symbols-mode)
   (company-mode 1)
   (eglot-ensure))
