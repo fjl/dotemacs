@@ -67,8 +67,14 @@
   (interactive)
   (message "Use `C-x p m` to go to magit-status"))
 
+(defun fjl/magit-project-status ()
+  (interactive)
+  (require 'project)
+  (require 'magit)
+  (magit-project-status))
+
 ;; project commands
-(global-set-key (kbd "C-x p m") 'magit-project-status)
+(global-set-key (kbd "C-x p m") 'fjl/magit-project-status)
 (global-set-key (kbd "C-c C-p v") 'fjl/use-new-project-binding)
 (global-set-key (kbd "C-c p v") 'fjl/use-new-project-binding)
 
