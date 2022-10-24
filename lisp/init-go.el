@@ -29,7 +29,6 @@
     ("gogetdoc"     "github.com/zmb3/gogetdoc@latest")
     ("goimports"    "golang.org/x/tools/cmd/goimports@latest")
     ("gomvpkg"      "golang.org/x/tools/cmd/gomvpkg@latest")
-    ("gorename"     "golang.org/x/tools/cmd/gorename@latest")
     ("ineffassign"  "github.com/gordonklaus/ineffassign@latest")
     ("pprof"        "github.com/google/pprof@latest")
     ("staticcheck"  "honnef.co/go/tools/cmd/staticcheck@latest")
