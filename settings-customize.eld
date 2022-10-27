@@ -268,6 +268,7 @@
  '(vc-display-status nil)
  '(vc-follow-symlinks t)
  '(vc-handled-backends '(Git Hg))
+ '(venv-virtualenv-command "python3 -m venv")
  '(visible-bell nil)
  '(which-func-modes '(python-mode))
  '(window-combination-resize t)
