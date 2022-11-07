@@ -55,10 +55,16 @@ the remote repository name in the cdr."
     (let ((exe (fjl/mac-git-path)))
       (when (file-exists-p exe)
         (setq-local magit-git-executable exe))))
+  ;; Bindings
+  (define-key magit-mode-map (kbd "v") 'magit-visit-pull-request-url)
+  ;; Configure revision buffer.
+  (setq magit-revision-insert-related-refs nil)
   ;; Configure status buffer.
+  (setq magit-section-initial-visibility-alist '((untracked . hide) (stashes . hide) (unstaged . show) (unpushed . show)))
   (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-stashes)
-  (define-key magit-mode-map (kbd "v") 'magit-visit-pull-request-url))
+  ;; Configure refs buffer.
+  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+  (remove-hook 'magit-refs-sections-hook 'magit-insert-remote-branches))
 
 ;;;###autoload
 (add-hook 'magit-mode-hook 'fjl/magit-mode-hook)
