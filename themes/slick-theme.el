@@ -87,12 +87,13 @@
    `(message-separator ((,class (:foreground "deep sky blue"))))
 
    ;; Mode line style
-   `(mode-line ((,class (:background "tan4" :foreground "gray90" :box (:line-width 1 :color "tan4" :style released-button)))))
-   `(mode-line-inactive ((,class (:inherit mode-line :background "black" :foreground "gray40" :weight light :box (:line-width 1 :style released-button)))))
+   `(mode-line ((,class (:background "tan4" :foreground "gray90" :box (:line-width 2 :color "tan4" :style released-button)))))
+   `(mode-line-inactive ((,class (:inherit mode-line :background "black" :foreground "gray40" :weight light :box (:line-width 2 :color "black")))))
    `(mode-line-buffer-id ((,class (:weight bold :foreground "white"))))
    `(mode-line-highlight ((,class (:background "tan" :foreground "black" :box nil))))
    `(which-func ((,class (:foreground "chartreuse3"))))
    `(aw-mode-line-face ((,class (:inherit mode-line-buffer-id :weight light :height 0.8 :background ,slick-text-color :foreground ,slick-background-color))))
+   `(so-long-mode-line-inactive ((,class (:inherit mode-line-emphasis))))
 
    ;; Minibuffer
    `(minibuffer-prompt ((,class (:foreground "deep pink" :weight bold))))
