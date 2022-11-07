@@ -141,6 +141,7 @@
    `(magit-diff-context ((,class (:inherit default))))
    `(magit-diff-context-highlight ((,class (:inherit default))))
    `(magit-diff-hunk-region ((,class (:background ,slick-faint-highlight-color))))
+   `(magit-diff-revision-summary ((,class (:inherit variable-pitch :height 1.2 :foreground "white" :weight bold :extend t))))
 
    ;; Diff/Merge
    `(smerge-markers ((,class (:background ,slick-faint-highlight-color))))
