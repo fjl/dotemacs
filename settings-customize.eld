@@ -220,7 +220,7 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(web-mode ein htmlize org-present org-contrib levenshtein speed-type slime-company company olivetti lua-mode yaml-mode ace-window ag cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm restclient slime toml-mode virtualenvwrapper wgrep))
+   '(eglot web-mode ein htmlize org-present org-contrib levenshtein speed-type slime-company company olivetti lua-mode yaml-mode ace-window ag cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm restclient slime toml-mode virtualenvwrapper wgrep))
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
