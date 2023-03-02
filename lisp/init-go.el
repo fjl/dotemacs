@@ -99,14 +99,16 @@ refer to the installed tools."
   "Ensure that the tools installed by `gotools-update' are
 present in `exec-path' and the PATH environment variable."
   (interactive)
-  (when (and (file-exists-p (gotools-gobin)) (not (file-remote-p (gotools-gobin))))
-    (let* ((path-list (split-string (getenv "PATH") path-separator))
-           (eb        (expand-file-name (gotools-gobin)))
+  (when (and (file-exists-p (gotools-gobin)))
+    (let* ((eb        (expand-file-name (gotools-gobin)))
+           (local-eb  (fjl/file-name-localname eb))
            (goimports (concat (file-name-as-directory eb) "goimports")))
-      (setq-default gofmt-command goimports)
-      (add-to-list 'exec-path eb)
-      (unless (member eb path-list)
-        (setenv "PATH" (concat eb path-separator (getenv "PATH")))))))
+      (setq-local gofmt-command goimports)
+      (setq-local process-environment
+                  (cons (concat "PATH=" local-eb path-separator (getenv "PATH"))
+                        process-environment))
+      (unless (member eb exec-path)
+        (setq-local exec-path (cons eb exec-path))))))
 
 ;;;###autoload
 (defun gopath (&optional dir)
@@ -235,8 +237,6 @@ Returns the new value of GOPATH."
         (list (fjl/file-name-localname (expand-file-name gopls-in-tools)))
       (list "gopls"))))
 
-(setf (cdr (assoc 'go-mode eglot-server-programs)) #'fjl/eglot-go-server)
-
 (defun fjl/go-mode-before-save ()
   (if (eglot-managed-p)
       (progn
@@ -250,8 +250,8 @@ Returns the new value of GOPATH."
 
 ;;;###autoload
 (defun fjl/go-mode-hook ()
-  (gopath)
   (gotools-setup)
+  (gopath)
   ;; The depth of -10 places this before eglot's willSave notification,
   ;; so that that notification reports the actual contents that will be saved.
   (add-hook 'before-save-hook 'fjl/go-mode-before-save -10 t)
