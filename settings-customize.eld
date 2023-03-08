@@ -231,7 +231,10 @@
  '(recentf-save-file "~/.emacs-recentf")
  '(ring-bell-function 'ignore)
  '(safe-local-variable-values
-   '((flycheck-disabled-checkers emacs-lisp-checkdoc)
+   '((calc-point-char . ",")
+     (calc-group-char . ".")
+     (calc-group-digits . t)
+     (flycheck-disabled-checkers emacs-lisp-checkdoc)
      (c-file-style "ethereum")
      (dtrt-indent-explicit-offset . t)))
  '(save-interprogram-paste-before-kill t)
