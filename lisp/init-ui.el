@@ -12,14 +12,6 @@
 (setq-default custom-safe-themes t) ;; accept any theme
 (load-theme 'slick)
 
-;; Make ANSI color look nice with the theme.
-
-(defun fjl/setup-ansi-color-theme ()
-  (aset ansi-color-map 34 '(foreground-color . "deep sky blue")))
-
-(add-hook 'eshell-mode-hook 'fjl/setup-ansi-color-theme)
-(add-hook 'shell-mode-hook 'fjl/setup-ansi-color-theme)
-
 ;; Fonts
 
 (defmacro fjl/define-font-class (name &rest alternates)

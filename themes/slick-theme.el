@@ -130,6 +130,8 @@
    `(eshell-ls-special ((,class (:foreground "magenta" :weight regular))))
    `(term-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
    `(term-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
+   `(ansi-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
+   `(ansi-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
 
    ;; Magit
    `(magit-item-highlight ((,class (:background ,slick-faint-highlight-color))))
