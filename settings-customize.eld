@@ -214,6 +214,7 @@
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Documents/org/work.org")
  '(org-export-allow-bind-keywords t)
+ '(org-hide-macro-markers t)
  '(org-html-htmlize-output-type 'css)
  '(org-indent-mode-turns-on-hiding-stars nil)
  '(org-latex-compiler "lualatex")
