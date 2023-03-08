@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
-;; This configures ag -- also known known as 'the silver searcher'.
+;; This configures ag -- also known as 'the silver searcher'.
 
 (require 'ag)
 (require 'wgrep-ag)
