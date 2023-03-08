@@ -44,9 +44,15 @@
 (defvar generated-autoload-file)
 
 (defun make-init-autoloads (&optional skip-if-exists)
-  (let ((generated-autoload-file (concat +fjl-init-lisp+ "init-autoloads.el")))
-    (unless (and skip-if-exists (file-exists-p generated-autoload-file))
-      (update-directory-autoloads +fjl-init-lisp+))))
+  (let ((af (concat +fjl-init-lisp+ "init-autoloads.el")))
+    (unless (and skip-if-exists (file-exists-p af))
+      (if (functionp 'loaddefs-generate)
+          (loaddefs-generate +fjl-init-lisp+ af)
+        ;; Old way for emacs version <= 29
+        (progn
+          (require 'autoload)
+          (let ((generated-autoload-file af))
+            (update-directory-autoloads +fjl-init-lisp+)))))))
 
 ;; Ensure init-autoloads.el exists so other files can just depend on it. This makes the
 ;; first startup work without running the makefile.
