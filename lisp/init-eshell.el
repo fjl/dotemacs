@@ -7,6 +7,7 @@
 (require 'ring)
 (require 'levenshtein)
 (require 'with-editor)
+(require 'virtualenvwrapper)
 
 ;; Load 'z' extension. This tracks frequently-used directories and
 ;; enables jumping into them using the 'z' command.
@@ -82,14 +83,14 @@ Eshell buffer in that directory."
 
 ;;;###autoload
 (defun cycle-busy-eshells (&optional n)
-  "Repeated invocations of this function switch through 'busy'
+  "Repeated invocations of this function switch through `busy'
 Eshell buffers (i.e. those which are currently executing a command)."
   (interactive "p")
   (fjl/cycle-eshell-buffers n fjl/busy-eshells "busy"))
 
 ;;;###autoload
 (defun cycle-free-eshells (&optional n)
-  "Repeated invocations of this function switch through 'free'
+  "Repeated invocations of this function switch through `free'
 Eshell buffers (i.e. those which are not currently executing a command)."
   (interactive "p")
   (fjl/cycle-eshell-buffers n fjl/free-eshells "free"))
@@ -232,7 +233,9 @@ of a pipeline and has no options specified.")
 
 (add-hook 'eshell-named-command-hook 'fjl/eshell-named-command-hook)
 
-(defun fjl/previous-prompt (regexp n)
+(defun fjl/eshell-previous-prompt (n &optional regexp)
+  (interactive "p")
+  (unless regexp (setq regexp eshell-prompt-regexp))
   (save-match-data
     (forward-line 0)
     (re-search-backward regexp (point-min) 'noerror n)
@@ -242,7 +245,9 @@ of a pipeline and has no options specified.")
                (<= (match-end 0) eol))
           (goto-char (match-end 0))))))
 
-(defun fjl/next-prompt (regexp n)
+(defun fjl/eshell-next-prompt (n &optional regexp)
+  (interactive "p")
+  (unless regexp (setq regexp eshell-prompt-regexp))
   (save-match-data
     (re-search-forward regexp (point-max) 'noerror n)))
 
@@ -286,21 +291,25 @@ adapting to terminal width not wrap."
 (defun fjl/eshell-mode-hook ()
   (fjl/eshell-fixup-COLUMNS)
   (setq truncate-lines nil)
+
   ;; This overrides eshell-show-output, which is also bound to C-c C-r.
   (define-key eshell-mode-map (kbd "C-c C-q") (lambda () (interactive) (quit-process)))
   (define-key eshell-mode-map (kbd "C-M-l") 'fjl/eshell-clear)
   (define-key eshell-mode-map (kbd "C-M-p") 'fjl/eshell-ido-history)
   (define-key eshell-mode-map (kbd "C-d") 'fjl/eshell-ctrl-d)
-  (define-key eshell-mode-map (kbd "C-c C-p")
-    (lambda (n) (interactive "p") (fjl/previous-prompt eshell-prompt-regexp n)))
-  (define-key eshell-mode-map (kbd "C-c C-n")
-    (lambda (n) (interactive "p") (fjl/next-prompt eshell-prompt-regexp n)))
+  (define-key eshell-mode-map (kbd "C-c C-p") 'fjl/eshell-previous-prompt)
+  (define-key eshell-mode-map (kbd "C-c C-n") 'fjl/eshell-next-prompt)
+
   ;; Set up history saving. In the default configuration, history is saved
   ;; only when emacs exits. This is inconvenient because my emacs sessions
   ;; usually end in a crash after a few days of use.
   (unless fjl/eshell-history-timer
     (setq fjl/eshell-history-timer
           (run-with-idle-timer 300 t 'eshell-save-some-history)))
+
+  ;; Set up virtualenv.
+  (venv-initialize-eshell)
+
   ;; Set EDITOR to this emacs server.
   (with-editor-export-editor))
 
