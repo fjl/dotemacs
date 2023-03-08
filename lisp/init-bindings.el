@@ -67,19 +67,19 @@
 (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
 (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
-(defun fjl/use-new-project-binding ()
+(defun fjl/bindings/use-new-project-binding ()
   (interactive)
   (message "Use `C-x p m` to go to magit-status"))
 
-(defun fjl/magit-project-status ()
+(defun fjl/bindings/magit-project-status ()
   (interactive)
   (require 'project)
   (require 'magit)
   (magit-project-status))
 
 ;; project commands
-(global-set-key (kbd "C-x p m") 'fjl/magit-project-status)
-(global-set-key (kbd "C-c C-p v") 'fjl/use-new-project-binding)
+(global-set-key (kbd "C-x p m") 'fjl/bindings/magit-project-status)
+(global-set-key (kbd "C-c C-p v") 'fjl/bindings/use-new-project-binding)
 (global-set-key (kbd "C-c p v") 'fjl/use-new-project-binding)
 (global-set-key (kbd "C-x p a") 'project-ag)
 
@@ -103,10 +103,12 @@
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
 ;; compilation
-(defun fjl/quit-buffer-process () (interactive) (quit-process))
-(defun fjl/bind-compilation-keys ()
-  (define-key compilation-mode-map (kbd "C-c C-q") 'fjl/quit-buffer-process))
-(add-hook 'compilation-mode-hook 'fjl/bind-compilation-keys)
+(defun fjl/bindings/quit-buffer-process () (interactive) (quit-process))
+
+(defun fjl/bindings/compilation ()
+  (define-key compilation-mode-map (kbd "C-c C-q") 'fjl/bindings/quit-buffer-process))
+
+(add-hook 'compilation-mode-hook 'fjl/bindings/compilation)
 
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -121,7 +123,7 @@
 (global-set-key (kbd "C-x 7 r") 'fjl/eshell-restart-command)
 
 ;; term
-(defun fjl/bind-term-keys ()
+(defun fjl/bindings/term-keys ()
   (setq truncate-lines nil)
   (define-key term-raw-map (kbd "M-o") 'ace-window)
   (define-key term-raw-map (kbd "M-x") 'counsel-M-x)
@@ -130,14 +132,16 @@
   ;; Free up C-c and make C-c C-c interrupt.
   (define-key term-raw-map (kbd "C-c") nil)
   (define-key term-raw-map (kbd "C-c C-c") 'term-interrupt-subjob))
-(add-hook 'term-mode-hook 'fjl/bind-term-keys)
+
+(add-hook 'term-mode-hook 'fjl/bindings/term-keys)
 
 ;; dired
-(defun fjl/dired-mode-hook ()
+(defun fjl/bindings/dired-keys ()
   (define-key dired-mode-map (kbd "s-]") 'dired-afplay)
   (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
   (dired-hide-details-mode 1))
-(add-hook 'dired-mode-hook 'fjl/dired-mode-hook)
+
+(add-hook 'dired-mode-hook 'fjl/bindings/dired-keys)
 
 ;; override keys for macOS
 (when (memq window-system '(ns mac))
