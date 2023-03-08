@@ -4,22 +4,30 @@
   "Visit the current branch's PR on Github.
 The branch must be pushed to github and have a remote."
   (interactive)
-  (let* ((branch      (magit-get-current-branch))
-         (branch-info (fjl/get-github-info branch (fjl/get-branch-remote branch)))
-         (base        (fjl/get-branch-upstream branch))
-         (base-info   (fjl/get-github-info (cdr base) (car base))))
-    (browse-url
-     (format "https://github.com/%s/%s/compare/%s...%s:%s"
-             (car base-info) (cdr base-info) (cdr base) (car branch-info) branch))))
+  (let* ((branch (magit-get-current-branch))
+         (remote (fjl/get-branch-remote branch)))
+    (unless remote
+      (error "Current branch has no remote."))
+    (let ((branch-info (fjl/get-github-info branch remote)))
+      (unless branch-info
+        (error "Current branch remote is not GitHub."))
+      (let* ((base (fjl/get-branch-upstream branch))
+             (base-info (fjl/get-github-info (cdr base) (car base))))
+        (unless base-info
+          (error "Upstream is not on GitHub."))
+        (browse-url
+         (format "https://github.com/%s/%s/compare/%s...%s:%s"
+                 (car base-info) (cdr base-info) (cdr base) (car branch-info) branch))))))
 
 (defun magit-yank-github-url ()
   (interactive)
   (let* ((branch (magit-get-current-branch))
-         (info   (fjl/get-github-info branch (fjl/get-branch-remote branch)))
-         (url    (format "https://github.com/%s/%s/tree/%s"
-                         (car info) (cdr info) branch)))
-    (kill-new url)
-    (message url)))
+         (info (fjl/get-github-info branch (fjl/get-branch-remote branch))))
+    (unless info
+      (error "Current branch has no GitHub remote."))
+    (let ((url (format "https://github.com/%s/%s/tree/%s" (car info) (cdr info) branch)))
+      (kill-new url)
+      (message url))))
 
 (defun fjl/get-branch-remote (branch)
   (or (magit-get-push-remote branch)
@@ -35,12 +43,11 @@ The branch must be pushed to github and have a remote."
   "Returns a cons containing the github username in the car and
 the remote repository name in the cdr."
   (let ((remote (magit-get "remote" remote-name "url")))
-    (when (null remote)
-      (error "current branch has no remote"))
-    (save-match-data
-      (string-match "\\`.+github\\.com[:/]\\([^\\]+\\)/\\([^\\]+?\\)\\(\\.git\\)?\\'" remote)
-      (cons (match-string 1 remote)
-            (match-string 2 remote)))))
+    (when remote
+      (save-match-data
+        (when (string-match "\\`.+github\\.com[:/]\\([^\\]+\\)/\\([^\\]+?\\)\\(\\.git\\)?\\'" remote)
+          (cons (match-string 1 remote)
+                (match-string 2 remote)))))))
 
 (defun fjl/mac-git-path ()
   (if (string-prefix-p "aarch64-" system-configuration)
