@@ -49,7 +49,8 @@
       (if (functionp 'loaddefs-generate)
           (let ((exc
                  (list (concat +fjl-init-lisp+ "init-bootstrap.el")
-                       (concat +fjl-init-lisp+ "init-bindings.el"))))
+                       (concat +fjl-init-lisp+ "init-bindings.el")
+                       (concat +fjl-init-lisp+ "init-ui.el"))))
             (loaddefs-generate +fjl-init-lisp+ af exc "" nil t))
         ;; Old way for emacs version <= 29
         (progn
