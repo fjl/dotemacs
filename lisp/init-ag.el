@@ -9,13 +9,11 @@
 (add-hook 'ag-mode-hook 'wgrep-ag-setup)
 
 ;;;###autoload
-(defun project-ag (project string)
+(defun project-ag (project-dir string)
   "Searches for STRING in the current project.el project."
-  (interactive (list (or (project-current)
-                         (project-prompt-project-dir))
-                     (ag/read-from-minibuffer "Search string")))
-  (unless (stringp project)
-    (setq project (project-root project)))
-  (ag/search string project))
+  (interactive
+   (let ((d (project-root (project-current t))))
+     (list d (ag/read-from-minibuffer (concat "ag in " d)))))
+  (ag/search string project-dir))
 
 (provide 'init-ag)
