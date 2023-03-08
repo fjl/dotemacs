@@ -3,6 +3,7 @@
 ;; This configures ag -- also known as 'the silver searcher'.
 
 (require 'ag)
+(require 'project)
 (require 'wgrep-ag)
 
 ;; Enable wgrep in ag buffers.
