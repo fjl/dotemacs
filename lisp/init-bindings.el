@@ -1,3 +1,7 @@
+;; -*- lexical-binding: t -*-
+
+;; This file defines key bindings.
+
 (require 'init-bootstrap)
 (require 'init-commands)
 (require 'init-autoloads)
@@ -77,6 +81,7 @@
 (global-set-key (kbd "C-x p m") 'fjl/magit-project-status)
 (global-set-key (kbd "C-c C-p v") 'fjl/use-new-project-binding)
 (global-set-key (kbd "C-c p v") 'fjl/use-new-project-binding)
+(global-set-key (kbd "C-x p a") 'project-ag)
 
 (after-package ivy
   ;; In ivy, never exit when pressing TAB too much.
