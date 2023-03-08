@@ -1,5 +1,4 @@
 (require 'markdown-mode)
-(require 'init-commands)
 
 ;;;###autoload
 (defun fjl/markdown-mode-hook ()
