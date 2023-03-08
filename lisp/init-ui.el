@@ -5,8 +5,7 @@
 
 (eval-when-compile
   (require 'ivy)
-  (require 'ansi-color)
-  (require 'desktop))
+  (require 'ansi-color))
 
 ;; Theme
 (setq-default custom-safe-themes t) ;; accept any theme
@@ -140,9 +139,6 @@ which isn't very useful."
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
     (fjl/setup-mac-path)
-    ;; Save/restore frame configuration.
-    (desktop-save-mode 1)
-    (setq desktop-save 'if-exists)
     (fjl/force-selected-frame)))
 
 ;; GTK Display
