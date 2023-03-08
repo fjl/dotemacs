@@ -87,7 +87,6 @@
  '(display-time-format " %-I:%M%p")
  '(display-time-mode t)
  '(dtrt-indent-global-mode t)
- '(dtrt-indent-mode nil nil (dtrt-indent))
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(eglot-autoreconnect 10)
  '(eglot-autoshutdown t)
