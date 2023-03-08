@@ -130,16 +130,10 @@ which isn't very useful."
     (setenv "PATH" path)
     (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
-;; This function works around an issue where emacs remains in the
-;; background after launch on macOS.
-(defun fjl/force-selected-frame ()
-  (select-frame-set-input-focus (selected-frame)))
-
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
-    (fjl/setup-mac-path)
-    (fjl/force-selected-frame)))
+    (fjl/setup-mac-path)))
 
 ;; GTK Display
 
