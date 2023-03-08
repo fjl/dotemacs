@@ -47,7 +47,10 @@
   (let ((af (concat +fjl-init-lisp+ "init-autoloads.el")))
     (unless (and skip-if-exists (file-exists-p af))
       (if (functionp 'loaddefs-generate)
-          (loaddefs-generate +fjl-init-lisp+ af)
+          (let ((exc
+                 (list (concat +fjl-init-lisp+ "init-bootstrap.el")
+                       (concat +fjl-init-lisp+ "init-bindings.el"))))
+            (loaddefs-generate +fjl-init-lisp+ af exc "" nil t))
         ;; Old way for emacs version <= 29
         (progn
           (require 'autoload)
