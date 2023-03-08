@@ -78,13 +78,13 @@ also enables prettification in comments."
 
 (defun fjl/setup-mac-gui (&optional frame)
   "Applies macOS gui settings."
-  ;; (setq ns-use-native-fullscreen nil)
+  (setq ns-use-native-fullscreen nil)
   (setq ns-pop-up-frames nil)
   (setq ns-auto-hide-menu-bar nil)
   (setq frame-resize-pixelwise t)
   ;; enable emoji font as fallback and other font settings
   (set-fontset-font t 'unicode (emojifont 10) frame 'prepend)
-  (setq-default line-spacing 0)
+  (setq-default line-spacing 0.1)
   (fjl/setup-pragmata-ligatures)
   ;; keyboard settings
   (if (eq window-system 'mac)
