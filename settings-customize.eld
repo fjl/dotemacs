@@ -125,8 +125,7 @@
  '(eshell-modules-list
    '(eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix))
  '(eshell-prompt-function 'fjl/eshell-prompt)
- '(eshell-prompt-regexp "^[^>
-]+ >> ")
+ '(eshell-prompt-regexp "^[^>\12]+ >> ")
  '(eshell-visual-subcommands '(("vagrant" "ssh") ("brew" "log") ("geth" "attach")))
  '(expand-region-preferred-python-mode 'fgallina-python)
  '(fill-column 90)
@@ -242,6 +241,7 @@
  '(savehist-mode t)
  '(send-mail-function 'smtpmail-send-it)
  '(sentence-end-double-space nil)
+ '(server-raise-frame t)
  '(shell-completion-fignore '("~" "#" "%"))
  '(shell-file-name "/bin/sh")
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
