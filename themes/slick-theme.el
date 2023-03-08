@@ -20,7 +20,7 @@
    `(error ((,class (:foreground "red"))))
    `(warning ((,class (:foreground "orange"))))
    `(success ((,class (:foreground "yellow green"))))
-   `(shadow ((,class (:inherit default :background nil :foreground "gray75"))))
+   `(shadow ((,class (:inherit default :background unspecified :foreground "gray75"))))
 
    ;; Frame/Window
    `(fringe ((,class (:background "gray10"))))
