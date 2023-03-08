@@ -139,13 +139,19 @@ which isn't very useful."
     (setenv "PATH" path)
     (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
+;; This function works around an issue where emacs remains in the
+;; background after launch on macOS.
+(defun fjl/force-selected-frame ()
+  (select-frame-set-input-focus (selected-frame)))
+
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
     (fjl/setup-mac-path)
     ;; Save/restore frame configuration.
     (desktop-save-mode 1)
-    (setq desktop-save 'if-exists)))
+    (setq desktop-save 'if-exists)
+    (fjl/force-selected-frame)))
 
 ;; GTK Display
 
