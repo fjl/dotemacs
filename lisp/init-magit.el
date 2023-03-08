@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'magit)
 
 (defun magit-visit-pull-request-url ()
@@ -8,11 +10,11 @@ The branch must be pushed to github and have a remote."
          (remote (fjl/get-branch-remote branch)))
     (unless remote
       (error "Current branch has no remote."))
-    (let ((branch-info (fjl/get-github-info branch remote)))
+    (let ((branch-info (fjl/get-github-info remote)))
       (unless branch-info
         (error "Current branch remote is not GitHub."))
       (let* ((base (fjl/get-branch-upstream branch))
-             (base-info (fjl/get-github-info (cdr base) (car base))))
+             (base-info (fjl/get-github-info (car base))))
         (unless base-info
           (error "Upstream is not on GitHub."))
         (browse-url
@@ -22,7 +24,7 @@ The branch must be pushed to github and have a remote."
 (defun magit-yank-github-url ()
   (interactive)
   (let* ((branch (magit-get-current-branch))
-         (info (fjl/get-github-info branch (fjl/get-branch-remote branch))))
+         (info (fjl/get-github-info (fjl/get-branch-remote branch))))
     (unless info
       (error "Current branch has no GitHub remote."))
     (let ((url (format "https://github.com/%s/%s/tree/%s" (car info) (cdr info) branch)))
@@ -39,7 +41,7 @@ The branch must be pushed to github and have a remote."
         (magit-split-branch-name (magit-get-push-branch (cdr name)))
       name)))
 
-(defun fjl/get-github-info (branch remote-name)
+(defun fjl/get-github-info (remote-name)
   "Returns a cons containing the github username in the car and
 the remote repository name in the cdr."
   (let ((remote (magit-get "remote" remote-name "url")))

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'init-bootstrap)
 
 (defvar bitlbee-socket "/tmp/bitlbee.socket")

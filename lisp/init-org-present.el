@@ -1,3 +1,6 @@
+;; -*- lexical-binding: t -*-
+
+(require 'org)
 (require 'org-present)
 
 ;;;###autoload

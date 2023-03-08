@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'org)
 (require 'org-agenda)
 
