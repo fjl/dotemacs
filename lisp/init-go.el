@@ -6,6 +6,7 @@
 (require 's)
 (require 'tramp)
 (require 'eglot)
+(require 'flymake)
 
 (defun gotools-dir ()
   "Returns the directory that Go tools should be installed in."
@@ -247,6 +248,10 @@ Returns the new value of GOPATH."
     (let ((goimports (concat (gotools-gobin) "goimports")))
       (let ((gofmt-command goimports))
         (gofmt)))))
+
+;; Workaround to avoid undefined variable warnings in eglot for Emacs 27.
+(unless (boundp 'flymake-list-only-diagnostics)
+  (defvar flymake-list-only-diagnostics nil))
 
 ;;;###autoload
 (defun fjl/go-mode-hook ()
