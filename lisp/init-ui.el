@@ -245,10 +245,10 @@ and to setup the inital frame."
 (defun fjl/compilation-mode-hook ()
   (setq-local scroll-conservatively 200)
   (setq-local scroll-step 1)
-  (unless (member major-mode '(ag-mode grep-mode))
-    (setq-local compilation-filter-hook
-                (cons 'ansi-color-compilation-filter
-                      compilation-filter-hook))))
+  (when (functionp 'ansi-color-compilation-filter)
+    (unless (member major-mode '(ag-mode grep-mode))
+      (setq-local compilation-filter-hook
+                  (cons 'ansi-color-compilation-filter compilation-filter-hook)))))
 
 (add-hook 'compilation-mode-hook 'fjl/compilation-mode-hook)
 
