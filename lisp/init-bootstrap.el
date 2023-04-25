@@ -28,6 +28,8 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
+(add-to-list 'load-path (file-name-as-directory (concat +fjl-init-lisp+ "copilot")))
+
 ;; Prevent loading packages twice. All packages are already activated above. package.el
 ;; will do it again after the init file is loaded unless disabled.
 (setq package-enable-at-startup nil)
