@@ -151,6 +151,8 @@
 
 ;; override keys for macOS
 (when (memq window-system '(ns mac))
+  ;; you can never leave
+  (global-unset-key (kbd "s-q"))
   ;; disable tab bar toggle
   (global-unset-key (kbd "C-<tab>"))
   ;; disable print-buffer on OS X
