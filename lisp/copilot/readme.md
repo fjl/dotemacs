@@ -8,11 +8,13 @@ Copilot.el is an Emacs plugin for GitHub Copilot.
 
 **Note:** You need access to [GitHub Copilot](https://github.com/features/copilot) to use this plugin.
 
+Current maintainer: [@emil-vdw](https://github.com/emil-vdw)
+
 ## Installation
 
-0. Ensure your Emacs version is at least 27.
+0. Ensure your Emacs version is at least 27, and the dependency package `editorconfig` ([melpa](https://melpa.org/#/editorconfig)) is also installed.
 
-1. Install [Node.js](https://nodejs.org/en/download/).
+1. Install [Node.js](https://nodejs.org/en/download/) v16+. (You can specify the path to `node` executable by setting `copilot-node-executable`.)
 
 2. Setup `copilot.el` as described in the next section.
 
@@ -234,8 +236,12 @@ A list of commands that won't cause the overlay to be cleared.
 
 #### copilot-network-proxy
 
-Format: `'(:host "127.0.0.1" :port "7890" :username: "user" :password: "password")`, where `:username` and `:password` are optional.
+Format: `'(:host "127.0.0.1" :port 7890 :username: "user" :password: "password")`, where `:username` and `:password` are optional.
 
+For example:
+```elisp
+(setq copilot-network-proxy '(:host "127.0.0.1" :port 7890))
+```
 
 ## Known Issues
 
