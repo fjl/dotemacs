@@ -258,7 +258,7 @@ Returns the new value of GOPATH."
 (defun fjl/go-mode-hook ()
   (gotools-setup)
   (gopath)
-  (copilot-mode 1)
+  ;; (copilot-mode 1)
   ;; The depth of -10 places this before eglot's willSave notification,
   ;; so that that notification reports the actual contents that will be saved.
   (add-hook 'before-save-hook 'fjl/go-mode-before-save -10 t)
