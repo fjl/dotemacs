@@ -143,8 +143,8 @@ Enabling event logging may slightly affect performance."
                              (s-trim)
                              (s-chop-prefix "v")
                              (string-to-number))))
-      (cond ((< node-version 16)
-             (user-error "Node 16+ is required but found %s" node-version))
+      (cond ((< node-version 18)
+             (user-error "Node 18+ is required but found %s" node-version))
             (t
              (setq copilot--connection
                    (make-instance 'jsonrpc-process-connection
@@ -291,6 +291,14 @@ Enabling event logging may slightly affect performance."
 (defvar-local copilot--completion-cache nil)
 (defvar-local copilot--completion-idx 0)
 
+(defcustom copilot-indent-warning-suppress nil
+  "If nil, then warn when copilot finds no mode-specific offset."
+  :type 'boolean
+  :group 'copilot)
+
+(defvar-local copilot--indent-warning-printed-p nil
+  "Flag indicating whether indent warning was already printed.")
+
 (defun copilot--infer-indentation-offset ()
   "Infer indentation offset."
   (or (let ((mode major-mode))
@@ -301,7 +309,12 @@ Enabling event logging may slightly affect performance."
                      (when (and (boundp s) (numberp (symbol-value s)))
                        (symbol-value s)))
                    (alist-get mode copilot--indentation-alist))))
-      tab-width))
+      (progn
+        (when (and (not copilot-indent-warning-suppress)
+                   (not copilot--indent-warning-printed-p))
+          (message "Warning: copilot--infer-indentation-offset found no mode-specific indentation offset, using 'tab-width' instead.  You can suppress this error message by customizing 'copilot-indent-warning-suppress'.")
+          (setq-local copilot--indent-warning-printed-p t))
+        tab-width)))
 
 (defun copilot--get-relative-path ()
   "Get relative path to current buffer."
@@ -333,7 +346,8 @@ Enabling event logging may slightly affect performance."
          (pmin (point-min))
          (half-window (/ copilot-max-char 2)))
     (when (and (>= copilot-max-char 0) (> pmax copilot-max-char))
-      (warn "%s size exceeds 'copilot-max-char' (%s), copilot completions may not work" (current-buffer) copilot-max-char))
+      (display-warning '(copilot copilot-exceeds-max-char)
+                       (format "%s size exceeds 'copilot-max-char' (%s), copilot completions may not work" (current-buffer) copilot-max-char)))
     (cond
      ;; using whole buffer
      ((or (< copilot-max-char 0) (< pmax copilot-max-char))
@@ -788,7 +802,12 @@ Use this for custom bindings in `copilot-mode'.")
 
 ;;;###autoload
 (define-global-minor-mode global-copilot-mode
-  copilot-mode copilot-mode)
+  copilot-mode copilot-turn-on-unless-buffer-read-only)
+
+(defun copilot-turn-on-unless-buffer-read-only ()
+  "Turn on `copilot-mode' if the buffer is writable."
+  (unless buffer-read-only
+    (copilot-mode 1)))
 
 (defun copilot--post-command ()
   "Complete in `post-command-hook' hook."
