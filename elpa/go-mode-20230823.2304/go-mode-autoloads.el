@@ -99,6 +99,7 @@ A major mode for editor go.work files.
 (fn)" t)
 (add-to-list 'auto-mode-alist '("go\\.work\\'" . go-dot-work-mode))
 (register-definition-prefixes "go-mode" '("go-" "god" "gofmt"))
+
 
 ;;; End of scraped data
 

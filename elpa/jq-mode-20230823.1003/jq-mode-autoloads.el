@@ -26,6 +26,7 @@ Runs jq interactively on a json buffer.
 ;;; Generated autoloads from ob-jq.el
 
 (register-definition-prefixes "ob-jq" '("org-babel-"))
+
 
 ;;; End of scraped data
 
