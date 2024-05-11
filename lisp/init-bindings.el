@@ -83,6 +83,13 @@
   (require 'magit)
   (magit-project-status))
 
+;; set up magit-status as an option in project switch
+(after-package project
+  (add-to-list
+   'project-switch-commands
+   '(fjl/bindings/magit-project-status "Magit")
+   t)) ;; append to end
+
 ;; project commands
 (global-set-key (kbd "C-x p m") 'fjl/bindings/magit-project-status)
 (global-set-key (kbd "C-c C-p v") 'fjl/bindings/use-new-project-binding)
