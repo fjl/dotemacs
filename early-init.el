@@ -7,5 +7,4 @@
 ;; with native elisp compilation on macOS.
 (when (and (eq system-type 'darwin) (featurep 'native-compile))
   (defvar native-comp-driver-options nil)
-  (push "-L/opt/homebrew/lib/gcc/11" native-comp-driver-options)
-  (setenv "LIBRARY_PATH" "/opt/homebrew/lib/gcc/11/gcc/aarch64-apple-darwin20/11.1.0/"))
+  (push "-L/opt/homebrew/lib/gcc/current" native-comp-driver-options))
