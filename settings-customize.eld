@@ -25,21 +25,11 @@
  '(battery-mode-line-format " Bat: %p")
  '(battery-mode-line-limit 15)
  '(c-default-style
-   '((java-mode . "java")
-     (awk-mode . "awk")
-     (other . "linux")))
+   '((java-mode . "java") (awk-mode . "awk") (other . "linux")))
  '(calc-language-alist
-   '((latex-mode . latex)
-     (tex-mode . tex)
-     (plain-tex-mode . tex)
-     (context-mode . tex)
-     (nroff-mode . eqn)
-     (pascal-mode . pascal)
-     (c-mode . c)
-     (c++-mode . c)
-     (fortran-mode . fortran)
-     (f90-mode . fortran)
-     (texinfo-mode . calc-normal-language)
+   '((latex-mode . latex) (tex-mode . tex) (plain-tex-mode . tex) (context-mode . tex)
+     (nroff-mode . eqn) (pascal-mode . pascal) (c-mode . c) (c++-mode . c)
+     (fortran-mode . fortran) (f90-mode . fortran) (texinfo-mode . calc-normal-language)
      (go-mode . c)))
  '(calc-settings-file "~/.emacs.d/settings-calc.eld")
  '(calendar-week-start-day 1)
@@ -66,7 +56,9 @@
  '(company-selection-wrap-around t)
  '(compilation-always-kill t)
  '(compilation-error-regexp-alist
-   '(bash python-tracebacks-and-caml comma maven gcc-include ruby-Test::Unit makepp msft perl gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Test::Harness gnu java))
+   '(bash python-tracebacks-and-caml comma maven gcc-include ruby-Test::Unit makepp msft perl
+          gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called
+          perl--Test::Harness gnu java))
  '(compilation-message-face 'default)
  '(compilation-scroll-output 'first-error)
  '(compilation-search-path '(nil "."))
@@ -121,7 +113,9 @@
  '(eshell-kill-processes-on-exit 'ask)
  '(eshell-modify-global-environment t)
  '(eshell-modules-list
-   '(eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix))
+   '(eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls
+                  eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp
+                  eshell-unix))
  '(eshell-prompt-function 'fjl/eshell-prompt)
  '(eshell-prompt-regexp "^[^>\12]+ >> ")
  '(eshell-visual-subcommands '(("vagrant" "ssh") ("brew" "log") ("geth" "attach")))
@@ -140,7 +134,9 @@
  '(gnutls-algorithm-priority "PFS")
  '(gnutls-min-prime-bits 1024)
  '(gnutls-trustfiles
-   '("/usr/local/etc/openssl/cert.pem" "/etc/ssl/certs/ca-certificates.crt" "/etc/pki/tls/certs/ca-bundle.crt" "/etc/ssl/ca-bundle.pem" "/usr/ssl/certs/ca-bundle.crt"))
+   '("/usr/local/etc/openssl/cert.pem" "/etc/ssl/certs/ca-certificates.crt"
+     "/etc/pki/tls/certs/ca-bundle.crt" "/etc/ssl/ca-bundle.pem"
+     "/usr/ssl/certs/ca-bundle.crt"))
  '(gnutls-verify-error t)
  '(go-fontify-function-calls nil)
  '(gofmt-show-errors nil)
@@ -171,11 +167,7 @@
  '(lsp-enable-symbol-highlighting nil)
  '(lsp-flycheck-live-reporting nil)
  '(lsp-go-codelenses
-   '((generate . t)
-     (regenerate_cgo . t)
-     (tidy . t)
-     (upgrade_dependency . t)
-     (test . t)
+   '((generate . t) (regenerate_cgo . t) (tidy . t) (upgrade_dependency . t) (test . t)
      (vendor . t)))
  '(lsp-prefer-flymake :none)
  '(magit-auto-revert-immediately nil)
@@ -205,9 +197,8 @@
    '("~/Documents/org/work.org" "~/Documents/org/personal.org"))
  '(org-babel-load-languages '((emacs-lisp . t) (shell . t)))
  '(org-capture-templates
-   '(("t" "Work Task" entry
-      (file "~/Documents/org/work.org")
-      "* LATER %?" :prepend t :empty-lines 1)))
+   '(("t" "Work Task" entry (file "~/Documents/org/work.org") "* LATER %?" :prepend t
+      :empty-lines 1)))
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Documents/org/work.org")
  '(org-export-allow-bind-keywords t)
@@ -228,16 +219,14 @@
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
  '(recentf-exclude
-   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
+   '("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'"
+     ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
  '(recentf-max-saved-items 60)
  '(recentf-save-file "~/.emacs-recentf")
  '(ring-bell-function 'ignore)
  '(safe-local-variable-values
-   '((calc-point-char . ",")
-     (calc-group-char . ".")
-     (calc-group-digits . t)
-     (flycheck-disabled-checkers emacs-lisp-checkdoc)
-     (c-file-style "ethereum")
+   '((calc-point-char . ",") (calc-group-char . ".") (calc-group-digits . t)
+     (flycheck-disabled-checkers emacs-lisp-checkdoc) (c-file-style "ethereum")
      (dtrt-indent-explicit-offset . t)))
  '(save-interprogram-paste-before-kill t)
  '(savehist-file "~/.emacs-history")
