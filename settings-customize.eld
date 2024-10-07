@@ -218,7 +218,12 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(org-re-reveal editorconfig wgrep-ag restclient-jq eglot web-mode ein htmlize org-present org-contrib levenshtein speed-type slime-company company olivetti lua-mode yaml-mode ace-window ag cm-mode counsel dtrt-indent erlang eshell-z expand-region fish-mode go-scratch graphviz-dot-mode ivy-hydra magit markdown-mode ob-go ox-gfm restclient slime toml-mode virtualenvwrapper wgrep))
+   '(ace-window ag cm-mode company counsel dtrt-indent editorconfig eglot ein erlang eshell-z
+                expand-region fish-mode go-scratch graphviz-dot-mode htmlize ivy-hydra
+                levenshtein lua-mode magit markdown-mode ob-go olivetti org-contrib
+                org-present org-re-reveal ox-gfm restclient restclient-jq slime
+                slime-company solidity-mode speed-type toml-mode virtualenvwrapper
+                web-mode wgrep wgrep-ag yaml-mode))
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
