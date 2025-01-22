@@ -12,6 +12,7 @@
 
 ;; Raise read-process-output-max. This is supposed to improve performance.
 (setq read-process-output-max 1048576)
+(setq process-adaptive-read-buffering nil)
 
 ;; Load source instead of bytecode if the bytecode is outdated.
 (setq load-prefer-newer t)
