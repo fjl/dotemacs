@@ -8,6 +8,7 @@
 (require 'eglot)
 (require 'flymake)
 (require 'copilot)
+(require 'esh-util) ;; for eshell-{get,set}-path
 
 (defun gotools-dir ()
   "Returns the directory that Go tools should be installed in."
@@ -109,6 +110,8 @@ present in `exec-path' and the PATH environment variable."
       (setq-local process-environment
                   (cons (concat "PATH=" local-eb path-separator (getenv "PATH"))
                         process-environment))
+      (when (eq major-mode 'eshell-mode)
+        (eshell-set-path (cons local-eb (eshell-get-path))))
       (unless (member eb exec-path)
         (setq-local exec-path (cons eb exec-path))))))
 
