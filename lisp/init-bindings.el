@@ -48,6 +48,8 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-M-/") 'hippie-expand)
 
+(global-set-key (kbd "M-]") 'ffap)
+
 (global-set-key (kbd "C-x M-o") 'ff-find-other-file)
 
 ;; package commands
