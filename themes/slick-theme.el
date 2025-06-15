@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (deftheme slick "A theme based the wheatgrass theme that comes with emacs.")
 
 (defconst slick-background-color "gray15")
