@@ -51,10 +51,10 @@ also enables prettification in comments."
              (memq (char-syntax (or (char-after end) ?\s)) syntaxes-end)))))
 
 (defun fjl/setup-pragmata-ligatures ()
-  (when (string= "PragmataPro" (fpfont))
+  (when (string-prefix-p "PragmataPro" (fpfont))
     (setq-default prettify-symbols-alist
-                  '(("<-"     . ?🡐)
-                    ("->"     . ?🡒)))
+                  '(("<-"     . " ←")
+                    ("->"     . " →")))
     (setq-default prettify-symbols-compose-predicate
                   'fjl/prettify-symbols-compose-p)))
 
