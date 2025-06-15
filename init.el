@@ -1,3 +1,5 @@
+;;  -*- lexical-binding: t; -*-
+
 ;; Added by Package.el.
 ;(package-initialize)
 
