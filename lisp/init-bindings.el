@@ -111,6 +111,9 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-e") 'company-complete-selection))
 
+(after-package eglot
+  (define-key eglot-mode-map (kbd "M-<mouse-2>") 'eglot-code-actions-at-mouse))
+
 ;; Make paragraph keys easier to type, especially on small keyboards.
 ;; They used to be bound to M-[ M-] here, but M-[ is indistinguishable
 ;; from a terminal escape sequence and binding it breaks xterm-mouse-mode.
