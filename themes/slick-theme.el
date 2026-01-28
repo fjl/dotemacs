@@ -8,6 +8,7 @@
 (defconst slick-highlight-color "gray40")
 (defconst slick-search-color "saddle brown")
 (defconst slick-text-color "gray90")
+(defconst slick-faint-text-color "gray80")
 (defconst slick-cursor-color "#FF0000")
 
 (let ((class    '((class color)))
@@ -202,6 +203,10 @@
    `(treemacs-fringe-indicator-face ((,class (:foreground ,slick-cursor-color))))
    `(treemacs-git-modified-face ((,class (:foreground "PeachPuff"))))
    `(treemacs-git-added-face ((,class (:inherit treemacs-git-modified-face))))
+
+   ;; Speedbar
+   `(speedbar-file-face ((,class (:foreground ,slick-faint-text-color))))
+   `(speedbar-selected-face ((,class (:foreground "tan3"))))
 ))
 
 (provide-theme 'slick)
