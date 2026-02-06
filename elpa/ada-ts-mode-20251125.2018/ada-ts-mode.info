@@ -1,0 +1,829 @@
+This is ada-ts-mode.info, produced by makeinfo version 6.8 from
+ada-ts-mode.texi.
+
+INFO-DIR-SECTION Emacs
+START-INFO-DIR-ENTRY
+* Ada Tree-Sitter Mode: (ada-ts-mode). Ada Major Mode using Tree-Sitter.
+END-INFO-DIR-ENTRY
+
+
+File: ada-ts-mode.info,  Node: Top,  Next: Prerequisites,  Up: (dir)
+
+Ada Major Mode using Tree-Sitter
+********************************
+
+A major mode for Ada files, which utilizes the Emacs built-in support
+for tree-sitter, first available starting with Emacs 29.  The
+tree-sitter functionality is used to build an in-memory concrete syntax
+tree of the parsed language, allowing operations such as syntax
+highlighting to be performed more accurately than historical methods
+(e.g., regular expressions).
+
+   This major mode provides support for syntax highlighting,
+indentation, navigation, Imenu, “which function” (i.e., displaying the
+current function name in the mode line), outlining (via
+‘outline-minor-mode’) and casing.
+
+   *Note*: This major mode is based on the Emacs 29 (or newer) built-in
+tree-sitter support, not to be confused with the separate Emacs
+tree-sitter package.  The two are not compatible with each other.
+
+   *Note*: Outlining is made available through Emacs 30 (or newer)
+built-in support for outlining within tree-sitter major modes, therefore
+it is required for ‘outline-minor-mode’ to work with ‘ada-ts-mode’.
+
+* Menu:
+
+* Prerequisites::
+* Installation::
+* Grammar Installation::
+* Syntax Highlighting::
+* Indentation::
+* Navigation::
+* Imenu::
+* Casing::
+* Miscellaneous::
+* LSP Client Support::
+* Troubleshooting::
+* Example Configuration::
+* Resources::
+* Command & Function Index::
+* Variable Index::
+
+— The Detailed Node Listing —
+
+Installation
+
+* From the MELPA Package Archive::
+* From the Git Repository::
+
+Indentation
+
+* Ada Language Server Indentation::
+
+Troubleshooting
+
+* Org Mode Source Code Blocks::
+* Function Calls not Highlighted Correctly::
+
+
+
+File: ada-ts-mode.info,  Node: Prerequisites,  Next: Installation,  Prev: Top,  Up: Top
+
+1 Prerequisites
+***************
+
+There are a couple of requirements which must be met in order to use
+tree-sitter powered major modes.  The Emacs documentation should be
+consulted which will provide complete details.  The following are the
+main points to consider:
+
+   • Emacs must have been built with tree-sitter support.  Versions of
+     Emacs prior to Emacs 29 do not have built-in support.  The built-in
+     support is optionally enabled when Emacs is built.  It is almost
+     guaranteed that any pre-built Emacs 29 or newer executable supplied
+     as part of an OS package manager (e.g., APT, Homebrew, MSYS2, etc.)
+     will have been built with this capability enabled.
+   • The tree-sitter shared library must be installed on your system.
+     The specifics of how to do this will vary based on the Operating
+     System.  However, a pre-built Emacs 29 or newer executable that is
+     installed by the OS package manager will likely have identified
+     this library as a prerequisite and have installed it along with
+     Emacs.  Therefore, it is unlikely you will need to manually install
+     this library if you installed Emacs with an OS package manager.
+
+     The following command can be used to determine if tree-sitter
+     support is enabled in Emacs and whether the tree-sitter library can
+     be found on your system:
+        • ‘M-: (treesit-available-p) RET’
+        • Make sure it indicates ‘t’ in the echo area instead of ‘nil’.
+
+
+File: ada-ts-mode.info,  Node: Installation,  Next: Grammar Installation,  Prev: Prerequisites,  Up: Top
+
+2 Installation
+**************
+
+There are multiple ways in which a package can be installed in Emacs.
+The most convenient way is to use a package archive, however
+installation directly from the git repository is also possible.  In
+addition, there are multiple third party package managers available, but
+installation instructions in this section will focus only on the
+built-in package manager (i.e., ‘package.el’).  It is assumed that
+power-users will not need direction as to how to use other package
+managers.
+
+   In addition to package management, it is also common practice to
+perform package configuration.  There are also multiple third party
+packages for managing your package configuration, however ‘use-package’
+is now built-in to Emacs.  Refer to the example configuration section
+for ideas on how to utilize ‘use-package’ to setup your own personal
+configuration.
+
+* Menu:
+
+* From the MELPA Package Archive::
+* From the Git Repository::
+
+
+File: ada-ts-mode.info,  Node: From the MELPA Package Archive,  Next: From the Git Repository,  Up: Installation
+
+2.1 From the MELPA Package Archive
+==================================
+
+This package can be installed from the MELPA package archive using the
+Emacs built-in package manager (i.e., ‘package.el’).  MELPA is not
+configured in the package manager by default, but the following can be
+used to configure the use of the MELPA archive.  Refer to Getting
+Started (https://melpa.org/#/getting-started) for additional details on
+configuring and using the MELPA package archive.
+
+     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+   Once configured as above, instruct the package manager to refresh the
+available packages and to perform the installation, as follows:
+
+   • ‘M-x package-refresh-contents RET’
+   • ‘M-x package-install RET ada-ts-mode RET’
+
+
+File: ada-ts-mode.info,  Node: From the Git Repository,  Prev: From the MELPA Package Archive,  Up: Installation
+
+2.2 From the Git Repository
+===========================
+
+Installation directly from the source repository is possible using
+‘package-vc-install’.  The following command can be used to perform this
+installation:
+
+   ‘M-x package-vc-install RET https://github.com/brownts/ada-ts-mode
+RET’
+
+
+File: ada-ts-mode.info,  Node: Grammar Installation,  Next: Syntax Highlighting,  Prev: Installation,  Up: Top
+
+3 Grammar Installation
+**********************
+
+In order for ada-ts-mode to be useful, it needs to have the specific
+tree-sitter Ada language grammar library installed.  This library is
+different from the tree-sitter library mentioned in the prerequisites
+section (e.g., ‘libtree-sitter.so’ vs ‘libtree-sitter-ada.so’).  The
+library is not bundled with ada-ts-mode, but is maintained separately.
+With the default configuration, the first time ada-ts-mode is loaded (in
+the absence of an existing installed library) it will prompt to
+download, build and install the grammar library.  The following settings
+provide control over this activity.
+
+ -- User Option: ada-ts-mode-grammar
+     Location of the tree-sitter Ada language grammar to be used by
+     ada-ts-mode.
+
+ -- User Option: ada-ts-mode-grammar-install
+     Controls the level of automation in installing the grammar library
+     (automatic, prompt first, etc).
+
+   In order to build the library, you will need to have a C compiler
+installed.  Refer to the Emacs documentation surrounding
+‘treesit-install-language-grammar’, as ada-ts-mode uses the built-in
+Emacs functionality to perform the download, building and installation
+of the library.
+
+   It’s also possible to skip this step if you already have a pre-built
+library for the language.  In which case, placing the pre-built library
+in the correct location will allow ada-ts-mode to find and use the
+library.  You can customize ‘treesit-extra-load-path’ to add extra
+locations to search for libraries.
+
+   You will only be prompted if the library can’t be found in one of the
+expected locations.  The prompting can also be controlled by changing
+the ‘ada-ts-mode-grammar-install’ setting.
+
+   If manually installing, or troubleshooting the installation of the
+Ada language grammar, you can use the following to check whether Emacs
+can locate the library:
+   • ‘M-: (treesit-ready-p 'ada t) RET’
+   • Make sure it indicates ‘t’ in the echo area instead of ‘nil’.
+
+
+File: ada-ts-mode.info,  Node: Syntax Highlighting,  Next: Indentation,  Prev: Grammar Installation,  Up: Top
+
+4 Syntax Highlighting
+*********************
+
+There are 4 different levels of syntax highlighting available, providing
+an increasing amount of highlighting.  By default in Emacs, level 3
+(controlled by ‘treesit-font-lock-level’) is used to provide a
+compromise between providing too little and too much fontification.  It
+should be noted that the levels are cumulative, meaning that each level
+also includes all of the fontification in the levels below it.  The
+following provides the list of features and how they are mapped to the
+different font lock levels.
+
+Level 1
+     comment, definition
+Level 2
+     keyword, preprocessor, string, type
+Level 3
+     attribute, assignment, constant, control, function, number,
+     operator
+Level 4
+     bracket, delimiter, error, label
+
+
+File: ada-ts-mode.info,  Node: Indentation,  Next: Navigation,  Prev: Syntax Highlighting,  Up: Top
+
+5 Indentation
+*************
+
+Indentation follows the nesting structure of the language.  Each nested
+level is indented a fixed amount.  Thus the general indentation offset
+governs the amount of this indentation.  Additional configurations
+address special cases, such as the indentation of a construct spanning
+multiple lines (i.e., broken indent).
+
+   Multiple indentation back-ends are supported, but the default
+back-end uses the intrinsic tree-sitter support.  Additionally, an
+external indentation back-end using the Ada Language Server can be
+configured, which uses the Language Server to perform formatting.  In
+addition to configuring the indentation backed to use the LSP formatter,
+a Language Server client must be enabled in the buffer.
+
+   Additionally, the LSP formatter does not use all of the user options
+below, it will only use the basic indentation offset and possibly the
+broken offset configuration.  Furthermore, because the LSP back-end uses
+a formatter rather than an indentation engine, depending on the
+configuration of the formatter, the back-end is likely to indent more
+than the current line.  See the documentation for the Language Server to
+learn about formatter details.
+
+   The following user options can be customized to modify the
+indentation as needed.
+
+ -- User Option: ada-ts-mode-indent-backend
+     Selects the back-end used to provide indentation support.  The
+     default uses Tree-sitter based indentation and supports all of the
+     indentation options specified below.  The “LSP” setting will use
+     the Language Server indentation support when a LSP client is active
+     for the buffer.  If no LSP client is active, or if the LSP
+     formatter refuses to format (e.g., when syntax errors are present)
+     this falls back to using Tree-sitter based indentation.
+
+ -- User Option: ada-ts-mode-indent-offset
+     Indentation used for structural visualization.
+
+ -- User Option: ada-ts-mode-indent-when-offset
+     Indentation for case alternatives, relative to a case statement.
+
+ -- User Option: ada-ts-mode-indent-broken-offset
+     Continuation indentation when item does not completely reside on a
+     single line.
+
+ -- User Option: ada-ts-mode-indent-exp-item-offset
+     Continuation indentation for partial expressions.
+
+ -- User Option: ada-ts-mode-indent-subprogram-is-offset
+     Indentation for ‘is’ keyword in a short form subprogram body (i.e.,
+     null procedure, expression function and abstract subprogram).
+
+ -- User Option: ada-ts-mode-indent-record-offset
+     Indentation of a record definition relative to the start of the
+     type declaration or representation clause when the ‘record’ keyword
+     appears on a separate line.
+
+ -- User Option: ada-ts-mode-indent-label-offset
+     Indentation for a block or loop statement containing a label.
+
+ -- User Option: ada-ts-mode-indent-strategy
+     Indentation strategy to use, typically when ‘RET’ or ‘TAB’ are
+     pressed during editing.  Historically, pressing one of these keys
+     would drive a line-based indentation, however more complex
+     indentation strategies can be used due to the available of the
+     syntax tree.  By default, an “aggressive” indentation strategy is
+     used that attempts to perform indentation at a higher structural
+     level (e.g., statement, subprogram, etc.)  in order to correct
+     possible incorrect indentation that might have occurred while
+     syntax errors were present in the buffer.  The “line” indentation
+     strategy performs the historical behavior of only indenting the
+     current line.
+
+     *Note*: This option is only supported when the tree-sitter
+     indentation is configured as the back-end.  The reason is to avoid
+     conflicting with formatting that the LSP formatter might perform.
+
+   It should be noted that the offsets defined above are described in
+terms of each other, so that by customizing the standard indentation
+offset ‘ada-ts-mode-indent-offset’, the other indentation offsets will
+be adjusted accordingly.  In other words, those settings either use the
+same value or a value derived from it.  Therefore, customizing the base
+value will have an affect on the remaining values as well.  If this is
+not the desired outcome, the other offsets should be customized as well.
+
+   Indentation rules used in ‘ada-ts-mode’, as in all tree-sitter based
+modes, are based on the syntax of the language.  When what currently
+exists in the buffer is not syntactically correct, the in-memory syntax
+tree will contain errors, since the buffer doesn’t adhere to the grammar
+rules of the language (i.e., it contains syntax errors).  To help combat
+this issue, a best-effort approach is used to perform indentation around
+syntax errors.  Furthermore, the indentation strategy can help recover
+from previously incorrect indentation that has occurred while the buffer
+was in a syntactically invalid state.
+
+   If none of the existing indentation strategies are sufficient, a
+custom strategy can be created and used.  In order to create a strategy,
+a new strategy symbol should be specified in
+‘ada-ts-mode-indent-strategy’, and an implementation of
+‘ada-ts-mode-indent’ should be created, specializing on the new strategy
+symbol name.  Refer to existing instances of this function to understand
+how current strategy functions are implemented.
+
+ -- Command: ada-ts-mode-fill-reindent-defun
+     Applies formatting to the comment at point or the defun (i.e.,
+     subprogram, package, task, etc.)  containing point.  For a comment,
+     the comment is refilled according to ‘fill-paragraph’.  When a
+     prefix argument is supplied, the filled paragraph is justified.
+     Otherwise, the defun containing point is re-indented using the
+     configured indentation back-end.
+
+* Menu:
+
+* Ada Language Server Indentation::
+
+
+File: ada-ts-mode.info,  Node: Ada Language Server Indentation,  Up: Indentation
+
+5.1 Ada Language Server Indentation
+===================================
+
+Since the Ada Language Server provides code formatting, not just an
+indentation engine, it may be necessary to configure the settings of the
+code formatter to meet behavioral desires.  Under the hood, the Ada LS
+may use either ‘GNATformat’ or ‘GNATpp’ (pretty print) although the
+later appears to be deprecated.  ‘GNATformat’ is an opinionated
+formatter with only a few configuration options, while ‘GNATpp’ contains
+many more options for the user to configure.  Configuration for either
+formatter occurs in the GNAT Project file in their corresponding
+packages (i.e., ‘Format’ and ‘Pretty_Print’, respectively).  The Ada LS
+will read the settings from the project file to control formatting.  The
+specific formatter to use is configured through the Ada LS
+‘useGnatformat’ setting.  See the Ada Language Server documentation for
+details about this setting and its default value.
+
+   When using the ‘GNATpp’ engine to format a line or region of the
+buffer, for minimal impact to the buffer, it’s likely desirable to use
+the ‘--source-line-breaks’ switch to prevent ‘GNATpp’ from reformatting
+the buffer beyond indentation.  With the ‘GNATformat’ engine, there is
+no control over the formatting, as it is opinionated.  Refer to their
+respective documentation for the full set of options available for the
+formatting engines.
+
+   The value of ‘ada-ts-mode-indent-offset’ is provided to the Ada
+Language Server as the ‘tabSize’ parameter in the
+‘textDocument/rangeFormatting’ and ‘textDocument/formatting’ requests.
+This corresponds to the main indentation amount (i.e., overriding the
+‘--indentation’ switch for ‘GNATpp’ or the ‘Indentation’ package setting
+for ‘GNATformat’).
+
+
+File: ada-ts-mode.info,  Node: Navigation,  Next: Imenu,  Prev: Indentation,  Up: Top
+
+6 Navigation
+************
+
+The major mode implements the normal source navigation commands which
+can be used to move around the buffer (i.e., ‘C-M-a’, ‘C-M-e’, etc).  It
+should also be noted that ‘which-function-mode’ is also supported and
+will show the current package and/or subprogram in the mode line, when
+enabled.
+
+ -- Command: ada-ts-mode-find-other-file
+     Locate the corresponding body or specification file related to the
+     file in the current buffer.  When an LSP client is active, the Ada
+     Language Server will be commanded to direct navigation to the other
+     file.  This is the most accurate method as the Language Server will
+     take into consideration non-standard naming conventions that are
+     described in the GNAT project file.  When no LSP client is active,
+     ‘ff-find-other-file’ will be used to find the corresponding file.
+
+ -- User Option: ada-ts-mode-other-file-alist
+     File extension mapping used to direct ‘ff-find-other-file’ to find
+     the corresponding file.  This customization is used to define the
+     buffer local ‘ff-find-other-file-alist’.
+
+ -- Command: ada-ts-mode-find-project-file
+     Locate the GNAT project file related to the source file of the
+     current buffer.  When an LSP client is active, the Ada Language
+     Server will be queried for the project file, otherwise Alire will
+     be queried if an ‘alire.toml’ file exists in the directory
+     hierarchy and the Alire executable is found in the path.  If
+     neither of these two conditions occur, a single project file will
+     be searched for in the root directory of the project if one exists.
+     Finally, if the project file still is not found, a search will look
+     for a ‘defaut.gpr’ file somewhere in the directory hierarchy from
+     the current buffer file’s directory.
+
+ -- User Option: ada-ts-mode-alire-program
+     The name of the Alire executable program that will be searched for
+     on the path, and if found, may be invoked for certain ‘ada-ts-mode’
+     commands (such as to query for the name and location of the GNAT
+     project file).
+
+
+File: ada-ts-mode.info,  Node: Imenu,  Next: Casing,  Prev: Navigation,  Up: Top
+
+7 Imenu
+*******
+
+With the provided Imenu support, additional options are available for
+ease of navigation within an Ada source file.  Imenu supports indexing
+of declarations, bodies and stubs for packages, subprograms, task units
+and protected units as well as type declarations and with clauses.
+
+ -- User Option: ada-ts-mode-imenu-categories
+     The set of categories to be used for Imenu.  Since there are a
+     number of different categories supported, it may be a distraction
+     to display categories that aren’t desired.  Therefore, the set of
+     categories can be customized to reduce clutter or to increase
+     performance.  The order in which the categories are listed will be
+     respected when the Imenu indexing is performed.  This is helpful if
+     specific ordering of categories is desired.
+
+ -- User Option: ada-ts-mode-imenu-category-name-alist
+     The mapping between categories and the displayed name for the
+     category.  This customization may be helpful if you are expecting a
+     specific name for a category, use plural instead of singular nouns,
+     or want to customize for internationalization.
+
+ -- User Option: ada-ts-mode-imenu-nesting-strategy-function
+     Function to use for constructing nested items within the Imenu data
+     structure.  The specific nesting function the user should use will
+     depend on which user interface is used to consume Imenu data, as
+     different interfaces behave differently with respect to how they
+     handle nested items.  Some interfaces will display both an entry
+     for the item as well as an entry for items nested within that item.
+     In that case, using “Place Before Nested Entries” is a good choice.
+     Other user interfaces remove duplicate entries, so using “Place
+     Within Nested Entries” will create a placeholder entry in the list
+     of sub-items.  If none of these are satisfactory, a custom function
+     can be used to implement a different strategy.
+
+ -- User Option: ada-ts-mode-imenu-nesting-strategy-placeholder
+     Placeholder to use for the “Place Within Nested Entries” strategy.
+     This placeholder could also be used with a custom function if it
+     supports a placeholder.  If this option is customized, it should be
+     configured such that it doesn’t interfere with other valid item
+     names.  Therefore, it is suggested to choose a placeholder which is
+     not a valid item name.  For example, surrounding a string with
+     parenthesis or brackets.
+
+ -- User Option: ada-ts-mode-imenu-sort-function
+     The items in each Imenu category can be sorted for each nesting
+     level.  The current options are to use “In Buffer Order” which will
+     list the items as they appear in the buffer, or to sort the items
+     “Alphabetically”.  Optionally, a custom sort function can be used
+     if neither of these are suitable.  A custom sort function should be
+     aware of the possible existence of a placeholder and to order that
+     before any “sorted” items in order to put the placeholder at the
+     top of the list.
+
+
+File: ada-ts-mode.info,  Node: Casing,  Next: Miscellaneous,  Prev: Imenu,  Up: Top
+
+8 Casing
+********
+
+Functionality is provided to manage casing within an Ada buffer.  This
+includes a number of commands to apply casing rules to point, to a
+region or to the entire buffer.  The commands can be used interactively,
+but may also be useful in other ways (such as calling the buffer casing
+command from the ‘buffer-save-hook’).  An auto-casing minor mode is also
+provided which performs case formatting as you type.
+
+ -- User Option: ada-ts-mode-case-formatting
+     A set of casing rules, used by the casing commands and modes, which
+     apply category specific formatting and dictionaries.
+
+ -- Command: ada-ts-auto-case-mode
+     A minor mode which applies casing corrections as you type at each
+     word or subword boundary.
+
+ -- Command: ada-ts-mode-case-format-region
+     Applies formatting to the specified region for all items in the
+     region which match the case formatting categories specified in
+     ‘ada-ts-mode-case-formatting’.  When the region doesn’t start or
+     stop exactly on a category boundary, the range is expanded to the
+     category boundary.
+
+ -- Command: ada-ts-mode-case-format-at-point
+     Applies formatting to point, assuming the item at point matches a
+     case formatting category specified in
+     ‘ada-ts-mode-case-formatting’.  When no category is matched, no
+     formatting is applied.
+
+ -- Command: ada-ts-mode-case-format-buffer
+     Applies formatting to the entire buffer for all items in the buffer
+     which match the case formatting categories specified in
+     ‘ada-ts-mode-case-formatting’.
+
+ -- Command: ada-ts-mode-case-format-dwim
+     A convenience command which will select between “region” and “at
+     point” formatting depending on whether a region is active in the
+     buffer.
+
+   If none of the existing casing categories are sufficient, or an
+additional category is desired, a custom category can be created and
+used.  In order to create a category, a new category symbol should be
+added to ‘ada-ts-mode-case-formatting’ along with the corresponding
+formatter and optional dictionary properties.  Additionally, an
+implementation of ‘ada-ts-mode-case-category-p’ should be created,
+specializing on the new category symbol name.  Refer to existing
+instances of this predicate function to understand how current category
+functions are implemented.
+
+
+File: ada-ts-mode.info,  Node: Miscellaneous,  Next: LSP Client Support,  Prev: Casing,  Up: Top
+
+9 Miscellaneous
+***************
+
+This section covers miscellaneous mode-specific commands and user
+options which don’t fit elsewhere.
+
+ -- User Option: ada-ts-mode-keymap-prefix
+     Prefix key used to activate the mode’s keymap.  This can be
+     configured as desired to change the prefix while still preserving
+     the rest of the mode map.  If the keymap prefix is set to nil, then
+     the mode commands won’t be mapped at all.
+
+ -- Command: ada-ts-mode-defun-comment-box
+     Creates a comment box above the defun enclosing point.  A comment
+     box is typically used to visually identify the start of a
+     subprogram.  Not only can this command be used in subprograms, but
+     it can be used within anything considered a defun, which includes
+     declarations, bodies, body stubs, generic instantiations and
+     renaming declarations for packages, task units, protected units,
+     subprograms, etc.  The comment box will be indented to the same
+     level as the enclosing defun.  The following demonstrates the look
+     of a defun comment box for a subprogram body.
+
+          -----------------
+          -- Hello_World --
+          -----------------
+
+          procedure Hello_World is
+          begin
+             Put_Line ("Hello, world!");
+          end Hello_World;
+
+
+File: ada-ts-mode.info,  Node: LSP Client Support,  Next: Troubleshooting,  Prev: Miscellaneous,  Up: Top
+
+10 LSP Client Support
+*********************
+
+In order to integrate functionality provided by the Ada Language Server
+(such as indentation), ‘ada-ts-mode’ must interact with an active LSP
+client.  Since multiple LSP clients exist, this interaction must be
+configurable such that additional LSP clients can be added when needed.
+Additionally, ‘ada-ts-mode’ must be able to determine which LSP client
+is active in the buffer.  If there is no active LSP client in the
+buffer, ‘ada-ts-mode’ will not be able to make use of LSP provided
+capabilities and thus falls back on providing this capability without
+it’s support, which likely will be less precise.
+
+   It’s up to the user to configure the LSP client to be active in an
+‘ada-ts-mode’ buffer, typically through the use of the
+‘ada-ts-mode-hook’ to enable the LSP client minor mode, although those
+clients which utilize directory local variables for configuration (e.g.,
+GPR project filename), may need to hook into the
+‘hack-local-variables-hook’ in order to initialize after the directory
+local variables have been initialized.  Refer to the documentation for
+the specific LSP client used for details.
+
+   A generic interface is used to support different LSP clients.  This
+interface is described in ‘ada-ts-mode-lspclient.el’.  There are
+separate files for each supported LSP client which implement those
+interfaces.  These separate files are configured to automatically load
+when both ‘ada-ts-mode’ and the corresponding LSP client package have
+been loaded.
+
+   To add an unsupported LSP client, add client-specific methods for all
+of the interfaces described in ‘ada-ts-mode-lspclient.el’.  In addition,
+a parameterless function for that client should be added to the
+‘ada-ts-mode-lspclient-find-functions’ hook variable (via ‘add-hook’).
+That function, when invoked, should determine if the LSP client is
+active in the current buffer, and when active, return an LSP client
+instance (which can be used to dispatch on the client-specific methods),
+else return ‘nil’.
+
+
+File: ada-ts-mode.info,  Node: Troubleshooting,  Next: Example Configuration,  Prev: LSP Client Support,  Up: Top
+
+11 Troubleshooting
+******************
+
+* Menu:
+
+* Org Mode Source Code Blocks::
+* Function Calls not Highlighted Correctly::
+
+
+File: ada-ts-mode.info,  Node: Org Mode Source Code Blocks,  Next: Function Calls not Highlighted Correctly,  Up: Troubleshooting
+
+11.1 Org Mode Source Code Blocks
+================================
+
+When Org Mode doesn’t know the major mode for the language of a source
+block, it will guess by appending “-mode” to the end of the language
+name.  If we use a language name of “ada”, this means it will look for a
+major mode named “ada-mode”.  This default behavior doesn’t work if we
+want to use Tree-Sitter enabled modes.  Maybe in the future it will be
+aware of these modes, but in the meantime, we can explicitly configure
+Org Mode to map to the Tree-Sitter major mode using the customization
+variable ‘org-src-lang-modes’.
+
+   The following can be added to your configuration to persist the
+setting:
+
+     (with-eval-after-load 'org-src
+       (add-to-list 'org-src-lang-modes '("ada" . ada-ts)))
+
+
+File: ada-ts-mode.info,  Node: Function Calls not Highlighted Correctly,  Prev: Org Mode Source Code Blocks,  Up: Troubleshooting
+
+11.2 Function Calls not Highlighted Correctly
+=============================================
+
+If you observe places in the syntax highlighting where functions calls
+are not being properly highlighted, such as an array being highlighted
+as a function call, or a parameterless function call not being
+highlighted, this is due to ambiguities in the syntax.  From a pure
+syntax perspective, array accesses look the same as function calls.
+Also parameterless function calls look the same as variable accesses.
+In places where it can be determined from the syntax (such as a generic
+package instantiation) care is taken to avoid highlighting these places
+as function calls.  In other places, it cannot be known from the syntax
+tree alone and that is where the syntax highlighting will become
+inaccurate.
+
+   One way to address this slightly inaccurate syntax highlighting of
+function calls, is simply to disable it.  An easy way to perform this is
+through the use of the ‘treesit-font-lock-recompute-features’ function.
+Using this function when loading the major mode will allow you to
+customize which features are enabled/disabled from the default settings.
+
+     (defun ada-ts-mode-setup ()
+       (treesit-font-lock-recompute-features nil '(function)))
+
+     (add-hook 'ada-ts-mode-hook #'ada-ts-mode-setup)
+
+   If disabling function call highlighting is not sufficiently
+satisfying, another approach is to augment the syntax highlighting of
+‘ada-ts-mode’ with that of the Ada language server.  The language server
+is capable of providing semantic highlighting, which is what is needed
+in this situation.  Refer to the Ada language server and a corresponding
+Emacs Language Server Protocol (LSP) client.  Not all LSP clients for
+Emacs support semantic highlighting, so investigate first before
+selecting one.  When semantic highlighting is used with ‘ada-ts-mode’,
+inaccurate function call highlighting will be corrected.  This includes
+both places where function calls are being highlighted, which aren’t
+real function calls, as well as places which are function calls but are
+not being highlighted.  In addition to function call highlighting,
+semantic highlighting provides highlighting of other semantic
+information, therefore it is highly recommended.
+
+   If you do observe places where function call syntax highlighting is
+inaccurate and it can be determined from the syntax tree, this is
+considered a bug and should be reported by filing an issue against the
+package.
+
+
+File: ada-ts-mode.info,  Node: Example Configuration,  Next: Resources,  Prev: Troubleshooting,  Up: Top
+
+12 Example Configuration
+************************
+
+The following is an example configuration using ‘use-package’ to manage
+this configuration.  It assumes that ‘package.el’ is your package
+manager.  This checks to make sure tree-sitter support is enabled in
+Emacs before attempting to install/configure the package, thus your
+configuration will remain compatible with versions of Emacs which don’t
+yet support tree-sitter, and will not install and configure this package
+in its absence.  This also demonstrates how to configure external
+indentation support through the Ada Language Server (assuming the user
+has configured an LSP client to be active in the buffer), if that is
+preferred over the intrinsic indentation support.
+
+     (when (and (fboundp 'treesit-available-p)
+                (treesit-available-p))
+       (use-package ada-ts-mode
+         :ensure t
+         :defer t ; autoload updates `auto-mode-alist'
+         :custom (ada-ts-mode-indent-backend 'lsp) ; Use Ada LS indentation
+         :init
+         ;; Configure source blocks for Org Mode.
+         (with-eval-after-load 'org-src
+           (add-to-list 'org-src-lang-modes '("ada" . ada-ts)))
+         ;; Enable auto-casing
+         :hook (ada-ts-mode . ada-ts-auto-case-mode)))
+
+     ;; Configure Imenu
+
+     (use-package imenu
+       :ensure nil ; built-in
+       :custom (imenu-auto-rescan t)
+       :hook (ada-ts-mode . imenu-add-menubar-index))
+
+
+File: ada-ts-mode.info,  Node: Resources,  Next: Command & Function Index,  Prev: Example Configuration,  Up: Top
+
+13 Resources
+************
+
+   • Recommended packages:
+        • gpr-ts-mode (https://github.com/brownts/gpr-ts-mode):
+          Tree-sitter based GNAT Project Major Mode
+   • Extended example configuration:
+        • dotemacs-ada (https://github.com/brownts/dotemacs-ada): Emacs
+          configuration for Ada & GNAT Project
+
+
+File: ada-ts-mode.info,  Node: Command & Function Index,  Next: Variable Index,  Prev: Resources,  Up: Top
+
+Appendix A Command & Function Index
+***********************************
+
+ [index ]
+* Menu:
+
+* ada-ts-auto-case-mode:                 Casing.              (line  17)
+* ada-ts-mode-case-format-at-point:      Casing.              (line  28)
+* ada-ts-mode-case-format-buffer:        Casing.              (line  34)
+* ada-ts-mode-case-format-dwim:          Casing.              (line  39)
+* ada-ts-mode-case-format-region:        Casing.              (line  21)
+* ada-ts-mode-defun-comment-box:         Miscellaneous.       (line  15)
+* ada-ts-mode-fill-reindent-defun:       Indentation.         (line 107)
+* ada-ts-mode-find-other-file:           Navigation.          (line  12)
+* ada-ts-mode-find-project-file:         Navigation.          (line  26)
+
+
+File: ada-ts-mode.info,  Node: Variable Index,  Prev: Command & Function Index,  Up: Top
+
+Appendix B Variable Index
+*************************
+
+ [index ]
+* Menu:
+
+* ada-ts-mode-alire-program:             Navigation.           (line 38)
+* ada-ts-mode-case-formatting:           Casing.               (line 13)
+* ada-ts-mode-grammar:                   Grammar Installation. (line 16)
+* ada-ts-mode-grammar-install:           Grammar Installation. (line 20)
+* ada-ts-mode-imenu-categories:          Imenu.                (line 11)
+* ada-ts-mode-imenu-category-name-alist: Imenu.                (line 20)
+* ada-ts-mode-imenu-nesting-strategy-function: Imenu.          (line 26)
+* ada-ts-mode-imenu-nesting-strategy-placeholder: Imenu.       (line 39)
+* ada-ts-mode-imenu-sort-function:       Imenu.                (line 48)
+* ada-ts-mode-indent-backend:            Indentation.          (line 30)
+* ada-ts-mode-indent-broken-offset:      Indentation.          (line 45)
+* ada-ts-mode-indent-exp-item-offset:    Indentation.          (line 49)
+* ada-ts-mode-indent-label-offset:       Indentation.          (line 61)
+* ada-ts-mode-indent-offset:             Indentation.          (line 39)
+* ada-ts-mode-indent-record-offset:      Indentation.          (line 56)
+* ada-ts-mode-indent-strategy:           Indentation.          (line 64)
+* ada-ts-mode-indent-subprogram-is-offset: Indentation.        (line 52)
+* ada-ts-mode-indent-when-offset:        Indentation.          (line 42)
+* ada-ts-mode-keymap-prefix:             Miscellaneous.        (line  9)
+* ada-ts-mode-other-file-alist:          Navigation.           (line 21)
+
+
+
+Tag Table:
+Node: Top220
+Node: Prerequisites1931
+Node: Installation3502
+Node: From the MELPA Package Archive4571
+Node: From the Git Repository5480
+Node: Grammar Installation5892
+Node: Syntax Highlighting8024
+Node: Indentation8918
+Node: Ada Language Server Indentation14876
+Node: Navigation16786
+Node: Imenu19006
+Node: Casing22175
+Node: Miscellaneous24626
+Node: LSP Client Support26021
+Node: Troubleshooting28203
+Node: Org Mode Source Code Blocks28446
+Node: Function Calls not Highlighted Correctly29368
+Node: Example Configuration31986
+Node: Resources33527
+Node: Command & Function Index33979
+Node: Variable Index34841
+
+End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
