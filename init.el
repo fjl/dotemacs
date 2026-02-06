@@ -6,8 +6,8 @@
 ;; (push (lambda (f) (message "loading %s" f)) after-load-functions)
 
 ;; Don't warn unless it's serious.
-;; (eval-when-compile (require 'warnings))
-;; (setq warning-minimum-level :error)
+(eval-when-compile (require 'warnings))
+(setq warning-minimum-level :error)
 
 ;; Inhibit GC during initialization.
 (setq gc-cons-threshold (* 50 1024 1024))
