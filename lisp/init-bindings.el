@@ -8,7 +8,6 @@
 (require 'cl-lib)
 
 (eval-when-compile
-  (require 'copilot)
   (require 'dired)
   (require 'ivy)
   (require 'term)
