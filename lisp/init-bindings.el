@@ -58,11 +58,6 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-x M-RET") 'ivy-resume)
 
-(after-package copilot
-  (define-key copilot-completion-map (kbd "<tab>") 'copilot-next-completion)
-  (define-key copilot-completion-map (kbd "S-<tab>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "<backtab>") 'copilot-accept-completion))
-
 ;; Redirect common operation through counsel. This enables
 ;; some of the more interesting features of ivy.
 (global-set-key (kbd "s-r") 'counsel-imenu)
