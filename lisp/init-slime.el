@@ -24,8 +24,7 @@
    slime-package-fu
    slime-autodoc
    slime-fuzzy
-   slime-fancy-inspector
-   slime-company))
+   slime-fancy-inspector))
 
 (define-common-lisp-style "fjl-indentation"
   "My personal indentation style. cond gets indented similar to case."
@@ -98,8 +97,7 @@
   (global-set-key (kbd "C-c C-s") 'slime-selector)
   (global-set-key (kbd "C-c s") 'slime-selector)
   (setq-local browse-url-browser-function 'eww-browse-url)
-  (setq tab-always-indent 'complete)
-  (company-mode 1))
+  (setq tab-always-indent 'complete))
 
 ;;;###autoload
 (defun fjl/common-lisp-mode-hook ()

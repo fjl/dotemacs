@@ -12,7 +12,6 @@
   (require 'ivy)
   (require 'term)
   (require 'ace-window)
-  (require 'company)
   (require 'expand-region)
   (require 'swiper)
   (require 'counsel))
@@ -103,12 +102,6 @@
   ;; In ivy, swap C-j and RET to retain ido behavior.
   (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
   (define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done))
-
-(after-package company
-  (define-key company-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "C-e") 'company-complete-selection))
 
 (after-package eglot
   (define-key eglot-mode-map (kbd "M-<mouse-2>") 'eglot-code-actions-at-mouse))

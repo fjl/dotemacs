@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'go-mode)
-(require 'company)
 (require 'cl-lib)
 (require 's)
 (require 'tramp)
