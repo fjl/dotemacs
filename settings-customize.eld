@@ -40,20 +40,6 @@
  '(comint-process-echoes nil)
  '(comment-empty-lines 'eol)
  '(comment-fill-column 70)
- '(company-auto-commit nil)
- '(company-auto-commit-chars nil)
- '(company-auto-complete nil)
- '(company-auto-complete-chars nil)
- '(company-begin-commands 'nil)
- '(company-continue-commands t)
- '(company-frontends
-   '(company-echo-metadata-frontend company-pseudo-tooltip-frontend))
- '(company-go-insert-arguments nil)
- '(company-idle-delay 0.2)
- '(company-insertion-on-trigger nil)
- '(company-insertion-triggers nil)
- '(company-lsp-enable-snippet nil)
- '(company-selection-wrap-around t)
  '(compilation-always-kill t)
  '(compilation-error-regexp-alist
    '(bash python-tracebacks-and-caml comma maven gcc-include ruby-Test::Unit makepp msft perl
