@@ -64,8 +64,9 @@ the remote repository name in the cdr."
     (let ((exe (fjl/mac-git-path)))
       (when (file-exists-p exe)
         (setq-local magit-git-executable exe))))
+  (setq-local long-line-threshold nil)
   ;; Bindings
-  (define-key magit-mode-map (kbd "v") 'magit-visit-pull-request-url)
+  (define-key magit-mode-map (kbd "#") 'magit-visit-pull-request-url)
   ;; Configure revision buffer.
   (setq magit-revision-insert-related-refs nil)
   ;; Configure status buffer.
