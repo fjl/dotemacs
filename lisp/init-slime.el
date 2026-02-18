@@ -1,10 +1,9 @@
 ;; -*- lexical-binding: t -*-
 
-(require 'slime)
 (require 'tramp)
-(eval-when-compile
-  (require 'slime-indentation)
-  (require 'slime-asdf))
+(require 'slime)
+(require 'slime-indentation)
+(require 'slime-asdf)
 
 (setq
  slime-default-lisp 'sbcl
@@ -48,11 +47,12 @@
   (if (file-remote-p default-directory)
       (let ((tf (tramp-dissect-file-name default-directory)))
         (tramp-make-tramp-file-name
-         (tramp-file-name-method tf)
-         (tramp-file-name-user tf)
-         (tramp-file-name-domain tf)
-         (tramp-file-name-host tf)
-         (tramp-file-name-port tf)
+         (make-tramp-file-name
+          :method (tramp-file-name-method tf)
+          :user (tramp-file-name-user tf)
+          :domain (tramp-file-name-domain tf)
+          :host (tramp-file-name-host tf)
+          :port (tramp-file-name-port tf))
          f))
     f))
 
@@ -85,6 +85,7 @@
              ;; No prefix arg, just use the first available system.
              (car systems)))))
    slime-mode)
+  (require 'slime-asdf)
   (slime-oos system 'test-op))
 
 ;; Keys
