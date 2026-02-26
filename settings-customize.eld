@@ -10,6 +10,7 @@
  '(ace-window-display-mode t)
  '(ag-reuse-buffers t)
  '(ag-reuse-window nil)
+ '(agent-shell-header-style 'text)
  '(ansi-color-for-comint-mode t)
  '(async-bytecomp-package-mode t)
  '(auth-sources '(macos-keychain-internet))
