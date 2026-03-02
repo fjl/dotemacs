@@ -127,6 +127,9 @@
 (global-set-key (kbd "C-x 7 b") 'cycle-busy-eshells)
 (global-set-key (kbd "C-x 7 r") 'fjl/eshell-restart-command)
 
+;; agent
+(global-set-key (kbd "C-x a") 'pi-coding-agent)
+
 ;; term
 (defun fjl/bindings/term-keys ()
   (setq truncate-lines nil)
