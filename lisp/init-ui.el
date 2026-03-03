@@ -30,12 +30,6 @@
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
 (set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
 
-;; Make mode line fixed-pitch (default is variable-pitch on emacs >= 29.1).
-(when (get 'mode-line-active 'face)
-  (set-face-attribute 'mode-line-active nil :inherit 'mode-line))
-(when (get 'mode-line-inactive 'face)
-  (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line))
-
 (defvar fjl/setting-up-first-frame t
   "This variable is set to nil after setting up the first frame.")
 
@@ -83,13 +77,13 @@ also enables prettification in comments."
   (setq frame-resize-pixelwise t)
   ;; enable emoji font as fallback and other font settings
   (set-fontset-font t 'unicode (emojifont 10) frame 'prepend)
-  (setq-default line-spacing 0.1)
   (fjl/setup-pragmata-ligatures)
   ;; keyboard settings
   (if (eq window-system 'mac)
     (setq mac-command-modifier 'super
           mac-right-command-modifier 'meta
           mac-option-modifier 'meta
+          mac-right-option-modifier 'meta
           mac-mouse-wheel-mode t
           mac-mouse-wheel-smooth-scroll nil
           mac-pass-control-to-system nil
