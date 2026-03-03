@@ -198,12 +198,12 @@
  '(org-replace-disputed-keys t)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(ace-window ada-ts-mode ag agent-shell claude-code cm-mode counsel dtrt-indent
-                editorconfig eglot ein erlang eshell-z expand-region fish-mode go-scratch
-                graphviz-dot-mode htmlize ivy-hydra levenshtein lua-mode magit
-                markdown-mode ob-go olivetti org-contrib org-present org-re-reveal ox-gfm
-                pi-coding-agent restclient restclient-jq slime solidity-mode speed-type
-                toml-mode virtualenvwrapper web-mode wgrep wgrep-ag yaml-mode))
+   '(ace-window ada-ts-mode ag cm-mode counsel dtrt-indent editorconfig eglot ein erlang
+                eshell-z expand-region fish-mode go-scratch graphviz-dot-mode htmlize
+                ivy-hydra levenshtein lua-mode magit markdown-mode ob-go olivetti
+                org-contrib org-present org-re-reveal ox-gfm pi-coding-agent restclient
+                restclient-jq slime solidity-mode speed-type toml-mode virtualenvwrapper
+                web-mode wgrep wgrep-ag yaml-mode))
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
