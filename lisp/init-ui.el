@@ -105,10 +105,15 @@ also enables prettification in comments."
       (buffer-substring start end))))
 
 (defun fjl/mac-app-resources-bin ()
-  (save-match-data
-    (let ((cmd (car command-line-args)))
-      (when (string-match "\\.app/Contents/\\(MacOS/Emacs\\)$" cmd)
-        (replace-match "Resources/bin" t t cmd 1)))))
+  (let ((cmd invocation-directory))
+    (when (string-match "\\.app/Contents/\\(MacOS/\\)$" cmd)
+      (replace-match "Resources/bin" t t cmd 1))))
+
+(defun fjl/homebrew-emacs-dir ()
+  (let ((hb "/opt/homebrew/Cellar/"))
+    (when (string-prefix-p hb invocation-directory)
+      (when (string-match "\\([^/]*/[^/]*\\)/.*" invocation-directory (length hb))
+        (concat hb (match-string 1 invocation-directory))))))
 
 (defun fjl/setup-mac-path ()
   "Sets executable path variables according to /etc/paths.
@@ -117,17 +122,29 @@ which isn't very useful."
   (let ((path     (fjl/mac-path-helper-path))
         (tool-bin (fjl/mac-app-resources-bin))
         (home-bin (expand-file-name "~/bin")))
-    (when (file-exists-p home-bin)
+    (when (file-directory-p home-bin)
       (setq path (concat path ":" home-bin)))
     (when tool-bin
       (setq path (concat tool-bin ":" path)))
     (setenv "PATH" path)
     (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
+(defun fjl/setup-mac-info-path ()
+  "Sets the info directory for homebrew-installed emacs."
+  (when-let (base-dir (fjl/homebrew-emacs-dir))
+    (eval-after-load 'info
+      (lambda ()
+	    (let ((info-path (concat base-dir "/share/info")))
+          (if (file-directory-p info-path)
+              (add-to-list 'Info-additional-directory-list info-path)
+            (message "Info directory does not exist: %s" info-path)))))))
+
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
-    (fjl/setup-mac-path)))
+    (fjl/setup-mac-path)
+    ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
+    (select-frame-set-input-focus (selected-frame))))
 
 ;; GTK Display
 
