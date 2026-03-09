@@ -32,7 +32,6 @@
      (nroff-mode . eqn) (pascal-mode . pascal) (c-mode . c) (c++-mode . c)
      (fortran-mode . fortran) (f90-mode . fortran) (texinfo-mode . calc-normal-language)
      (go-mode . c)))
- '(calc-settings-file "~/.emacs.d/settings-calc.eld")
  '(calendar-week-start-day 1)
  '(column-number-mode t)
  '(comint-completion-autolist t)
