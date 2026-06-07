@@ -58,6 +58,9 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-x M-RET") 'ivy-resume)
 
+(global-set-key (kbd "s--") 'stickies-new)
+(global-set-key (kbd "s-=") 'stickies-toggle)
+
 ;; Redirect common operation through counsel. This enables
 ;; some of the more interesting features of ivy.
 (global-set-key (kbd "s-r") 'counsel-imenu)
