@@ -45,9 +45,11 @@ Open the sticky note BASENAME from `stickies-directory'.
 
 (fn BASENAME)" t)
 (autoload 'stickies-show-all "stickies" "\
-Show every sticky note in `stickies-directory'." t)
+Show every sticky note in `stickies-directory'.
+Only supported on graphical frames." t)
 (autoload 'stickies-hide-all "stickies" "\
-Hide every visible sticky note frame." t)
+Hide every visible sticky note frame.
+Only supported on graphical frames." t)
 (autoload 'stickies-toggle "stickies" "\
 Toggle the visibility of all sticky notes.
 If the current frame is itself a sticky note, hide every sticky note.
@@ -55,7 +57,9 @@ Otherwise show every sticky note in `stickies-directory' and raise the
 frames.  Dispatching on the current frame instead of overall
 visibility means one invocation from a non-sticky note frame always
 brings the sticky notes forward, even when some are merely occluded
-by other windows -- something Emacs has no API to detect." t)
+by other windows -- something Emacs has no API to detect.
+
+Only supported on graphical frames." t)
 (autoload 'stickies-set-theme "stickies" "\
 Set NAME as the theme for the current sticky note.
 
@@ -64,8 +68,10 @@ Set NAME as the theme for the current sticky note.
 Rename the current sticky note to NEW-BASENAME (within `stickies-directory').
 
 (fn NEW-BASENAME)" t)
-(autoload 'stickies-delete "stickies" "\
-Delete the current sticky note (with confirmation)." t)
+(autoload 'stickies--note-blank-p "stickies" "\
+Return non-nil if note BUFFER holds nothing but whitespace.
+
+(fn BUFFER)")
 (register-definition-prefixes "stickies" '("stickies-"))
 
 ;;; End of scraped data
