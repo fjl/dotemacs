@@ -212,10 +212,8 @@ and to setup the inital frame."
   (dolist (frame (frame-list))
     (fjl/setup-frame frame)))
 
-;; Apply the parameters to all frames after creating a new frame.
-;; This works around issues I had in the past with the menu bar randomly
-;; showing up on a frame.
-(add-to-list 'after-make-frame-functions 'fjl/setup-all-frames)
+;; Apply the parameters to new frames after creation.
+(add-to-list 'after-make-frame-functions 'fjl/setup-frame)
 
 (progn
   ;; Frame parameters for all frames, regardless of window-system.
