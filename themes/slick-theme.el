@@ -35,7 +35,7 @@
    `(compilation-mode-line-fail ((,class (:foreground "dark green"))))
    `(compilation-mode-line-run  ((,class (:foreground "dark goldenrod"))))
    `(compilation-mode-line-exit ((,class (:foreground "yellow green"))))
-   `(compilation-error ((,class (:foreground "tan3" :weight bold :underline t))))
+   `(compilation-error ((,class (:foreground "tan3" :underline nil))))
 
    ;; Completion
    `(completions-common-part ((,class (:foreground "tan3"))))
