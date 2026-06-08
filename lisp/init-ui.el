@@ -225,20 +225,20 @@ and to setup the inital frame."
   ;; Per window-system overrides and additions to default-frame-alist.
   (setq window-system-default-frame-alist
         `((ns  . ((menu-bar-lines . 1)
-                  (left-fringe . 6)
+                  (left-fringe . 8)
                   (font . ,(fpfont 14))
                   (alpha . 98)
                   (ns-transparent-titlebar . nil)
                   (ns-appearance . dark)))
           (mac . ((menu-bar-lines . 1)
-                  (left-fringe . 6)
+                  (left-fringe . 8)
                   (internal-border-width . 2)
                   (font . ,(fpfont 14))
                   (alpha . 98)))
           (w32 . ((font . ,(fpfont 12))
                   (menu-bar-lines . 0)))
           (x   . ((font . ,(fpfont 12))
-                  (left-fringe . 6)
+                  (left-fringe . 8)
                   (menu-bar-lines . 0)))
           (t   . ((menu-bar-lines . 0)))))
   ;; Apply the parameters for all initial frames.
@@ -247,6 +247,10 @@ and to setup the inital frame."
 ;; Display margin content on the inside of the fringe.
 ;; It looks nicer.
 (setq-default fringes-outside-margins t)
+
+;; Configure fringe indicators.
+(setq-default indicate-buffer-boundaries '((up . left) (down . left) (t . nil)))
+(setq-default indicate-empty-lines nil)
 
 ;; For the compilation buffer, these auto scroll settings make it so point isn't centered
 ;; in the window when output reaches the bottom.
