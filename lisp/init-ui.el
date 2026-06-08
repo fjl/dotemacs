@@ -134,7 +134,7 @@ which isn't very useful."
   (when-let (base-dir (fjl/homebrew-emacs-dir))
     (eval-after-load 'info
       (lambda ()
-	    (let ((info-path (concat base-dir "/share/info")))
+        (let ((info-path (concat base-dir "/share/info")))
           (if (file-directory-p info-path)
               (add-to-list 'Info-additional-directory-list info-path)
             (message "Info directory does not exist: %s" info-path)))))))
