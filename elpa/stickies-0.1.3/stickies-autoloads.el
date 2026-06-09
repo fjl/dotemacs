@@ -11,7 +11,7 @@
 
 ;;; Generated autoloads from stickies.el
 
-(autoload 'stickies-note-mode "stickies" "\
+(autoload 'stickies-mode "stickies" "\
 Minor mode for buffers that are sticky notes.
 
 Applies the buffer's theme colors via a `default' face remap,
@@ -19,21 +19,19 @@ hides the mode line, installs a header line with a close button,
 binds `mouse-3' to a context menu for changing themes, and closes
 the corresponding sticky note frame when the buffer is killed.
 
-This is a minor mode.  If called interactively, toggle the
-`Stickies-Note mode' mode.  If the prefix argument is positive, enable
-the mode, and if it is zero or negative, disable the mode.
+This is a minor mode.  If called interactively, toggle the `Stickies
+mode' mode.  If the prefix argument is positive, enable the mode, and if
+it is zero or negative, disable the mode.
 
 If called from Lisp, toggle the mode if ARG is `toggle'.  Enable the
 mode if ARG is nil, omitted, or is a positive number.  Disable the mode
 if ARG is a negative number.
 
 To check whether the minor mode is enabled in the current buffer,
-evaluate the variable `stickies-note-mode'.
+evaluate the variable `stickies-mode'.
 
 The mode's hook is called both when the mode is enabled and when it is
 disabled.
-
-\\{stickies-note-mode-map}
 
 (fn &optional ARG)" t)
 (autoload 'stickies-new "stickies" "\
