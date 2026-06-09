@@ -24,10 +24,12 @@
          (if (not size) ,selection (format "%s-%d" ,selection size))))))
 
 (fjl/define-font-class fpfont "PragmataPro" "Dejavu Sans Mono" "Consolas" "Monospace")
+(fjl/define-font-class fpserif "Courier" "Nimbus Mono PS" "Monospace Serif")
 (fjl/define-font-class vpfont "Avenir" "Noto Sans" "Dejavu Sans" "Sans Serif")
 (fjl/define-font-class emojifont "Apple Color Emoji" "Symbola")
 
 (set-face-attribute 'fixed-pitch nil :family (fpfont))
+(set-face-attribute 'fixed-pitch-serif nil :family (fpserif))
 (set-face-attribute 'variable-pitch nil :family (vpfont) :height 1.0)
 
 (defvar fjl/setting-up-first-frame t
