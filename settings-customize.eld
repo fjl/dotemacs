@@ -210,6 +210,9 @@
      ".*~$" ".*\\.(png|jpg|jpeg|pdf)$" "-autoloads\\.el"))
  '(recentf-max-saved-items 60)
  '(recentf-save-file "~/.emacs-recentf")
+ '(remote-file-name-inhibit-auto-save-visited t)
+ '(remote-file-name-inhibit-cache nil)
+ '(remote-file-name-inhibit-locks t)
  '(ring-bell-function 'ignore)
  '(safe-local-variable-values
    '((calc-point-char . ",") (calc-group-char . ".") (calc-group-digits . t)
@@ -223,6 +226,7 @@
  '(server-raise-frame t)
  '(shell-completion-fignore '("~" "#" "%"))
  '(shell-file-name "/bin/sh")
+ '(shell-history-file-name t)
  '(shell-prompt-pattern "^[^>#$\\n]+ >>? *")
  '(show-paren-context-when-offscreen 'child-frame)
  '(show-paren-style 'parenthesis)
@@ -246,6 +250,13 @@
  '(tab-width 4)
  '(term-input-ignoredups t)
  '(tls-checktrust t)
+ '(tramp-remote-path
+   '(tramp-default-remote-path tramp-own-remote-path "/bin" "/usr/bin" "/sbin" "/usr/sbin"
+     "/usr/local/bin" "/usr/local/sbin" "/local/bin" "/local/freeware/bin"
+     "/local/gnu/bin" "/usr/freeware/bin" "/usr/pkg/bin" "/usr/contrib/bin" "/opt/bin"
+     "/opt/sbin" "/opt/local/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin")
+   nil (tramp))
+ '(tramp-use-scp-direct-remote-copying t)
  '(tramp-verbose 2)
  '(truncate-lines t)
  '(use-file-dialog nil)

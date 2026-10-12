@@ -31,6 +31,7 @@
   (load custom-file nil t)
   (require 'init-commands)
   (require 'init-bindings)
+  (require 'init-tramp)
   ;; Enable some built-in packages.
   (require 'uniquify)
   ;; Enable server for GUI emacs.
