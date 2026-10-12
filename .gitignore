@@ -11,5 +11,7 @@
 /lisp/init-autoloads.el
 /elpa/archives
 /elpa/gnupg
+/elpa/vterm-*/build
+/elpa/vterm-*/*.so
 
 /elpa/*.txt
