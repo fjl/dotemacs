@@ -200,7 +200,8 @@
                 graphviz-dot-mode htmlize ivy-hydra levenshtein lua-mode magit
                 markdown-mode ob-go olivetti org-contrib org-present org-re-reveal ox-gfm
                 pi-coding-agent restclient restclient-jq slime solidity-mode speed-type
-                stickies toml-mode virtualenvwrapper web-mode wgrep-ag yaml-mode))
+                stickies toml-mode virtualenvwrapper web-mode wgrep-ag xterm-color
+                yaml-mode))
  '(python-shell-completion-native-disabled-interpreters '("pypy" "python"))
  '(query-user-mail-address nil)
  '(recentf-auto-cleanup 300)
