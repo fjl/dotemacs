@@ -131,6 +131,14 @@ which isn't very useful."
     (setenv "PATH" path)
     (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
+(defun fjl/setup-mac-locale ()
+  "Sets LANG if it is unset.
+Applications started via launchd have no locale in their environment, which
+makes subprocesses fall back to the C locale and fail on non-ASCII input."
+  (unless (or (getenv "LANG") (getenv "LC_ALL"))
+    (setenv "LANG" "en_US.UTF-8")
+    (set-locale-environment "en_US.UTF-8")))
+
 (defun fjl/setup-mac-info-path ()
   "Sets the info directory for homebrew-installed emacs."
   (when-let (base-dir (fjl/homebrew-emacs-dir))
@@ -145,6 +153,7 @@ which isn't very useful."
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
     (fjl/setup-mac-path)
+    (fjl/setup-mac-locale)
     ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
     (select-frame-set-input-focus (selected-frame))))
 
