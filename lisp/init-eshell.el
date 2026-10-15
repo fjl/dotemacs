@@ -8,6 +8,7 @@
 (require 'levenshtein)
 (require 'with-editor)
 (require 'virtualenvwrapper)
+(require 'eat)
 
 ;; Load 'z' extension. This tracks frequently-used directories and
 ;; enables jumping into them using the 'z' command.
@@ -289,8 +290,11 @@ adapting to terminal width not wrap."
 
 ;;;###autoload
 (defun fjl/eshell-mode-hook ()
-  (fjl/eshell-fixup-COLUMNS)
-  (setq truncate-lines nil)
+  ;; Some fixes for display, but these are invalid now because I switched
+  ;; to eat-eshell-mode.
+  ;;
+  ;; (fjl/eshell-fixup-COLUMNS)
+  ;; (setq truncate-lines nil)
 
   ;; This overrides eshell-show-output, which is also bound to C-c C-r.
   (define-key eshell-mode-map (kbd "C-c C-q") (lambda () (interactive) (quit-process)))
