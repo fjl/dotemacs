@@ -131,10 +131,25 @@
    `(eshell-ls-executable ((,class (:foreground "ForestGreen" :weight regular))))
    `(eshell-ls-symlink ((,class (:foreground "cyan" :weight regular))))
    `(eshell-ls-special ((,class (:foreground "magenta" :weight regular))))
-   `(term-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
-   `(term-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
+
+   ;; Terminal colors (eat, term, ansi-color). A warm 16-color palette that
+   ;; stays readable on the dark gray background.
    `(ansi-color-black ((,class (:background "dim gray" :foreground "dim gray"))))
-   `(ansi-color-blue ((,class (:background "deep sky blue" :foreground "deep sky blue"))))
+   `(ansi-color-red ((,class (:background "tomato" :foreground "tomato"))))
+   `(ansi-color-green ((,class (:background "yellow green" :foreground "yellow green"))))
+   `(ansi-color-yellow ((,class (:background "goldenrod" :foreground "goldenrod"))))
+   `(ansi-color-blue ((,class (:background "SteelBlue2" :foreground "SteelBlue2"))))
+   `(ansi-color-magenta ((,class (:background "deep pink" :foreground "deep pink"))))
+   `(ansi-color-cyan ((,class (:background "CadetBlue3" :foreground "CadetBlue3"))))
+   `(ansi-color-white ((,class (:background ,slick-text-color :foreground ,slick-text-color))))
+   `(ansi-color-bright-black ((,class (:background "gray55" :foreground "gray55"))))
+   `(ansi-color-bright-red ((,class (:background "salmon" :foreground "salmon"))))
+   `(ansi-color-bright-green ((,class (:background "DarkOliveGreen2" :foreground "DarkOliveGreen2"))))
+   `(ansi-color-bright-yellow ((,class (:background "LightGoldenrod" :foreground "LightGoldenrod"))))
+   `(ansi-color-bright-blue ((,class (:background "LightSkyBlue" :foreground "LightSkyBlue"))))
+   `(ansi-color-bright-magenta ((,class (:background "hot pink" :foreground "hot pink"))))
+   `(ansi-color-bright-cyan ((,class (:background "pale turquoise" :foreground "pale turquoise"))))
+   `(ansi-color-bright-white ((,class (:background "white" :foreground "white"))))
 
    ;; Magit
    `(magit-item-highlight ((,class (:background ,slick-faint-highlight-color))))
