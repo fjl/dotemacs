@@ -158,8 +158,7 @@ which isn't very useful."
                    shell)))))))
     (when shell
       (setenv "SHELL" shell)
-      (setq shell-file-name shell)
-      (setq eat-shell shell))))
+      (setq explicit-shell-file-name shell))))
 
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
