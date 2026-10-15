@@ -132,12 +132,8 @@ which isn't very useful."
     (setq exec-path (nconc (split-string path ":") (last exec-path)))))
 
 (defun fjl/setup-mac-locale ()
-  "Sets LANG if it is unset.
-Applications started via launchd have no locale in their environment, which
-makes subprocesses fall back to the C locale and fail on non-ASCII input."
-  (unless (or (getenv "LANG") (getenv "LC_ALL"))
-    (setenv "LANG" "en_US.UTF-8")
-    (set-locale-environment "en_US.UTF-8")))
+  (setenv "LANG" "en_US.UTF-8")
+  (set-locale-environment "en_US.UTF-8"))
 
 (defun fjl/setup-mac-info-path ()
   "Sets the info directory for homebrew-installed emacs."
@@ -149,11 +145,28 @@ makes subprocesses fall back to the C locale and fail on non-ASCII input."
               (add-to-list 'Info-additional-directory-list info-path)
             (message "Info directory does not exist: %s" info-path)))))))
 
+(defun fjl/setup-mac-shell ()
+  (let ((shell
+         (with-temp-buffer
+           (when (zerop (call-process "dscl" nil t nil "." "-read"
+                                      (concat "/Users/" (user-login-name))
+                                      "UserShell"))
+             (goto-char (point-min))
+             (when (re-search-forward "^UserShell:[ \t]*\\(.+\\)$" nil t)
+               (let ((shell (match-string 1)))
+                 (when (file-executable-p shell)
+                   shell)))))))
+    (when shell
+      (setenv "SHELL" shell)
+      (setq shell-file-name shell)
+      (setq eat-shell shell))))
+
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
     (fjl/setup-mac-path)
     (fjl/setup-mac-locale)
+    (fjl/setup-mac-shell)
     ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
     (select-frame-set-input-focus (selected-frame))))
 
