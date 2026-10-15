@@ -71,10 +71,6 @@
 (global-set-key (kbd "C-x RET") 'counsel-M-x) ;; shadows input-method/coding-system stuff
 (global-set-key (kbd "C-x 8 RET") 'counsel-unicode-char)
 
-(defun fjl/bindings/use-new-project-binding ()
-  (interactive)
-  (message "Use `C-x p m` to go to magit-status"))
-
 (defun fjl/bindings/magit-project-status ()
   (interactive)
   (require 'project)
@@ -90,8 +86,6 @@
 
 ;; project commands
 (global-set-key (kbd "C-x p m") 'fjl/bindings/magit-project-status)
-(global-set-key (kbd "C-c C-p v") 'fjl/bindings/use-new-project-binding)
-(global-set-key (kbd "C-c p v") 'fjl/use-new-project-binding)
 (global-set-key (kbd "C-x p a") 'project-ag)
 
 (after-package ivy
