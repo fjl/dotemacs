@@ -78,7 +78,7 @@ also enables prettification in comments."
   (setq ns-auto-hide-menu-bar nil)
   (setq frame-resize-pixelwise t)
   ;; enable emoji font as fallback and other font settings
-  (set-fontset-font t 'unicode (emojifont 10) frame 'prepend)
+  (set-fontset-font t 'emoji (emojifont 10) frame 'prepend)
   (fjl/setup-pragmata-ligatures)
   ;; keyboard settings
   (if (eq window-system 'mac)
@@ -206,7 +206,7 @@ forward delete."
 
 (defun fjl/setup-gtk (&optional frame)
   "Applies GTK gui settings."
-  (set-fontset-font t 'unicode "Symbola" frame 'prepend)
+  (set-fontset-font t 'emoji "Symbola" frame 'prepend)
   (fjl/setup-pragmata-ligatures))
 
 ;; TTY Display
