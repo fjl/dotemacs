@@ -189,6 +189,19 @@ which isn't very useful."
     ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
     (select-frame-set-input-focus (selected-frame))))
 
+(defun fjl/eat-fix-erase-char (args)
+  "On macOS, run `stty erase ^?' before the shell eat starts.
+Emacs disables the tty erase character on every pty it creates, and
+BSD `stty sane' (which eat runs) does not restore it.  fish 4 compares
+DEL against the erase character at startup, so backspace turns into
+forward delete."
+  (if (eq system-type 'darwin)
+      (let ((program (or (car args) explicit-shell-file-name
+                         (getenv "ESHELL") shell-file-name)))
+        (cons (concat "stty erase '^?' kill '^U'; exec " program) (cdr args)))
+    args))
+(advice-add 'eat--1 :filter-args #'fjl/eat-fix-erase-char)
+
 ;; GTK Display
 
 (defun fjl/setup-gtk (&optional frame)
