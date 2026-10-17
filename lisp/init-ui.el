@@ -162,17 +162,17 @@ which isn't very useful."
 
 (defun fjl/find-gcc-library-directory ()
   "Return the directory containing libemutls_w.a in a Homebrew GCC, or nil."
-  (catch 'found
-    (dolist (prefix '("/opt/homebrew" "/usr/local"))
-      ;; opt/gcc, opt/gcc@14, opt/gcc@13, ... newest first
-      (dolist (keg (reverse (sort (file-expand-wildcards
-                                   (concat prefix "/opt/gcc*"))
-                                  #'string<)))
-        (let ((hit (car (directory-files-recursively
-                         (file-truename keg)
-                         "\\`libemutls_w\\.a\\'"))))
-          (when hit
-            (throw 'found (file-name-directory hit))))))))
+  (let ((patterns
+         '("/opt/homebrew/opt/gcc*/lib/gcc/*/libemutls_w.a"
+           "/opt/homebrew/opt/gcc*/lib/gcc/*/gcc/*/*/libemutls_w.a")))
+    (catch 'found
+      (dolist (pattern patterns)
+        (let ((hits (file-expand-wildcards pattern t)))
+          (when hits
+            ;; Highest version last
+            (throw 'found
+                   (file-name-directory
+                    (car (last (sort hits #'string-version-lessp)))))))))))
 
 (defun fjl/setup-mac-gcc-env ()
   (let ((dir (fjl/find-gcc-library-directory)))
