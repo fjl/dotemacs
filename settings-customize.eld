@@ -71,6 +71,7 @@
  '(eat-eshell-visual-command-mode nil)
  '(eat-maximum-latency 0.02)
  '(eat-minimum-latency 0.01)
+ '(eat-term-name "xterm-256color")
  '(eat-very-visible-cursor-type '(t 2 hollow))
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(eglot-autoreconnect 10)
