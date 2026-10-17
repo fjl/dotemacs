@@ -160,12 +160,32 @@ which isn't very useful."
       (setenv "SHELL" shell)
       (setq explicit-shell-file-name shell))))
 
+(defun fjl/find-gcc-library-directory ()
+  "Return the directory containing libemutls_w.a in a Homebrew GCC, or nil."
+  (catch 'found
+    (dolist (prefix '("/opt/homebrew" "/usr/local"))
+      ;; opt/gcc, opt/gcc@14, opt/gcc@13, ... newest first
+      (dolist (keg (reverse (sort (file-expand-wildcards
+                                   (concat prefix "/opt/gcc*"))
+                                  #'string<)))
+        (let ((hit (car (directory-files-recursively
+                         (file-truename keg)
+                         "\\`libemutls_w\\.a\\'"))))
+          (when hit
+            (throw 'found (file-name-directory hit))))))))
+
+(defun fjl/setup-mac-gcc-env ()
+  (let ((dir (fjl/find-gcc-library-directory)))
+    (when dir
+      (setq native-comp-driver-options (list (concat "-L" dir))))))
+
 (defun fjl/setup-mac (&optional frame)
   (fjl/setup-mac-gui frame)
   (when fjl/setting-up-first-frame
     (fjl/setup-mac-path)
     (fjl/setup-mac-locale)
     (fjl/setup-mac-shell)
+    (fjl/setup-mac-gcc-env)
     ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
     (select-frame-set-input-focus (selected-frame))))
 
