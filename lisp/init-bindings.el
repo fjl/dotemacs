@@ -140,6 +140,12 @@
 
 (add-hook 'term-mode-hook 'fjl/bindings/term-keys)
 
+;; eat
+(defun fjl/bindings/eat-keys ()
+  (keymap-set eat-mode-map "C-c C-m" 'eat-send-password))
+
+(add-hook 'eat-mode-hook 'fjl/bindings/eat-keys)
+
 ;; dired
 (defun fjl/bindings/dired-keys ()
   (define-key dired-mode-map (kbd "s-]") 'dired-afplay)
