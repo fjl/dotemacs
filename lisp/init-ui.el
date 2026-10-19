@@ -157,8 +157,7 @@ which isn't very useful."
                  (when (file-executable-p shell)
                    shell)))))))
     (when shell
-      (setenv "SHELL" shell)
-      (setq explicit-shell-file-name shell))))
+      (setenv "SHELL" shell))))
 
 (defun fjl/find-gcc-library-directory ()
   "Return the directory containing libemutls_w.a in a Homebrew GCC, or nil."
