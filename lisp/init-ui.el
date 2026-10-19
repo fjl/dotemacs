@@ -188,18 +188,22 @@ which isn't very useful."
     ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
     (select-frame-set-input-focus (selected-frame))))
 
-(defun fjl/eat-fix-erase-char (args)
-  "On macOS, run `stty erase ^?' before the shell eat starts.
-Emacs disables the tty erase character on every pty it creates, and
-BSD `stty sane' (which eat runs) does not restore it.  fish 4 compares
-DEL against the erase character at startup, so backspace turns into
-forward delete."
-  (if (eq system-type 'darwin)
-      (let ((program (or (car args) explicit-shell-file-name
-                         (getenv "ESHELL") shell-file-name)))
-        (cons (concat "stty erase '^?' kill '^U'; exec " program) (cdr args)))
-    args))
-(advice-add 'eat--1 :filter-args #'fjl/eat-fix-erase-char)
+(defun fjl/eat-login-shell (args)
+  "Make `eat' launch the login shell and fix up the tty.
+
+Instead of a hardcoded shell, run \"$SHELL\": login, sshd and launchd all
+set it to the user's login shell, so this works locally, on other
+machines, and through TRAMP, where the remote SHELL is used.
+
+Emacs disables the tty erase and kill characters on every pty it
+creates, and BSD `stty sane' (which eat runs) does not restore them.
+fish 4 compares DEL against the erase character at startup, so backspace
+turns into forward delete.  Restoring them is a no-op elsewhere."
+  (if (car args)
+      args
+    (cons "stty erase '^?' kill '^U' 2>/dev/null; exec \"${SHELL:-/bin/sh}\""
+          (cdr args))))
+(advice-add 'eat--1 :filter-args #'fjl/eat-login-shell)
 
 ;; GTK Display
 
