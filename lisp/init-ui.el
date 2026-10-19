@@ -255,14 +255,15 @@ to set the terminal title."
   "Reapplies frame parameters from `default-frame-alist' and
 `window-system-default-frame-alist'. This is useful while tweaking
 and to setup the inital frame."
-  (let* ((type (framep-on-display frame))
-         (special (assq type window-system-default-frame-alist)))
-    (modify-frame-parameters frame (append default-frame-alist
-                                           (when special (cdr special))))
-    (cond ((or (eq type 'ns) (eq type 'mac))      (fjl/setup-mac frame))
-          ((eq type 'x)                           (fjl/setup-gtk frame))
-          ((and (eq type t) (not noninteractive)) (fjl/setup-tty)))
-    (setq fjl/setting-up-first-frame nil)))
+  (unless (frame-parameter frame 'parent-frame)
+    (let* ((type (framep-on-display frame))
+           (special (assq type window-system-default-frame-alist)))
+      (modify-frame-parameters frame (append default-frame-alist
+                                             (when special (cdr special))))
+      (cond ((or (eq type 'ns) (eq type 'mac))      (fjl/setup-mac frame))
+            ((eq type 'x)                           (fjl/setup-gtk frame))
+            ((and (eq type t) (not noninteractive)) (fjl/setup-tty)))
+      (setq fjl/setting-up-first-frame nil))))
 
 (defun fjl/setup-all-frames (&rest _)
   (dolist (frame (frame-list))
