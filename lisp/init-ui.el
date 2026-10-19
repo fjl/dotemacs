@@ -137,7 +137,7 @@ which isn't very useful."
 
 (defun fjl/setup-mac-info-path ()
   "Sets the info directory for homebrew-installed emacs."
-  (when-let (base-dir (fjl/homebrew-emacs-dir))
+  (when-let* ((base-dir (fjl/homebrew-emacs-dir)))
     (eval-after-load 'info
       (lambda ()
         (let ((info-path (concat base-dir "/share/info")))
