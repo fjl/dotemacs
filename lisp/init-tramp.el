@@ -12,10 +12,18 @@
 (connection-local-set-profile-variables
  'fjl/tramp-direct-async
  '((tramp-direct-async-process . t)))
-(dolist (method '("ssh" "scp" "sshx"))
+(dolist (method '("ssh" "scp" "sshx" "scpx"))
   (connection-local-set-profiles
    `(:application tramp :protocol ,method)
    'fjl/tramp-direct-async))
+
+;; Backups go to a local directory (see `backup-directory-alist'), so backing up a
+;; remote file would download the whole file on the first save. Don't back up
+;; remote files at all.
+(setq backup-enable-predicate
+      (lambda (name)
+        (and (normal-backup-enable-predicate name)
+             (not (file-remote-p name)))))
 
 (connection-local-set-profile-variables
  'fjl/tramp-dired
