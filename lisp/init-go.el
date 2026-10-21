@@ -105,13 +105,18 @@ present in `exec-path' and the PATH environment variable."
            (local-eb  (fjl/file-name-localname eb))
            (goimports (concat (file-name-as-directory eb) "goimports")))
       (setq-local gofmt-command goimports)
-      (setq-local process-environment
-                  (cons (concat "PATH=" local-eb path-separator (getenv "PATH"))
-                        process-environment))
-      (when (eq major-mode 'eshell-mode)
-        (eshell-set-path (cons local-eb (eshell-get-path))))
-      (unless (member eb exec-path)
-        (setq-local exec-path (cons eb exec-path))))))
+      ;; Only adjust PATH for local buffers. TRAMP computes the remote PATH itself
+      ;; and propagates a modified `process-environment' to remote processes, which
+      ;; would replace the remote PATH with this local one. Remote tools are
+      ;; referenced by absolute path instead (see `fjl/eglot-go-server').
+      (unless (file-remote-p default-directory)
+        (setq-local process-environment
+                    (cons (concat "PATH=" local-eb path-separator (getenv "PATH"))
+                          process-environment))
+        (when (eq major-mode 'eshell-mode)
+          (eshell-set-path (cons local-eb (eshell-get-path))))
+        (unless (member eb exec-path)
+          (setq-local exec-path (cons eb exec-path)))))))
 
 ;;;###autoload
 (defun gopath (&optional dir)
@@ -136,7 +141,7 @@ Returns the new value of GOPATH."
           ;; A Go workspace was detected.
           (setq dir gp)
           (setq new (fjl/file-name-localname gp)))))
-    (unless (or (string-equal new old) (fjl/in-goroot-p dir))
+    (unless (or (string-equal new old))
       (message (concat "GOPATH = " new))
       (setenv "GOBIN" (concat (file-name-as-directory (car (split-string dir "[:;]"))) "bin"))
       (setenv "GOPATH" new))))
@@ -152,7 +157,7 @@ Returns the new value of GOPATH."
       (message "cd %s" dir)
       (cd dir))))
 
-(defvar fjl/definitely-not-gopath '("/" "/usr" "/usr/local"))
+(defvar fjl/definitely-not-gopath '("/" "/usr" "/usr/local" "/opt/homebrew"))
 
 (defun fjl/find-gopath (&optional start)
   "Auto-detect a Go workspace root, starting at directory START."
@@ -164,10 +169,6 @@ Returns the new value of GOPATH."
                  (let ((name (fjl/file-name-localname (string-trim-right dir "/"))))
                    (not (member name fjl/definitely-not-gopath))))))))
     (and gopath (expand-file-name gopath))))
-
-(defun fjl/in-goroot-p (dir)
-  (let ((root (s-chomp (shell-command-to-string "go env GOROOT"))))
-    (string-prefix-p root (file-name-as-directory dir))))
 
 (defun fjl/go-coverage-c.out ()
   (interactive)
@@ -233,12 +234,22 @@ Returns the new value of GOPATH."
 (define-key go-mode-map (kbd "C-c c") 'fjl/go-coverage-c.out)
 (define-key go-mode-map (kbd "C-c r") 'eglot-rename)
 
-(defun fjl/eglot-go-server (&optional _)
-  "This function finds gopls for use by eglot."
-  (let ((gopls-in-tools (concat (gotools-gobin) "gopls")))
-    (if (file-exists-p gopls-in-tools)
-        (list (fjl/file-name-localname (expand-file-name gopls-in-tools)))
-      (list "gopls"))))
+(defun fjl/eglot-go-server (&optional _interactive)
+  "Find gopls for eglot.
+Prefer the copy installed by `gotools-update', then ~/go/bin/gopls,
+then whatever is on PATH. For remote buffers the candidates are
+looked up on the remote host, where TRAMP's PATH (built by a
+non-interactive /bin/sh -l) usually doesn't include ~/go/bin."
+  (let ((remote (or (file-remote-p default-directory) "")))
+    (or (cl-loop for cand in (list (concat (gotools-gobin) "gopls")
+                                   (concat remote "~/go/bin/gopls"))
+                 for full = (expand-file-name cand)
+                 when (file-exists-p full)
+                 return (list (fjl/file-name-localname full)))
+        (list "gopls"))))
+
+(add-to-list 'eglot-server-programs
+             '((go-mode go-ts-mode go-dot-mod-mode go-dot-work-mode) . fjl/eglot-go-server))
 
 (defun fjl/go-mode-before-save ()
   (if (eglot-managed-p)
@@ -258,7 +269,10 @@ Returns the new value of GOPATH."
 ;;;###autoload
 (defun fjl/go-mode-hook ()
   (gotools-setup)
-  (gopath)
+  (unless (file-remote-p default-directory)
+    ;; GOPATH detection is slow over TRAMP and changes the global environment,
+    ;; so it is skipped for remote files.
+    (gopath))
   ;; The depth of -10 places this before eglot's willSave notification,
   ;; so that that notification reports the actual contents that will be saved.
   (add-hook 'before-save-hook 'fjl/go-mode-before-save -10 t)
