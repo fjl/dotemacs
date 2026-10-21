@@ -266,7 +266,7 @@
                                "/opt/local/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin"))
  '(tramp-use-connection-share nil)
  '(tramp-use-scp-direct-remote-copying t)
- '(tramp-verbose 2)
+ '(tramp-verbose 3)
  '(truncate-lines t)
  '(use-file-dialog nil)
  '(user-mail-address "fjl@twurst.com")
