@@ -52,6 +52,50 @@ the remote repository name in the cdr."
           (cons (match-string 1 remote)
                 (match-string 2 remote)))))))
 
+;;; Magit over TRAMP.
+;;
+;; Every remote command costs a network round trip, and a magit refresh over TRAMP
+;; sent about 75 of them for ~20 git invocations, because TRAMP throws away its file
+;; cache after each one. Measured with a 300ms RTT, keeping the cache for read-only
+;; git commands took a status refresh from 74 to 45 remote commands.
+
+(defun fjl/magit-git-read-only-p (args)
+  "Non-nil if the git invocation ARGS cannot change the working tree or refs."
+  (let* ((args (flatten-tree args))
+         (cmd (seq-find (lambda (a) (not (string-prefix-p "-" a))) args))
+         (rest (cdr (member cmd args))))
+    (pcase cmd
+      ((or "rev-parse" "rev-list" "diff" "diff-tree" "diff-index" "diff-files" "log" "show"
+           "status" "for-each-ref" "show-ref" "ls-files" "ls-tree" "cat-file" "merge-base"
+           "describe" "name-rev" "verify-tag" "version" "blame" "check-ignore"
+           "check-ref-format" "count-objects" "shortlog" "reflog" "grep" "cherry"
+           "ls-remote" "var" "when-merged")
+       t)
+      ;; symbolic-ref writes when given a second ref.
+      ("symbolic-ref" (length< (seq-remove (lambda (a) (string-prefix-p "-" a)) rest) 2))
+      ("update-index" (and (member "--refresh" rest)
+                           (not (member "--add" rest))
+                           (not (member "--remove" rest))))
+      ("config" (seq-some (lambda (a) (or (string-prefix-p "--get" a)
+                                          (member a '("--list" "-l"))))
+                          rest))
+      ((or "branch" "tag" "remote" "worktree" "stash" "notes")
+       (seq-some (lambda (a) (member a '("--list" "-l" "-v" "--verbose" "list" "show"
+                                         "get-url" "--contains" "--points-at"
+                                         "--merged" "--no-merged")))
+                 rest))
+      (_ nil))))
+
+(defun fjl/magit-keep-tramp-cache-for-read-only-git (fn destination &rest args)
+  "Don't let TRAMP flush its file cache after read-only git commands.
+TRAMP flushes everything it knows about the remote host after every
+`process-file' unless `process-file-side-effects' is nil, and magit
+never binds it. Each refresh then re-stats a dozen files in .git."
+  (let ((process-file-side-effects (not (fjl/magit-git-read-only-p args))))
+    (apply fn destination args)))
+
+(advice-add 'magit-process-git :around #'fjl/magit-keep-tramp-cache-for-read-only-git)
+
 ;;;###autoload
 (defun fjl/magit-mode-hook ()
   ;; On macOS, the default git in path is an XCode-enabled wrapper, making it a lot slower
