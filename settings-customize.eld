@@ -264,6 +264,7 @@
                                "/local/freeware/bin" "/local/gnu/bin" "/usr/freeware/bin"
                                "/usr/pkg/bin" "/usr/contrib/bin" "/opt/bin" "/opt/sbin"
                                "/opt/local/bin" "/opt/homebrew/bin" "/opt/homebrew/sbin"))
+ '(tramp-use-connection-share nil)
  '(tramp-use-scp-direct-remote-copying t)
  '(tramp-verbose 2)
  '(truncate-lines t)
