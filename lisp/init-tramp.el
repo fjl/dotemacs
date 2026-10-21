@@ -1,9 +1,11 @@
 ;; -*- lexical-binding: t -*-
 
-(after-package vc-hooks
-  (require 'tramp)
-  (setq vc-ignore-dir-regexp
-        (format "\\(%s\\)\\|\\(%s\\)" vc-ignore-dir-regexp tramp-file-name-regexp)))
+;; Don't let VC touch remote files; magit is used for that and every VC check costs
+;; a remote git invocation. This used to be done by adding the TRAMP regexp to
+;; `vc-ignore-dir-regexp', but project.el uses that regexp as the stop condition
+;; of its root search, which made project detection impossible for remote files.
+(define-advice vc-registered (:around (fn file) fjl/not-for-remote-files)
+  (and (not (file-remote-p file)) (funcall fn file)))
 
 (setq tramp-copy-size-limit (* 1024 1024)) ;; 1MB
 
