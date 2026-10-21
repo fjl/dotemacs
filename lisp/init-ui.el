@@ -159,6 +159,20 @@ which isn't very useful."
     (when shell
       (setenv "SHELL" shell))))
 
+(defun fjl/mac-git-path ()
+  (if (string-prefix-p "aarch64-" system-configuration)
+      "/opt/homebrew/bin/git"
+    "/usr/local/bin/git"))
+
+(defvar vc-git-program)
+
+(defun fjl/setup-mac-git ()
+  "Use the Homebrew git for VC. On macOS, the default git in path is an XCode-enabled wrapper,
+making it a lot slower to invoke. Just calling the regular git exectuable makes it a little faster."
+  (let ((exe (fjl/mac-git-path)))
+    (when (file-exists-p exe)
+      (setq vc-git-program exe))))
+
 (defun fjl/find-gcc-library-directory ()
   "Return the directory containing libemutls_w.a in a Homebrew GCC, or nil."
   (let ((patterns
@@ -184,6 +198,7 @@ which isn't very useful."
     (fjl/setup-mac-path)
     (fjl/setup-mac-locale)
     (fjl/setup-mac-shell)
+    (fjl/setup-mac-git)
     (fjl/setup-mac-gcc-env)
     ;; make sure emacs is in foreground. somehow it doesn't do this automatically.
     (select-frame-set-input-focus (selected-frame))))

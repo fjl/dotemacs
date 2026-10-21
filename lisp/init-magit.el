@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'magit)
+(declare-function fjl/mac-git-path "init-ui")
 
 (defun magit-visit-pull-request-url ()
   "Visit the current branch's PR on Github.
@@ -50,11 +51,6 @@ the remote repository name in the cdr."
         (when (string-match "\\`.+github\\.com[:/]\\([^\\]+\\)/\\([^\\]+?\\)\\(\\.git\\)?\\'" remote)
           (cons (match-string 1 remote)
                 (match-string 2 remote)))))))
-
-(defun fjl/mac-git-path ()
-  (if (string-prefix-p "aarch64-" system-configuration)
-      "/opt/homebrew/bin/git"
-      "/usr/local/bin/git"))
 
 ;;;###autoload
 (defun fjl/magit-mode-hook ()
