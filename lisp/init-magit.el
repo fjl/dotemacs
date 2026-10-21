@@ -68,6 +68,16 @@ the remote repository name in the cdr."
   ;; Configure status buffer.
   (setq magit-section-initial-visibility-alist '((untracked . hide) (stashes . hide) (unstaged . show) (unpushed . show)))
   (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header)
+  ;; Over TRAMP every section is at least one git round trip. Skip the stashes
+  ;; section and the recent commits shown when there is nothing to push.
+  (when (and (derived-mode-p 'magit-status-mode) (file-remote-p default-directory))
+    (setq-local magit-status-sections-hook
+                (remq 'magit-insert-stashes
+                      (mapcar (lambda (fn)
+                                (if (eq fn 'magit-insert-unpushed-to-upstream-or-recent)
+                                    'magit-insert-unpushed-to-upstream
+                                  fn))
+                              magit-status-sections-hook))))
   ;; Configure refs buffer.
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-remote-branches))
