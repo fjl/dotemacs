@@ -14,7 +14,9 @@
   (require 'ace-window)
   (require 'expand-region)
   (require 'swiper)
-  (require 'counsel))
+  (require 'counsel)
+  (require 'eat)
+  (require 'eglot))
 
 ;; my commands
 (global-set-key (kbd "<f10>") 'recompile)
