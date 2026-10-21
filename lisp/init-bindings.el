@@ -166,6 +166,7 @@
   (global-unset-key (kbd "s-p"))
   ;; enable CUA paste shortcut to make pasting from LaunchBar work
   (global-set-key (kbd "s-v") 'clipboard-yank)
+  (global-set-key (kbd "s-c") 'clipboard-kill-ring-save)
   ;; macOS platform bindings
   (global-set-key (kbd "M-`") 'other-frame)
   (global-set-key (kbd "s-`") 'other-frame)
