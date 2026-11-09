@@ -69,6 +69,7 @@
  '(eat-default-cursor-type '(bar nil nil))
  '(eat-eshell-mode t)
  '(eat-eshell-visual-command-mode nil)
+ '(eat-kill-buffer-on-exit t)
  '(eat-maximum-latency 0.016)
  '(eat-minimum-latency 0.002)
  '(eat-term-name "xterm-256color")
