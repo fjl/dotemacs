@@ -1,0 +1,569 @@
+;;; nael.el --- Major mode for Lean  -*- lexical-binding: t; -*-
+
+;; Copyright © 2013-2014 Microsoft Corp.
+;; Copyright © 2014-2015 Soonho Kong
+;; Copyright © 2024 Free Software Foundation, Inc.
+;; Copyright © 2025 Mekeor Melire
+
+;; Author: Adam Topaz <topaz@ualberta.ca>
+;;         Akira Komamura <akira.komamura@gmail.com>
+;;         Bao Zhiyuan <bzy_sustech@foxmail.com>
+;;         Daniel Selsam <daniel.selsam@protonmail.com>
+;;         Gabriel Ebner <gebner@gebner.org>
+;;         Henrik Böving <hargonix@gmail.com>
+;;         Hongyu Ouyang <oyhy0214@163.com>
+;;         Jakub Bartczuk <bartczukkuba@gmail.com>
+;;         Leonardo de Moura <leonardo@microsoft.com>
+;;         Mauricio Collares <mauricio@collares.org>
+;;         Mekeor Melire <mekeor@posteo.de>
+;;         Philip Kaludercic <philipk@posteo.net>
+;;         Richard Copley <buster@buster.me.uk>
+;;         Sebastian Ullrich <sebasti@nullri.ch>
+;;         Siddharth Bhat <siddu.druid@gmail.com>
+;;         Simon Hudon <simon.hudon@gmail.com>
+;;         Soonho Kong <soonhok@cs.cmu.edu>
+;;         Tomáš Skřivan <skrivantomas@seznam.cz>
+;;         Wojciech Nawrocki <wjnawrocki@protonmail.com>
+;;         Yael Dillies <yael.dillies@gmail.com>
+;;         Yury G. Kudryashov <urkud@urkud.name>
+;; Keywords: languages
+;; Maintainer: Mekeor Melire <mekeor@posteo.de>
+;; Package-Requires: ((emacs "29.1"))
+;; SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
+;; URL: https://codeberg.org/mekeor/nael
+;; Package-Version: 20260309.1253
+;; Package-Revision: c1d349746731
+
+;; This is licensed under GNU General Public License (version 3 only),
+;; see LICENSE.GPL3.  To be precise, it is licensed under Apache-2.0,
+;; see LICENSE.APACHE2, and sublicensed under GPL3.
+
+;;; Commentary:
+
+;; `nael-mode' is a major mode for the Lean language.  For more
+;; information, read the manual:
+;;
+;; - As Org file `README.org' in the `nael' folder or repository.
+;;
+;; - After installation, as local Info manual per C-h i d nael RET or
+;;   (info "(nael) Top")
+;;
+;; - As HTML webpage at <https://codeberg.org/mekeor/nael>.
+
+;;; Code:
+
+(require 'jsonrpc)
+(require 'project)
+(require 'rx)
+(require 'seq)
+
+;; Avoid strict loading of optional features, files or dependencies.
+(defvar lsp-managed-mode-hook)
+(declare-function flymake-goto-next-error "flymake"
+                  (&optional n filter interactive))
+(declare-function lsp "lsp-mode" (&optional arg))
+(declare-function nael-abbrev-configure "nael-abbrev" ())
+(declare-function nael-abbrev-help "nael-abbrev" (&optional beg end))
+(declare-function nael-eglot-configure-when-initialized "nael-eglot"
+                  (_))
+(declare-function nael-eglot-configure-when-managed "nael-eglot" ())
+(declare-function nael-lsp-configure-when-managed "nael-lsp" ())
+
+(defgroup nael nil
+  "Major mode for Lean."
+  :group 'languages
+  :link '(emacs-library-link :tag "Source Lisp File" "nael.el")
+  :link '(url-link :tag "Website" "https://codeberg.org/mekeor/nael")
+  :prefix "nael-"
+  :tag "Nael")
+
+(defvar nael-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    ;; Parentheses:
+    (modify-syntax-entry ?\[ "(]" table)
+    (modify-syntax-entry ?\] ")[" table)
+    (modify-syntax-entry ?\{ "(}" table)
+    (modify-syntax-entry ?\} "){" table)
+
+    ;; Comments:
+    (modify-syntax-entry ?/  ". 14nb" table)
+    (modify-syntax-entry ?-  ". 123"  table)
+    (modify-syntax-entry ?\n ">"      table)
+    (modify-syntax-entry ?«  "<"      table)
+    (modify-syntax-entry ?»  ">"      table)
+
+    ;; Words:
+    (mapc
+     (lambda (character) (modify-syntax-entry character "w" table))
+     '(;; Latin characters:
+       ?a ?b ?c ?d ?e ?f ?g ?h ?i ?j ?k ?l ?m ?n ?o ?p ?q ?r ?s ?t ?u
+       ?v ?w ?x ?y ?z ?A ?B ?C ?D ?E ?F ?G ?H ?I ?J ?K ?L ?M ?N ?O ?P
+       ?Q ?R ?S ?T ?U ?V ?W ?X ?Y ?Z
+       ;; Digits
+       ?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9
+       ;; Greek (and Coptic) characters:
+       ?α ?β ?γ ?δ ?ε ?ζ ?η ?θ ?ι ?κ ;; ?λ
+       ?μ ?ν ?ξ ?ο ?π ?ρ ?ς ?σ ?τ ?υ ?φ ?χ ?ψ ?ω ?ϊ ?ϋ ?ό ?ύ ?ώ ?Ϗ ?ϐ
+       ?ϑ ?ϒ ?ϓ ?ϔ ?ϕ ?ϖ ?ϗ ?Ϙ ?ϙ ?Ϛ ?ϛ ?Ϝ ?ϝ ?Ϟ ?ϟ ?Ϡ ?ϡ ?Ϣ ?ϣ ?Ϥ ?ϥ
+       ?Ϧ ?ϧ ?Ϩ ?ϩ ?Ϫ ?ϫ ?Ϭ ?ϭ ?Ϯ ?ϯ ?ϰ ?ϱ ?ϲ ?ϳ ?ϴ ?ϵ ?϶ ?Ϸ ?ϸ ?Ϲ ?Ϻ
+       ?ϻ ?ἀ ?ἁ ?ἂ ?ἃ ?ἄ ?ἅ ?ἆ ?ἇ ?Ἀ ?Ἁ ?Ἂ ?Ἃ ?Ἄ ?Ἅ ?Ἆ ?Ἇ ?ἐ ?ἑ ?ἒ ?ἓ
+       ?ἔ ?ἕ ?἖ ?἗ ?Ἐ ?Ἑ ?Ἒ ?Ἓ ?Ἔ ?Ἕ ?἞ ?἟ ?ἠ ?ἡ ?ἢ ?ἣ ?ἤ ?ἥ ?ἦ ?ἧ ?Ἠ
+       ?Ἡ ?Ἢ ?Ἣ ?Ἤ ?Ἥ ?Ἦ ?Ἧ ?ἰ ?ἱ ?ἲ ?ἳ ?ἴ ?ἵ ?ἶ ?ἷ ?Ἰ ?Ἱ ?Ἲ ?Ἳ ?Ἴ ?Ἵ
+       ?Ἶ ?Ἷ ?ὀ ?ὁ ?ὂ ?ὃ ?ὄ ?ὅ ?὆ ?὇ ?Ὀ ?Ὁ ?Ὂ ?Ὃ ?Ὄ ?Ὅ ?὎ ?὏ ?ὐ ?ὑ ?ὒ
+       ?ὓ ?ὔ ?ὕ ?ὖ ?ὗ ?὘ ?Ὑ ?὚ ?Ὓ ?὜ ?Ὕ ?὞ ?Ὗ ?ὠ ?ὡ ?ὢ ?ὣ ?ὤ ?ὥ ?ὦ ?ὧ
+       ?Ὠ ?Ὡ ?Ὢ ?Ὣ ?Ὤ ?Ὥ ?Ὦ ?Ὧ ?ὰ ?ά ?ὲ ?έ ?ὴ ?ή ?ὶ ?ί ?ὸ ?ό ?ὺ ?ύ ?ὼ
+       ?ώ ?὾ ?὿ ?ᾀ ?ᾁ ?ᾂ ?ᾃ ?ᾄ ?ᾅ ?ᾆ ?ᾇ ?ᾈ ?ᾉ ?ᾊ ?ᾋ ?ᾌ ?ᾍ ?ᾎ ?ᾏ ?ᾐ ?ᾑ
+       ?ᾒ ?ᾓ ?ᾔ ?ᾕ ?ᾖ ?ᾗ ?ᾘ ?ᾙ ?ᾚ ?ᾛ ?ᾜ ?ᾝ ?ᾞ ?ᾟ ?ᾠ ?ᾡ ?ᾢ ?ᾣ ?ᾤ ?ᾥ ?ᾦ
+       ?ᾧ ?ᾨ ?ᾩ ?ᾪ ?ᾫ ?ᾬ ?ᾭ ?ᾮ ?ᾯ ?ᾰ ?ᾱ ?ᾲ ?ᾳ ?ᾴ ?᾵ ?ᾶ ?ᾷ ?Ᾰ ?Ᾱ ?Ὰ ?Ά
+       ?ᾼ ?᾽ ?ι ?᾿ ?῀ ?῁ ?ῂ ?ῃ ?ῄ ?῅ ?ῆ ?ῇ ?Ὲ ?Έ ?Ὴ ?Ή ?ῌ ?῍ ?῎ ?῏ ?ῐ
+       ?ῑ ?ῒ ?ΐ ?῔ ?῕ ?ῖ ?ῗ ?Ῐ ?Ῑ ?Ὶ ?Ί ?῜ ?῝ ?῞ ?῟ ?ῠ ?ῡ ?ῢ ?ΰ ?ῤ ?ῥ
+       ?ῦ ?ῧ ?Ῠ ?Ῡ ?Ὺ ?Ύ ?Ῥ ?῭ ?΅ ?` ?῰ ?῱ ?ῲ ?ῳ ?ῴ ?῵ ?ῶ ?ῷ ?Ὸ ?Ό ?Ὼ
+       ?Ώ ?ῼ ?´ ?῾
+       ;; Mathematical characters:
+       ?℀ ?℁ ?ℂ ?℃ ?℄ ?℅ ?℆ ?ℇ ?℈ ?℉ ?ℊ ?ℋ ?ℌ ?ℍ ?ℎ ?ℏ ?ℐ ?ℑ ?ℒ ?ℓ ?℔
+       ?ℕ ?№ ?℗ ?℘ ?ℙ ?ℚ ?ℛ ?ℜ ?ℝ ?℞ ?℟ ?℠ ?℡ ?™ ?℣ ?ℤ ?℥ ?Ω ?℧ ?ℨ ?℩
+       ?K ?Å ?ℬ ?ℭ ?℮ ?ℯ ?ℰ ?ℱ ?Ⅎ ?ℳ ?ℴ ?ℵ ?ℶ ?ℷ ?ℸ ?ℹ ?℺ ?℻ ?ℼ ?ℽ ?ℾ
+       ?ℿ ?⅀ ?⅁ ?⅂ ?⅃ ?⅄ ?ⅅ ?ⅆ ?ⅇ ?ⅈ ?ⅉ ?⅊ ?⅋ ?⅌ ?⅍ ?ⅎ ?⅏
+       ;; Subscripts:
+       ?₁ ?₂ ?₃ ?₄ ?₅ ?₆ ?₇ ?₈ ?₉ ?₀ ?ₐ ?ₑ ?ₒ ?ₓ ?ₔ ?ₕ ?ₖ ?ₗ ?ₘ ?ₙ ?ₚ
+       ?ₛ ?ₜ ?' ?_ ?! ??))
+
+    ;; Operators:
+    (mapc
+     (lambda (character) (modify-syntax-entry character "." table))
+     '(?# ?$ ?% ?& ?* ?+ ?< ?= ?> ?@ ?^ ?| ?~ ?:))
+
+    ;; Whitespace:
+    (modify-syntax-entry ?\  " " table)
+    (modify-syntax-entry ?\t " " table)
+
+    ;; Strings:
+    (modify-syntax-entry ?\" "\"" table)
+    (modify-syntax-entry ?\\ "/"  table)
+
+    table)
+  "Syntax table used in `nael-mode'.")
+
+(defconst nael-syntax-definition-pre
+  (rx (zero-or-more (or "noncomputable" "partial" "unsafe"
+                        "private" "protected" "public" space))))
+
+(defconst nael-syntax-definition
+  (rx
+   ;; Use `line-start' rather than `word-start' for speed.
+   (zero-or-more line-start (regexp nael-syntax-definition-pre))
+   line-start
+   (group
+    (regexp nael-syntax-definition-pre)
+    (or "axiom" "class" "constant" "def" "definition" "inductive"
+        "instance" "lemma" "opaque" "structure" "theorem"
+        (group "class" (zero-or-more space) "inductive")))
+   word-end
+   (zero-or-more space)
+   (group (zero-or-more
+           "{" (zero-or-more (not (any "}"))) "}"
+           (zero-or-more space)))
+   (zero-or-more space)
+   (group-n 99 (zero-or-more (not (any " \t\n\r{([:")))))
+  "Regular expression matching definitions.")
+
+(defvar nael-font-lock-defaults
+  (list
+   (list
+    (list (rx word-start "attribute" word-end
+              (zero-or-more space)
+              (group
+               (one-or-more "[" (zero-or-more (not (any "]"))) "]"
+                            (zero-or-more space))))
+          '(1 'font-lock-preprocessor-face))
+    (list (rx (group "@[" (zero-or-more (not (any "]"))) "]"))
+          '(1 'font-lock-preprocessor-face))
+    (list (rx (group "#"
+                     (or "eval" "print" "reduce" "help" "check" "lang"
+                         "check_failure" "synth")))
+          '(1 'font-lock-keyword-face))
+
+    ;; Mutual definitions:
+    (list (rx word-start "mutual" word-end
+              (zero-or-more space)
+              word-start (or "inductive" "definition" "def") word-end
+              (group (zero-or-more (not (any " \t\n\r{([,")))
+                     (zero-or-more (zero-or-more space) ","
+                                   (zero-or-more space)
+                                   (not (any " \t\n\r{([,")))))
+          '(1 'font-lock-function-name-face))
+
+    ;; Definitions:
+    (list nael-syntax-definition
+          '(1 'font-lock-keyword-face)
+          '(99 'font-lock-function-name-face))
+
+    ;; Constants which have a keyword as subterm:
+    (cons "∘if"
+          'font-lock-constant-face)
+
+    ;; Keywords:
+    (list "\\(set_option\\)[ \t]*\\([^ \t\n]*\\)"
+          '(2 'font-lock-constant-face))
+    (cons (rx word-start
+              (or
+               "abbrev" "at" "attribute" "attributes" "axiom" "begin"
+               "break" "builtin_initialize" "by" "cases" "catch"
+               "class" "constant" "continue" "declare_syntax_cat"
+               "def" "deriving" "do" "elab" "else" "end" "example"
+               "exists" "export" "extends" "finally" "for" "forall"
+               "from" "fun" "generalizing" "have" "hide" "hiding"
+               "if" "import" "in" "include" "induction" "inductive"
+               "infix" "infixl" "infixr" "init_quot" "initialize"
+               "instance" "lemma" "let" "local" "macro" "macro_rules"
+               "match" "match_syntax" "module" "mut" "mutual"
+               "namespace" "nomatch" "noncomputable" "notation"
+               "open" "opaque" "partial" "postfix" "precedence"
+               "prefix" "prelude" "private" "protected" "public" "raw"
+               "rec" "register_builtin_option" "renaming" "return"
+               "run_cmd" "scoped" "section" "set_option" "show"
+               "structure" "suffices" "syntax" "then" "theorem" "this"
+               "try" "unif_hint" "universe" "universes" "unless"
+               "unsafe" "using" "using_well_founded" "variable"
+               "variables" "where" "with")
+              word-end)
+          'font-lock-keyword-face)
+    (list (rx word-start (group "example") ".")
+          '(1 'font-lock-keyword-face))
+    (cons (rx (or "∎"))
+          'font-lock-keyword-face)
+
+    ;; Types:
+    (cons (rx word-start
+              (or "Prop" "Type" "Type*" "Sort" "Sort*")
+              symbol-end)
+          'font-lock-type-face)
+    (list (rx word-start (group (or "Prop" "Type" "Sort")) ".")
+          '(1 'font-lock-type-face))
+
+    ;; Strings:
+    (cons "\"[^\"]*\"" 'font-lock-string-face)
+
+    ;; Constants:
+    (cons (regexp-opt
+           '("!" "#" "$" "&&" "*" "+" "+c" "+f" "+n" "-" "->" "/" "/"
+             "/\\" ":=" "<" "<->" "<=" "=" "==" ">" ">=" "@" "\\/"
+             "^c" "||" "~" "¬" "×" "×c" "×f" "×n" "Π" "Σ" "λ" "⁻¹" "ℂ"
+             "ℕ" "ℕ₋₂" "ℚ" "ℝ" "ℤ" "→" "↔" "∀" "∃" "∘" "∘1nf" "∘f"
+             "∘f1n" "∘fi" "∘fn" "∘fn1" "∘n" "∘n1f" "∘nf" "∧" "∨" "∼"
+             "≃" "≃c" "≅" "≅c" "≠" "≡" "≤" "≥" "▸" "◾" "◾o" "⬝" "⬝e"
+             "⬝h" "⬝hp" "⬝i" "⬝o" "⬝op" "⬝ph" "⬝po" "⬝pv" "⬝r" "⬝v"
+             "⬝vp" "𝔸"))
+          'font-lock-constant-face)
+    (cons (rx word-start
+              (one-or-more digit)
+              (optional (and "." (zero-or-more digit)))
+              word-end)
+          'font-lock-constant-face)
+
+    ;; Place holder:
+    (cons (rx symbol-start "_" symbol-end)
+          'font-lock-preprocessor-face)
+
+    ;; Warnings:
+    (cons (rx word-start "sorry" word-end)
+          'font-lock-warning-face)
+    (cons (rx word-start
+              (or "assert" "dbgTrace" "panic" "unreachable"))
+          'font-lock-warning-face)
+
+    ;; Escaped identifiers:
+    (list (rx (group "«")
+              (group (one-or-more (not (any "»"))))
+              (group "»"))
+          '(1 font-lock-comment-face t)
+          '(2 nil t)
+          '(3 font-lock-comment-face t))))
+  "Defaults for `font-lock-mode' used by `nael-mode'.")
+
+;;;; Auxiliary Functions and Commands:
+
+(defun nael-comment-insert ()
+  "`comment-insert-comment-function' for `nael-mode'."
+  (interactive)
+  (if (save-excursion (beginning-of-line)
+                      (looking-at-p "[[:blank:]]*$"))
+      (progn
+        ;; Respect users who set `comment-start' to "--".
+        (insert comment-start " ")
+        ;; Respect users who set `comment-end' to "".
+        (unless (length= comment-end 0)
+          (save-excursion
+            (insert " " comment-end))))
+    (end-of-line)
+    (unless (looking-back "[[:blank:]]" (1- (point)))
+      (insert " "))
+    (insert "-- ")))
+
+(defun nael-fill-paragraph (&optional justify)
+  "Fill comment paragraph at point.  Maybe JUSTIFY."
+  (interactive)
+  (when (save-excursion (nth 4 (syntax-ppss (point))))
+    (let* ((com-beg (save-excursion
+                      (re-search-backward "[/-]-" nil t)
+                      (match-beginning 0)))
+           (multi (eq (char-after com-beg) ?/)))
+      (if multi
+          (let* ((par-beg (save-excursion
+                            (re-search-backward paragraph-start nil t)
+                            (match-beginning 0)))
+                 (beg (max com-beg par-beg))
+                 (com-end (if multi "-/" "$"))
+                 (com-end (save-excursion
+                            ;; If cursor is at -|/, then move to |-/,
+                            ;; so that `re-search-forward' can locate
+                            ;; comment ending.
+                            (and (eq (char-before) ?-)
+                                 (eq (char-after) ?/)
+                                 (backward-char))
+                            (re-search-forward com-end nil t)
+                            (match-end 0)))
+                 (par-end (save-excursion
+                            (search-forward paragraph-separate nil t)
+                            (match-end 0)))
+                 (end (min com-end par-end)))
+            (fill-region beg end justify))
+        ;; `fill-comment-paragraph' fills prefixed comments well, when
+        ;; configured correctly.
+        (let ((comment-start "--") (comment-end ""))
+          ;; For some reason, "" is used as fill-prefix by
+          ;; `fill-comment-paragraph' when point is at --|.  Avoid
+          ;; this misbehavior by moving point forward one char.
+          (and (not (eolp))
+               (looking-back "--" (max (- (point) 2) (point-min)))
+               (forward-char))
+          (fill-comment-paragraph justify))))))
+
+;; TODO: Both `nael-navigation-defun-beginning' and
+;; `nael-navigation-defun-name' currently lack support for `mutual'
+;; blocks, i.e. mutually recursive definitions.
+
+(defun nael-navigation-defun-end ()
+  "`end-of-defun-function' for `nael-mode'."
+  (interactive)
+  (when (re-search-forward nael-syntax-definition nil t)
+    (goto-char (match-beginning 0))))
+
+(defun nael-navigation-defun-beginning ()
+  "`beginning-of-defun-function' for `nael-mode'."
+  (interactive)
+  (re-search-backward nael-syntax-definition nil t))
+
+(defun nael-navigation-defun-name ()
+  "`add-log-current-defun-function' for `nael-mode'."
+  (save-excursion
+    (when (nael-navigation-defun-beginning)
+      (forward-symbol 1)
+      (forward-whitespace 1)
+      (symbol-at-point))))
+
+(defvar nael-imenu-generic-expression
+  (list (list nil nael-syntax-definition 99))
+  "`imenu-generic-expression' for `nael-mode'.")
+
+;;;; Preparation:
+
+;; Our goal is to avoid loading `nael-abbrev' / `abbrev', `nael-eglot'
+;; / `eglot' and `nael-lsp' / `lsp', until the user calls one of their
+;; autoloaded commands.  We are lucky that `post-self-insert-hook' is
+;; strictly loaded and that `eglot-server-initialized-hook',
+;; `eglot-managed-mode-hook' as well as `lsp-managed-mode-hook' are
+;; all initialized to nil, in usual Emacs manner.  Thus, it's fine to
+;; call `add-hook' on them, even if they have not been defined as
+;; variables yet.
+
+;; We could introduce a hook, with all of
+;; `nael-prepare-{abbrev,eglot,lsp}' being default members of it,
+;; which we could run in the beginning of the definition-body of
+;; `nael-mode'.  As mentioned, though, it's uncommon in Emacs to have
+;; hooks initialized with non-nil values and some common functions
+;; like `add-hook' rely on this practice.  Thus, we use boolean flags
+;; instead.
+
+(defcustom nael-prepare-abbrev t
+  "Whether `abbrev-mode' should be prepared for `nael-mode'."
+  :type 'boolean
+  :group 'nael)
+
+(defun nael-prepare-abbrev ()
+  "Prepare `abbrev-mode' for `nael-mode'.
+
+Expand symbol-including abbreviations when adequate character inserted."
+  (interactive)
+  (when nael-prepare-abbrev
+    (add-hook 'abbrev-mode-hook
+              #'nael-abbrev-configure nil 'local)))
+
+(defcustom nael-prepare-eglot t
+  "Whether `eglot' should be prepared for `nael-mode'."
+  :type 'boolean
+  :group 'nael)
+
+(defun nael-prepare-eglot ()
+  "Prepare `eglot' for `nael-mode'."
+  (interactive)
+  (when nael-prepare-eglot
+    ;; We want to add an entry to `eglot-server-programs' but we want
+    ;; to avoid stricly loading `eglot' here.  Unfortunately, Eglot
+    ;; doesn't offer any hook that'd be run before it accesses
+    ;; `eglot-server-programs'.  We have no choice but
+    ;; `with-eval-after-load'.
+    (with-eval-after-load 'eglot
+      (require 'nael-eglot))
+    (add-hook 'eglot-server-initialized-hook
+              #'nael-eglot-configure-when-initialized nil 'local)
+    (add-hook 'eglot-managed-mode-hook
+              #'nael-eglot-configure-when-managed nil 'local)))
+
+(defcustom nael-prepare-lsp t
+  "Whether `lsp-mode' should be prepared for `nael-mode'."
+  :type 'boolean
+  :group 'nael)
+
+(defun nael-prepare-lsp ()
+  "Prepare `lsp-mode' for `nael-mode'.
+
+Note that if you call `lsp-mode' inside a buffer majored by `nael-mode',
+it is unguardedly assumed that you have `nael-lsp' package installed and
+that either you have `nael-lsp' loaded, or `nael-lsp-autoloads', or at
+least evaluated an autoload statement for
+`nael-lsp-configure-when-managed'."
+  (interactive)
+  (when nael-prepare-lsp
+    ;; The `lsp-language-id-configuration' variable needs to be
+    ;; modified so early, that hooks don't work.  We have no choice
+    ;; but `with-eval-after-load'.
+    (with-eval-after-load 'lsp-mode
+      (require 'nael-lsp))
+    (add-hook 'lsp-managed-mode-hook
+              #'nael-lsp-configure-when-managed nil 'local)))
+
+;; Let's use the same interface (a configure-function, a
+;; prepare-option and -function) for Flymake too because we don't load
+;; or invoke it in `nael-mode' itself.
+
+(defun nael-flymake-configure ()
+  "Use Flymake to jump to errors."
+  (interactive)
+  (setq-local next-error-function
+              #'flymake-goto-next-error))
+
+(defcustom nael-prepare-flymake t
+  "Whether `flymake-mode' should be prepared for `nael-mode'."
+  :type 'boolean
+  :group 'nael)
+
+(defun nael-prepare-flymake ()
+  "Prepare `flymake-mode' for `nael-mode'."
+  (interactive)
+  (when nael-prepare-flymake
+    (add-hook 'flymake-mode-hook
+              #'nael-flymake-configure nil 'local)))
+
+;;;; Mode:
+
+(defcustom nael-mode-hook nil
+  "Hook run when entering `nael-mode'."
+  :options '(abbrev-mode eglot-ensure imenu-add-menubar-index lsp)
+  :type 'hook
+  :group 'nael)
+
+(defvar-keymap nael-mode-map
+  "<remap> <display-local-help>" #'eldoc-doc-buffer
+  "C-c C-a" #'abbrev-mode
+  "C-c C-c" #'project-compile
+  "C-c C-e" #'eglot
+  "C-c C-k" #'nael-abbrev-help)
+
+;;;###autoload
+(define-derived-mode nael-mode prog-mode "Nael"
+  "Major mode for Lean.
+
+\\{nael-mode-map}"
+  ;; Preparations:
+  (nael-prepare-abbrev)
+  (nael-prepare-eglot)
+  (nael-prepare-lsp)
+  ;; Navigation:
+  (setq-local add-log-current-defun-function
+              #'nael-navigation-defun-name)
+  (setq-local beginning-of-defun-function
+              #'nael-navigation-defun-beginning)
+  (setq-local end-of-defun-function
+              #'nael-navigation-defun-end)
+  ;; Paragraphs and filling:
+  (setq-local paragraph-start
+              "[[:blank:]]*$")
+  (setq-local paragraph-separate
+              "[[:blank:]]*$")
+  (setq-local fill-paragraph-function
+              #'nael-fill-paragraph)
+  ;; Comments:
+  (setq-local comment-end
+              "-/")
+  (setq-local comment-end-skip
+              "[[:space:]]*-/")
+  (setq-local comment-insert-comment-function
+              #'nael-comment-insert)
+  (setq-local comment-padding
+              1)
+  (setq-local comment-quote-nested ;; Comments may be nested.
+              nil)
+  (setq-local comment-start
+              "/-")
+  (setq-local comment-start-skip
+              "/-[[:space:]]*")
+  (setq-local comment-style
+              'multi-line)
+  (setq-local comment-use-syntax
+              t)
+  (setq-local parse-sexp-ignore-comments
+              t)
+  ;; Font-lock:
+  (setq-local font-lock-defaults
+              nael-font-lock-defaults)
+  ;; Compile:
+  (setq-local compilation-mode-font-lock-keywords
+              nil)
+  (setq-local compile-command
+              "lake build ")
+  ;; Imenu:
+  (setq-local imenu-generic-expression
+              nael-imenu-generic-expression)
+  ;; Flymake:
+  (nael-flymake-configure))
+
+;; Lean language specification requires UTF-8 encoding.
+(modify-coding-system-alist 'file "\\.lean\\'" 'utf-8)
+
+;;;; Association:
+
+;;;###autoload
+(add-to-list 'auto-mode-alist
+             (cons "\\.lean\\'" 'nael-mode))
+
+(add-to-list 'project-vc-extra-root-markers
+             "lakefile.lean")
+
+(add-to-list 'project-vc-extra-root-markers
+             "lakefile.toml")
+
+(with-eval-after-load 'org-src
+  (add-to-list 'org-src-lang-modes
+               (cons "lean" 'nael)))
+
+;; If the code that requires `markdown-mode' grows, we will extract it
+;; into a new package that depends on it.  But a single expression is
+;; not worth a package.
+(with-eval-after-load 'markdown-mode
+  (add-to-list 'markdown-code-lang-modes
+               (cons "lean" 'nael-mode)))
+
+(provide 'nael)
+
+;;; nael.el ends here

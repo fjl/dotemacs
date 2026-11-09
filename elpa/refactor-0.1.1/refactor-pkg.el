@@ -1,0 +1,2 @@
+;; Generated package description from refactor.el  -*- no-byte-compile: t; lexical-binding:t -*-
+(define-package "refactor" "0.1.1" "Language-agnostic refactoring interface" '((emacs "26.3") (eldoc "1.14.0")) :commit "e8f81976d0f14f314e7b5241ac9d8b7b98385680" :url "https://elpa.gnu.org/packages/refactor.html" :authors '(("João Távora" . "joaotavora@gmail.com")) :maintainer '("João Távora" . "joaotavora@gmail.com") :keywords '("convenience" "languages"))
